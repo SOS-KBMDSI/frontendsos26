@@ -9,6 +9,7 @@ import axios, {
 
 const PROXY_API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL!;
 
+// Lightweight request queue for better handling
 const requestQueue: Array<() => Promise<void>> = [];
 let isProcessing = false;
 
@@ -20,7 +21,8 @@ async function processQueue(): Promise<void> {
     const request = requestQueue.shift();
     if (request) {
       await request();
-      await new Promise((resolve) => setTimeout(resolve, 100));
+      // Very minimal delay to prevent overwhelming
+      await new Promise((resolve) => setTimeout(resolve, 10));
     }
   }
   isProcessing = false;
@@ -45,15 +47,32 @@ async function makeRequestWithRetry<T = unknown>(
             `Attempt ${attempt} failed for ${config.url} - Status: ${status}`
           );
 
+          // Handle rate limiting from backend
           if (status === 429 && attempt < maxRetries) {
-            const delay = Math.pow(2, attempt) * 1000 + Math.random() * 1000;
-            console.log(`Rate limited, waiting ${delay}ms before retry...`);
+            // Respect backend rate limiting with exponential backoff
+            const retryAfter = axiosError.response?.headers?.["retry-after"];
+            const delay = retryAfter
+              ? parseInt(retryAfter as string) * 1000
+              : Math.pow(2, attempt) * 1000 + Math.random() * 1000;
+
+            console.log(
+              `Backend rate limited, waiting ${delay}ms before retry...`
+            );
             await new Promise((resolve) => setTimeout(resolve, delay));
             continue;
           }
 
-          reject(axiosError);
-          return;
+          // Don't retry on client errors (400-499) except 429
+          if (status && status >= 400 && status < 500 && status !== 429) {
+            reject(axiosError);
+            return;
+          }
+
+          // Retry on server errors (500+) or network errors
+          if (attempt === maxRetries) {
+            reject(axiosError);
+            return;
+          }
         }
       }
     });
@@ -83,6 +102,12 @@ async function handler(
     const headers: Record<string, string> = {
       Accept: request.headers.get("Accept") ?? "application/json",
       "User-Agent": "NextJS-Proxy/1.0",
+      // Forward original IP for backend rate limiting
+      "X-Forwarded-For":
+        request.headers.get("x-forwarded-for") ||
+        request.headers.get("x-real-ip") ||
+        "unknown",
+      "X-Real-IP": request.headers.get("x-real-ip") || "unknown",
     };
 
     if (token) {
@@ -125,10 +150,11 @@ async function handler(
       const status = error.response?.status ?? 500;
       const responseHeaders = new Headers();
 
-      console.error("Final Proxy Error:", {
+      console.error("Proxy Error:", {
         status,
         statusText: error.response?.statusText,
         message: error.message,
+        url: request.url,
         timestamp: new Date().toISOString(),
       });
 
@@ -140,18 +166,21 @@ async function handler(
         });
       }
 
+      // Forward backend rate limiting response
       if (status === 429) {
+        const retryAfter =
+          (error.response?.headers?.["retry-after"] as string) || "5";
         return NextResponse.json(
           {
             message:
-              "Backend is still rate limiting after retries. Try again later.",
-            retryAfter: "5 seconds",
+              "Terlalu banyak permintaan. Silakan coba lagi setelah beberapa saat.",
+            retryAfter: `${retryAfter} detik`,
           },
           {
             status: 429,
             headers: {
               ...Object.fromEntries(responseHeaders.entries()),
-              "Retry-After": "5",
+              "Retry-After": retryAfter,
             },
           }
         );
