@@ -1,11 +1,9 @@
-
-echo "Running build before push..."
+echo "🚀 Menjalankan build sebelum push..."
 npm run build
 
-# Check the exit code of the build command
 if [ $? -ne 0 ]; then
-  echo "Build failed. Push aborted."
+  echo "❌ Build gagal. Push dibatalkan."
   exit 1
 fi
 
-echo "Build successful. Proceeding with push."
+echo "✅ Build berhasil. Melanjutkan proses push."
