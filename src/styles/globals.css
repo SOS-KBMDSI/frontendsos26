@@ -29,6 +29,7 @@
 
   /* == Default Colors == */
   --color-default-dark: #383838;
+  --color-default-dark-50: rgba(56, 56, 56, 0.50);
   --color-default-light: #f9f9f9;
 
   --color-bg-primary: #a61b37;
@@ -47,6 +48,10 @@
   /* Alert Colors */
   --color-danger: #EA3333;
   --color-success: #009933;
+
+  /* Surface Colors */
+  --color-surface-grey-50: rgba(227, 227, 227, 0.5);
+  --color-surface-divider : #D9D9D9;
 
   --font-family-poppins: "Poppins", sans-serif;
 
