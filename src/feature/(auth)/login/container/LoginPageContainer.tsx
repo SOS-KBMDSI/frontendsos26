@@ -1,7 +1,7 @@
 "use client";
 
 import LoginForm from "../components/LoginForm";
-import Ornament from "../components/Ornament";
+import { Ornament } from "../components/Ornament";
 import Pattern from "../components/Pattern";
 import RandomStars from "../components/RandomStars";
 import { useLoginForm } from "../hooks/useLoginForm";

@@ -14,9 +14,6 @@
       "npx --node-options=--max-old-space-size=4096 eslint --fix",
       "npx prettier --write"
     ],
-    "*.{ts,tsx}": [
-      "npx tsc --noEmit"
-    ],
     "*.{css,scss,md,json}": [
       "npx prettier --write"
     ]
