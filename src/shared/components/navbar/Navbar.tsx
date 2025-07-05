@@ -1,5 +1,3 @@
-// file: components/Navbar.tsx
-
 "use client";
 
 import React, { useState } from "react";
@@ -8,7 +6,8 @@ import { navListData } from "../../data/navListData";
 import { Button } from "../ui/Button";
 import { Sling as Hamburger } from "hamburger-react";
 import { motion, AnimatePresence, Variants } from "framer-motion";
-
+import Image from "next/image";
+import LogoSoS from "@/assets/logo-sos.svg";
 const menuVariants: Variants = {
   hidden: {
     opacity: 0,
@@ -47,7 +46,16 @@ const Navbar = () => {
     <>
       <nav className="w-screen h-20 bg-primary-600 fixed z-50">
         <div className="mycontainer h-full grid grid-cols-12 items-center">
-          <div className="bg-[#F3EFE8] h-14 w-14 md:w-30 xl:w-52 rounded-2xl col-span-2"></div>
+          <div className="flex text-white font-semibold  items-center col-span-9   md:col-span-2   rounded-2xl ">
+            <Image
+              className="w-14 h-14"
+              width={300}
+              height={300}
+              src={LogoSoS}
+              alt="Logo SoS"
+            />
+            <span className="text-sm w-1/2 ">Synergy Of Symphony</span>
+          </div>
 
           <ul className="md:flex hidden gap-12 col-span-8 justify-center">
             {navListData.map((item, idx) => (

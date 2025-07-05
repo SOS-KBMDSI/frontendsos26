@@ -1,0 +1,9 @@
+echo "🚀 Menjalankan build sebelum push..."
+npm run build
+
+if [ $? -ne 0 ]; then
+  echo "❌ Build gagal. Push dibatalkan."
+  exit 1
+fi
+
+echo "✅ Build berhasil. Melanjutkan proses push."

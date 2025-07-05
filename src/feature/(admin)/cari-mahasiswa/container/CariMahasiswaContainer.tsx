@@ -44,7 +44,9 @@ const CariMahasiswaContainer = () => {
 
   return (
     <main>
-      <h4 className="text-4xl font-semibold text-black">Cari Mahasiswa</h4>
+      <h4 className="text-4xl md:text-3xl font-semibold text-black">
+        Cari Mahasiswa
+      </h4>
       <DataTable<MahasiswaDetail>
         table={table}
         isLoading={MahasiswaData.isLoading}

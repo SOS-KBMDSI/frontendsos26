@@ -38,9 +38,9 @@ const inputVariants = cva(
 const labelVariants = cva("block text-lg font-semibold mb-2", {
   variants: {
     variant: {
-      default: "text-black",
-      error: "text-black",
-      success: "text-black",
+      default: "text-primary-500",
+      error: "text-primary-500",
+      success: "text-primary-500",
     },
     disabled: {
       true: "text-secondary-700",
