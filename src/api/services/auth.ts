@@ -9,7 +9,7 @@ export interface AuthProfile {
   study_program: string;
   siakad_photo_url: string;
   file_filkom_photo_url: string;
-  role: "admin" | "maba";
+  role: "admin" | "user";
 }
 
 interface LoginResponse {
