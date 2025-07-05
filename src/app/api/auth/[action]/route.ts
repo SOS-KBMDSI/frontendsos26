@@ -6,6 +6,7 @@ import { cookies } from "next/headers";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET as string);
+
 async function verifyToken(token: string) {
   try {
     const { payload } = await jwtVerify(token, JWT_SECRET);
@@ -17,7 +18,7 @@ async function verifyToken(token: string) {
 
 export async function POST(
   request: NextRequest,
-  context: { params: Promise<{ action: string }> }
+  context: { params: Promise<{ action: string }> },
 ) {
   const { action } = await context.params;
 
@@ -39,7 +40,7 @@ export async function POST(
       }
 
       (await cookies()).set("auth_session", token, {
-        httpOnly: true,
+        httpOnly: false,
         secure: process.env.NODE_ENV === "production",
         maxAge: 60 * 60 * 7,
         path: "/",

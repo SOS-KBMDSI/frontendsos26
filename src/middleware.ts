@@ -17,8 +17,6 @@ export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const token = request.cookies.get("auth_session")?.value;
   const payload = token ? await verifyToken(token) : null;
-
-  // const mabaPaths: string[] = []; //nanti aja ini wak isinya
   const adminPath = "/admin";
   const loginPath = "/login";
 

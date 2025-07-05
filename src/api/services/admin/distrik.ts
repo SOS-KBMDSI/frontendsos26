@@ -22,7 +22,7 @@ class DistrikService {
     return DistrikService.instance;
   }
   async getAllDistricts(): Promise<BackendResponse<Distrik[]>> {
-    const response = await apiClient.get("/api/distrik");
+    const response = await apiClient.get("/api/distrik/");
     return response as unknown as BackendResponse<Distrik[]>;
   }
 
@@ -33,7 +33,7 @@ class DistrikService {
 
   async getAnggotaByDistrictId(
     id: string,
-    params: { page: number; limit: number }
+    params: { page: number; limit: number },
   ): Promise<BackendResponse<PaginatedData>> {
     const response = await apiClient.get(`/api/distrik/${id}/maba`, {
       params,
