@@ -2,8 +2,10 @@
 
 import { useState, FormEvent } from "react";
 import { stfService } from "@/api/services/admin/stf";
+import { useRouter } from "next/navigation";
 
 export const useCreateStf = () => {
+  const router = useRouter();
   const [nama, setNama] = useState("");
   const [prodi, setProdi] = useState("");
   const [visi, setVisi] = useState("");
@@ -32,7 +34,8 @@ export const useCreateStf = () => {
       const response = await stfService.createCaketang(formData);
       if (response.status_code === 201) {
         alert("Caketang berhasil dibuat!");
-        window.location.reload();
+        router.refresh();
+        router.push("/admin/stf");
       } else {
         throw new Error(response.message || "Gagal membuat caketang.");
       }
