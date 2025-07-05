@@ -33,7 +33,7 @@ class DistrikService {
 
   async getAnggotaByDistrictId(
     id: string,
-    params: { page: number; limit: number }
+    params: { page: number; limit: number },
   ): Promise<BackendResponse<PaginatedData>> {
     const response = await apiClient.get(`/api/distrik/${id}/maba`, {
       params,
