@@ -9,7 +9,7 @@ export interface AuthProfile {
   study_program: string;
   siakad_photo_url: string;
   file_filkom_photo_url: string;
-  role: "admin" | "user";
+  role: "admin" | "maba";
 }
 
 interface LoginResponse {
@@ -34,7 +34,7 @@ class AuthService {
   }): Promise<LoginResponse> {
     const response = await axios.post<LoginResponse>(
       "/api/auth/login",
-      credentials
+      credentials,
     );
     return response.data;
   }
@@ -48,7 +48,7 @@ class AuthService {
 
   async getMe(): Promise<ApiResponse<AuthProfile>> {
     try {
-      const response = await apiClient.get<AuthProfile>("/api/mahasiswa");
+      const response = await apiClient.get<AuthProfile>("/api/mahasiswa/");
       return response;
     } catch (error: unknown) {
       if (error instanceof Error) {

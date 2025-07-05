@@ -30,7 +30,6 @@ class ApiCore {
       headers: {
         "Content-Type": "application/json",
       },
-      withCredentials: true,
     });
     this.setupInterceptors();
   }
@@ -43,17 +42,9 @@ class ApiCore {
   }
 
   private setupInterceptors(): void {
-    // Interceptor to add the token from the cookie to every request
     this.client.interceptors.request.use(
       (config) => {
-        // This check ensures the code only runs in the browser
         if (typeof window !== "undefined") {
-          // 👇 --- DEBUGGING LOGS START --- 👇
-          console.log("--- Axios Interceptor ---");
-          console.log("Current document.cookie:", document.cookie);
-          // 👆 --- DEBUGGING LOGS END --- 👆
-
-          // Helper function to read a cookie
           const getCookie = (name: string): string | undefined => {
             const value = `; ${document.cookie}`;
             const parts = value.split(`; ${name}=`);
@@ -62,19 +53,9 @@ class ApiCore {
 
           const token = getCookie("auth_session");
 
-          // 👇 --- DEBUGGING LOGS START --- 👇
           if (token) {
-            console.log("Token found in cookie:", token);
             config.headers.Authorization = `Bearer ${token}`;
-            console.log(
-              "Authorization header set:",
-              config.headers.Authorization,
-            );
-          } else {
-            console.log("Auth token not found in cookie.");
           }
-          console.log("-------------------------");
-          // 👆 --- DEBUGGING LOGS END --- 👆
         }
         return config;
       },
@@ -87,17 +68,12 @@ class ApiCore {
       (response: AxiosResponse) => response,
       (error: AxiosError) => {
         if (error.response?.status === 401) {
-          if (typeof window !== "undefined") {
-            // If unauthenticated, redirect to the login page
-            window.location.href = "/login";
-          }
         }
         return Promise.reject(error);
       },
     );
   }
 
-  // --- API Methods (GET, POST, PUT, PATCH, DELETE) ---
   public async get<T>(
     url: string,
     config?: AxiosRequestConfig,
