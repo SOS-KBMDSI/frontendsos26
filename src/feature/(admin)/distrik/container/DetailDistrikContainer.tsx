@@ -58,7 +58,7 @@ const DetailDistrikContainer = ({ distrikId }: { distrikId: string }) => {
             <span className="text-xl">Kembali</span>
           </Link>
         </div>
-        <h1 className="text-4xl font-bold text-default-dark">
+        <h1 className="text-4xl font-semibold text-default-dark">
           {distrik.nama_distrik}
         </h1>
       </div>
