@@ -25,7 +25,7 @@ class StfService {
     if (cachedItem && cachedItem.expiry > Date.now()) {
       return cachedItem.data as BackendResponse<StfSummary[]>;
     }
-    const response = await apiClient.get("/api/stf");
+    const response = await apiClient.get("/api/stf/");
     const responseData = response as unknown as BackendResponse<StfSummary[]>;
     this.cache.set(cacheKey, { data: responseData, expiry: Date.now() + this.cacheDuration });
     return responseData;

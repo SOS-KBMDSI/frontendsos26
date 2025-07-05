@@ -30,7 +30,7 @@ class DistrikService {
     if (cachedItem && cachedItem.expiry > Date.now()) {
       return cachedItem.data as BackendResponse<Distrik[]>;
     }
-    const response = await apiClient.get("/api/distrik");
+    const response = await apiClient.get("/api/distrik/");
     const responseData = response as unknown as BackendResponse<Distrik[]>;
     this.cache.set(cacheKey, { data: responseData, expiry: Date.now() + this.cacheDuration });
     return responseData;
