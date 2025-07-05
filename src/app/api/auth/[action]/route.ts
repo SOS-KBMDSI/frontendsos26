@@ -17,7 +17,7 @@ async function verifyToken(token: string) {
 
 export async function POST(
   request: NextRequest,
-  context: { params: Promise<{ action: string }> }
+  context: { params: Promise<{ action: string }> },
 ) {
   const { action } = await context.params;
 
@@ -39,7 +39,7 @@ export async function POST(
       }
 
       (await cookies()).set("auth_session", token, {
-        httpOnly: true,
+        httpOnly: false,
         secure: process.env.NODE_ENV === "production",
         maxAge: 60 * 60 * 7,
         path: "/",
