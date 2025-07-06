@@ -5,18 +5,9 @@ import { motion, AnimatePresence } from "framer-motion";
 import FramePhoto from "../components/FramePhoto";
 import Hero from "../components/Hero";
 import { ComingSoonLoader } from "../components/ComingSoonLoader";
-import { useQuis } from "../hooks/useQuis";
 
 export default function ComingSoonContainer() {
   const [loading, setLoading] = useState(true);
-  const quizChallenges = [
-    {
-      question: "Synergy of Symphony disingkat jadi?",
-      answer: ["S", "O", "S"],
-    },
-    { question: "Singkatan Departemen Kita:", answer: ["S", "I"] },
-  ];
-  const { quizState, quizActions } = useQuis(quizChallenges);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -38,7 +29,7 @@ export default function ComingSoonContainer() {
             transition={{ duration: 0.75 }}
           >
             <FramePhoto />
-            <Hero quizState={quizState} quizActions={quizActions} />
+            <Hero />
           </motion.div>
         )}
       </AnimatePresence>
