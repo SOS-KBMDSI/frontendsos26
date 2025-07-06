@@ -1,4 +1,11 @@
 import localFont from "next/font/local";
+
 export const upanddownNormal = localFont({
-  src: "../../../public/fonts/UpandDown.ttf",
+  src: [
+    {
+      path: "../../assets/fonts/UpandDown.ttf",
+      weight: "400",
+    },
+  ],
+  variable: "--font-upanddownnormal",
 });

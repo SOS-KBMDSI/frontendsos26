@@ -2,8 +2,7 @@
 
 @theme {
   --font-poppins: "Poppins", sans-serif;
-  --font-upanddownnormal: "upanddownNormal";
-  --font-upanddownrough: "upanddownRough";
+  --font-upanddownnormal: "upanddownnormal";
   --color-white-default: #f9f9f9 /* == PRIMARY COLORS == */
     --color-primary-100: #fbe8e9;
   --color-primary-200: #e8ccd3;
