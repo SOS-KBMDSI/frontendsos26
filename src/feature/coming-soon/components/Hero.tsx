@@ -141,22 +141,20 @@ const Hero: React.FC<HeroProps> = ({ quizState, quizActions }) => {
   }, [handleCharacterClick]);
 
   return (
-    <div className="w-full h-full font-upanddownnormal">
+    <div className="w-screen h-screen flex justify-center items-center font-upanddownnormal">
       <AnimatePresence mode="wait">
         {!showQuiz ? (
-          // STATE 1: Tampilan Awal (Teks di Tengah)
           <motion.div
             key="initial-state"
-            className="w-full h-full flex flex-col items-center justify-center"
+            className="w-full h-screen flex flex-col items-center justify-center"
             exit={{ opacity: 0, transition: { duration: 0.5 } }}
           >
             <AnimatedTextBlock renderWaveText={renderWaveText} />
           </motion.div>
         ) : (
-          // STATE 2: Tampilan Akhir (Teks di Atas + Kuis)
           <motion.div
             key="final-state"
-            className="w-full h-full flex flex-col items-center pt-30" // pt-30 di sini
+            className="flex items-center flex-col pt-30"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1, transition: { duration: 0.5 } }}
           >

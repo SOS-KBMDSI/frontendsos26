@@ -145,7 +145,7 @@ const backgroundVariants: Variants = {
 };
 
 export const ComingSoonLoader: React.FC<ComingSoonLoaderProps> = ({
-  text = "Cook Some Things Up",
+  text = "Cooking Some Things Up",
   showPulse = true,
   autoHide = false,
   hideDelay = 5000,
