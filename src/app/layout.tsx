@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "@/styles/globals.css";
-import { upanddownNormal, upanddownRough } from "@/shared/utils/font";
+import { upanddownNormal } from "@/shared/utils/font";
 const poppins = Poppins({
   variable: "--font-poppins",
   subsets: ["latin"],
@@ -22,7 +22,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${poppins.variable} ${upanddownNormal} ${upanddownRough} font-poppins antialiased`}
+        className={`${poppins.variable} ${upanddownNormal}  font-poppins antialiased`}
       >
         {children}
       </body>
