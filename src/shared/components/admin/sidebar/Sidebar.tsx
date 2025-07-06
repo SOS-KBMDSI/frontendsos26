@@ -33,14 +33,14 @@ const Sidebar = () => {
           Welcome, Admin {user?.nama}!
         </span>
       </div>
-      <ul className="mt-12 md:mt-18 flex flex-col gap-3 md:gap-5">
+      <ul className="mt-10 flex flex-col gap-3 md:gap-5">
         {sidebarMenuItems.map((sidebar) => {
           const isActive = pathname === sidebar.path;
 
           return (
             <Link key={sidebar.id} href={sidebar.path} passHref>
               <li
-                className={`px-3 md:px-4 py-4 md:py-5 flex gap-x-2 md:gap-x-3 text-base md:text-lg transition-all duration-300 rounded-xl ${
+                className={`px-3 md:px-4 py-4 md:py-4 flex   gap-x-2 md:gap-x-3 text-xs  transition-all duration-300 rounded-xl ${
                   isActive
                     ? "bg-primary-500 text-white"
                     : "text-primary-500 hover:bg-primary-500 hover:text-white"
