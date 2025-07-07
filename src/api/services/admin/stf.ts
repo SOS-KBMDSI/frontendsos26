@@ -27,7 +27,10 @@ class StfService {
     }
     const response = await apiClient.get("/api/stf/");
     const responseData = response as unknown as BackendResponse<StfSummary[]>;
-    this.cache.set(cacheKey, { data: responseData, expiry: Date.now() + this.cacheDuration });
+    this.cache.set(cacheKey, {
+      data: responseData,
+      expiry: Date.now() + this.cacheDuration,
+    });
     return responseData;
   }
 
@@ -44,7 +47,10 @@ class StfService {
     return response as unknown as BackendResponse<null>;
   }
 
-  async updateCaketang(id: string, data: FormData): Promise<BackendResponse<null>> {
+  async updateCaketang(
+    id: string,
+    data: FormData,
+  ): Promise<BackendResponse<null>> {
     this.cache.delete("all_caketang");
     const response = await apiClient.patch(`/api/stf/${id}`, data, {
       headers: { "Content-Type": "multipart/form-data" },
