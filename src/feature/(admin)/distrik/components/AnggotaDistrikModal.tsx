@@ -47,8 +47,8 @@ export const AnggotaDetailModal = ({
 
   const kesehatanFields = [
     { label: "Riwayat Penyakit", value: mahasiswa.riwayat_penyakit },
-    { label: "Alergi Obat", value: mahasiswa.alergi_obat },
-    { label: "Alergi Makanan", value: mahasiswa.alergi_makanan },
+    { label: "Alergi Obat", value: mahasiswa.alergiObat },
+    { label: "Alergi Makanan", value: mahasiswa.alergiMakanan },
   ];
 
   return (
