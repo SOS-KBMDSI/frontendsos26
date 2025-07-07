@@ -68,7 +68,6 @@ class MahasiswaService {
       const response = await apiClient.get<MahasiswaDetail[]>(
         "/api/mahasiswa/search",
       );
-
       this.cache.set(cacheKey, {
         data: response,
         expiry: Date.now() + this.cacheDuration,
@@ -98,7 +97,7 @@ class MahasiswaService {
       const response = await apiClient.get<MahasiswaDetail>(
         `/api/mahasiswa/search/${id}`,
       );
-
+      console.log(response);
       this.cache.set(id, {
         data: response,
         expiry: Date.now() + this.cacheDuration,

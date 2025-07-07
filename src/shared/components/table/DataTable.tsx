@@ -51,7 +51,7 @@ export const DataTable = <TData,>({
   return (
     <div className="mt-12">
       {!hideSearchInput && (
-        <div className="relative w-1/3">
+        <div className="relative w-full md:w-1/3">
           <Input
             className="text-base w-full mb-14 pl-10"
             variant={"default"}
@@ -73,7 +73,8 @@ export const DataTable = <TData,>({
           )}
         </div>
         <div className="w-full overflow-x-auto">
-          <table className="min-w-[800px] w-full text-sm text-left text-black table-fixed">
+          {/* 1. Mengubah `table-fixed` menjadi `table-auto` untuk responsivitas */}
+          <table className="min-w-[800px] w-full text-sm text-left text-black table-auto">
             <thead className={cn("text-black text-lg", headerClassName)}>
               {table.getHeaderGroups().map((headerGroup) => (
                 <tr key={headerGroup.id}>
@@ -81,12 +82,13 @@ export const DataTable = <TData,>({
                     <th
                       key={header.id}
                       className="py-4 px-6"
+                      // Lebar kolom diatur agar lebih fleksibel
                       style={{ width: header.getSize() }}
                     >
                       <div>
                         {flexRender(
                           header.column.columnDef.header,
-                          header.getContext()
+                          header.getContext(),
                         )}
                       </div>
                     </th>
@@ -98,14 +100,16 @@ export const DataTable = <TData,>({
               {table.getRowModel().rows.map((row, index) => (
                 <tr
                   key={row.id}
-                  className={`h-20 cursor-pointer transition-colors ${
+                  // 2. Menghapus `cursor-pointer`
+                  className={`h-20 transition-colors ${
                     row.getIsSelected()
                       ? "bg-primary-500 text-white"
                       : index % 2 === 1
-                      ? "bg-white"
-                      : "bg-primary-500/10"
+                        ? "bg-white"
+                        : "bg-primary-500/10"
                   }`}
-                  onClick={row.getToggleSelectedHandler()}
+                  // 3. Menghapus event `onClick`
+                  // onClick={row.getToggleSelectedHandler()}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <td
@@ -115,7 +119,7 @@ export const DataTable = <TData,>({
                     >
                       {flexRender(
                         cell.column.columnDef.cell,
-                        cell.getContext()
+                        cell.getContext(),
                       )}
                     </td>
                   ))}

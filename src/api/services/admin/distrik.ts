@@ -32,7 +32,10 @@ class DistrikService {
     }
     const response = await apiClient.get("/api/distrik/");
     const responseData = response as unknown as BackendResponse<Distrik[]>;
-    this.cache.set(cacheKey, { data: responseData, expiry: Date.now() + this.cacheDuration });
+    this.cache.set(cacheKey, {
+      data: responseData,
+      expiry: Date.now() + this.cacheDuration,
+    });
     return responseData;
   }
 
@@ -44,22 +47,30 @@ class DistrikService {
     }
     const response = await apiClient.get(`/api/distrik/${id}`);
     const responseData = response as unknown as BackendResponse<Distrik>;
-    this.cache.set(cacheKey, { data: responseData, expiry: Date.now() + this.cacheDuration });
+    this.cache.set(cacheKey, {
+      data: responseData,
+      expiry: Date.now() + this.cacheDuration,
+    });
     return responseData;
   }
 
   async getAnggotaByDistrictId(
     id: string,
-    params: { page: number; limit: number }
+    params: { page: number; limit: number },
   ): Promise<BackendResponse<PaginatedData>> {
     const cacheKey = `anggota_distrik_${id}_page_${params.page}`;
     const cachedItem = this.cache.get(cacheKey);
     if (cachedItem && cachedItem.expiry > Date.now()) {
       return cachedItem.data as BackendResponse<PaginatedData>;
     }
-    const response = await apiClient.get(`/api/distrik/${id}/maba`, { params });
+    const response = await apiClient.get(`/api/distrik/${id}/maba`, {
+      params,
+    });
     const responseData = response as unknown as BackendResponse<PaginatedData>;
-    this.cache.set(cacheKey, { data: responseData, expiry: Date.now() + this.cacheDuration });
+    this.cache.set(cacheKey, {
+      data: responseData,
+      expiry: Date.now() + this.cacheDuration,
+    });
     return responseData;
   }
 }
