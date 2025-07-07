@@ -124,7 +124,7 @@ const Hero = () => {
   }, [handleCharacterClick]);
 
   return (
-    <div className="w-full min-h-screen flex flex-col items-center pt-20 justify-center overflow-hidden py-8">
+    <div className="w-full h-screen flex flex-col items-center pt-20 justify-center overflow-hidden py-8">
       <div className="w-full min-h-screen flex flex-col items-center justify-center font-upanddownnormal overflow-hidden ">
         <motion.div
           layout

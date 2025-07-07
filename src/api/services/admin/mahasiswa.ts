@@ -30,8 +30,8 @@ export interface MahasiswaDetail {
   agama: string;
   golongan_darah: string;
   riwayat_penyakit: string;
-  alergi_obat: string;
-  alergi_makanan: string;
+  alergiObat: string;
+  alergiMakanan: string;
   kelompok: Kelompok;
   kelamin: string;
 }
