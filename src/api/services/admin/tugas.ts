@@ -6,9 +6,16 @@ export interface Rangkaian {
   Start_Date: string;
   End_Date: string;
 }
+export interface TugasStatus {
+  nama_mahasiswa: string;
+  nim: string;
+  status: string;
+  link_pengumpulan: string;
+  nilai: number;
+}
 
 export interface TugasSummary {
-  id_tugas: string;
+  id_penugasan: string;
   id_rangkaian: string;
   judul: string;
   deskripsi: string;
@@ -76,7 +83,26 @@ class TugasService {
     );
     return response as unknown as BackendResponse<null>;
   }
+  async getTugasStatusById(
+    id: string,
+  ): Promise<BackendResponse<TugasStatus[]>> {
+    const cacheKey = `tugas_status_${id}`;
+    const cachedItem = this.cache.get(cacheKey);
 
+    if (cachedItem && cachedItem.expiry > Date.now()) {
+      return cachedItem.data as BackendResponse<TugasStatus[]>;
+    }
+
+    const response = await apiClient.get(`/api/penugasan/${id}/status`);
+    const responseData = response as unknown as BackendResponse<TugasStatus[]>;
+
+    this.cache.set(cacheKey, {
+      data: responseData,
+      expiry: Date.now() + this.cacheDuration,
+    });
+
+    return responseData;
+  }
   async updateTugas(
     id: string,
     data: FormData,

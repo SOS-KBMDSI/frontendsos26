@@ -4,9 +4,11 @@ import { TugasCard } from "../components/TugasCard";
 import { Button } from "@/shared/components/ui/Button";
 import { Modal } from "@/shared/components/ui/Modal";
 import { FormCreateTugas } from "../components/FormCreateTugas";
+import Link from "next/link";
 
 const TugasContainer = () => {
   const { data: tugas, isLoading, error, refresh } = useGetAllTugas();
+  console.log(tugas);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const handleCreateSuccess = () => {
     setIsModalOpen(false);
@@ -26,7 +28,7 @@ const TugasContainer = () => {
     );
   }
   return (
-    <section>
+    <section className="">
       <div className="flex justify-end">
         <Button variant={"outline"} onClick={() => setIsModalOpen(true)}>
           Tambah Penugasan
@@ -34,7 +36,12 @@ const TugasContainer = () => {
       </div>
       <div className="mt-8 flex gap-9 flex-col">
         {tugas.map((tugas, idx) => (
-          <TugasCard key={idx} tugas={tugas} idx={idx} />
+          <Link
+            href={`/admin/penugasan/tugas/${tugas.id_penugasan}`}
+            key={tugas.id_penugasan}
+          >
+            <TugasCard tugas={tugas} idx={idx} />
+          </Link>
         ))}
       </div>
       <Modal

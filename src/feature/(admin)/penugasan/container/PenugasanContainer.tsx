@@ -6,7 +6,7 @@ const PenugasanContainer = () => {
   const [activeTab, setActiveTab] = useState<"tugas" | "quiz">("tugas");
 
   return (
-    <div className="w-full h-screen bg-white rounded-xl p-20">
+    <div className="w-full  bg-white rounded-xl p-20">
       <h4 className="text-center font-bold text-5xl text-[#383838]">
         Penugasan
       </h4>
