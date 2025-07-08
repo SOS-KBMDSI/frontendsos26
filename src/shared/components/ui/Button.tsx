@@ -14,7 +14,7 @@ const buttonVariants = cva(
 
         outline:
           "border-[1.5px] text-primary-500 border-primary-500 hover:bg-primary-200 active:bg-primary-300 focus:border-2 " +
-          "disabled:border-neutral-500/50  disabled:text-secondary-900 hover:bg-neutral-500 disabled:bg-transparent",
+          "disabled:border-neutral-500/50  disabled:text-secondary-900 hover:bg-primary-200 disabled:bg-transparent",
 
         transparent:
           "bg-transparent text-primary-500 hover:bg-primary-100 focus:bg-white focus:shadow-[0px_0px_0px_3px_rgba(235,204,211,1.00)] active:bg-primary-300 " +
@@ -32,7 +32,7 @@ const buttonVariants = cva(
       variant: "primary",
       size: "default",
     },
-  }
+  },
 );
 
 interface ButtonProps
@@ -55,7 +55,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       <button
         className={cn(
           buttonVariants({ variant, size: finalSize, className }),
-          isVertical && "flex-col"
+          isVertical && "flex-col",
         )}
         ref={ref}
         {...props}
@@ -81,7 +81,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         )}
       </button>
     );
-  }
+  },
 );
 
 Button.displayName = "Button";
