@@ -1,0 +1,166 @@
+import React from "react";
+import { Loader2 } from "lucide-react";
+import { useGetRangkaian } from "../hooks/useGetRangkaian";
+import { useFormCreateTugas } from "../hooks/useFormCreateTugas";
+import { useToast } from "@/shared/hooks/useToast";
+import { Button } from "@/shared/components/ui/Button";
+import { Input } from "@/shared/components/ui/Input";
+import { CalendarPicker } from "@/shared/components/ui/CalendarPicker";
+
+interface FormCreateTugasProps {
+  onSuccess: () => void;
+}
+
+export const FormCreateTugas: React.FC<FormCreateTugasProps> = ({
+  onSuccess,
+}) => {
+  const { showToast } = useToast();
+  const { data: rangkaianList, isLoading: isLoadingRangkaian } =
+    useGetRangkaian();
+
+  const handleSuccess = () => {
+    showToast({
+      type: "success",
+      title: "Berhasil!",
+      message: "Tugas Baru berhasil dibuat",
+    });
+    onSuccess();
+  };
+
+  const {
+    judul,
+    setJudul,
+    deskripsi,
+    setDeskripsi,
+    tenggat,
+    setTenggat,
+    fileLink,
+    setFileLink,
+    idRangkaian,
+    setIdRangkaian,
+    isSubmitting,
+    isFormValid,
+    handleSubmit: performSubmit,
+  } = useFormCreateTugas({
+    onSuccess: handleSuccess,
+  });
+
+  const handleFormSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      await performSubmit(e);
+    } catch (error) {
+      showToast({
+        type: "error",
+        title: "Gagal!",
+        message: error instanceof Error ? error.message : "Terjadi kesalahan",
+        duration: 6000,
+      });
+    }
+  };
+
+  const inputClasses =
+    "w-full rounded border border-gray-300 bg-gray-50 p-2 text-sm text-gray-800 transition focus:border-indigo-500 focus:ring-1 focus:ring-indigo-200 disabled:cursor-not-allowed disabled:opacity-50";
+  const labelClasses = "mb-1 block text-sm font-medium text-gray-800";
+
+  return (
+    <div className="max-w-2xl mx-auto">
+      <form onSubmit={handleFormSubmit} className="space-y-4">
+        <div className="space-y-1">
+          <label htmlFor="rangkaian" className={labelClasses}>
+            Rangkaian Acara <span className="text-red-500">*</span>
+          </label>
+          <select
+            id="rangkaian"
+            value={idRangkaian}
+            onChange={(e) => setIdRangkaian(e.target.value)}
+            className={inputClasses}
+            required
+            disabled={isLoadingRangkaian || isSubmitting}
+          >
+            <option value="" disabled>
+              {isLoadingRangkaian ? "Memuat..." : "-- Pilih Rangkaian --"}
+            </option>
+            {rangkaianList?.map((r) => (
+              <option key={r.ID} value={r.ID}>
+                {r.Name}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className="space-y-1">
+          <label htmlFor="judul" className={labelClasses}>
+            Judul Tugas <span className="text-red-500">*</span>
+          </label>
+          <Input
+            id="judul"
+            value={judul}
+            onChange={(e) => setJudul(e.target.value)}
+            placeholder="Contoh: Unggah Twibbon Synergy On Frame"
+            disabled={isSubmitting}
+            required
+            className="text-sm"
+          />
+        </div>
+
+        <div className="space-y-1">
+          <label htmlFor="deskripsi" className={labelClasses}>
+            Deskripsi <span className="text-red-500">*</span>
+          </label>
+          <textarea
+            id="deskripsi"
+            value={deskripsi}
+            onChange={(e) => setDeskripsi(e.target.value)}
+            placeholder="Jelaskan detail dan ketentuan Tugas..."
+            className={inputClasses}
+            rows={3}
+            disabled={isSubmitting}
+            required
+          />
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="space-y-1">
+            <label htmlFor="tenggat" className={labelClasses}>
+              Tenggat <span className="text-red-500">*</span>
+            </label>
+            <CalendarPicker
+              value={tenggat}
+              onChange={(e) => setTenggat(e.target.value)}
+              disabled={isSubmitting}
+            />
+          </div>
+          <div className="space-y-1">
+            <label htmlFor="file" className={labelClasses}>
+              Link File <span className="text-red-500">*</span>
+            </label>
+            <Input
+              id="file"
+              type="url"
+              value={fileLink}
+              onChange={(e) => setFileLink(e.target.value)}
+              placeholder="https://contoh.com/file"
+              disabled={isSubmitting}
+              required
+              className="text-sm py-2"
+            />
+          </div>
+        </div>
+
+        <div className="w-full mt-10">
+          <Button
+            type="submit"
+            disabled={isSubmitting || !isFormValid}
+            className=" w-full "
+          >
+            {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+            {isSubmitting ? "Menyimpan..." : "Simpan Tugas"}
+          </Button>
+        </div>
+      </form>
+    </div>
+  );
+};
+
+export default FormCreateTugas;
