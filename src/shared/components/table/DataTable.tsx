@@ -13,7 +13,7 @@ interface DataTableProps<TData> {
   error: string | null;
   refresh: () => void;
   title: string;
-  searchPlaceholder: string;
+  searchPlaceholder?: string;
   hideSearchInput?: boolean;
   headerClassName?: string;
   hideMeta?: boolean;
