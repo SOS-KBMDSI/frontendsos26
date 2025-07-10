@@ -49,7 +49,7 @@ export async function POST(
 
       const userRole = payload.Role as string;
 
-      let redirectUrl = "/";
+      let redirectUrl = "/home";
       if (userRole === "admin") {
         redirectUrl = "/admin/dashboard";
       }
