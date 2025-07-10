@@ -11,7 +11,10 @@ export interface TugasStatus {
   nim: string;
   status: string;
   link_pengumpulan: string;
-  nilai: number;
+  tenggat: string;
+  nilai: string | number;
+  file_link: string | null;
+  is_visible: boolean;
 }
 
 export interface TugasSummary {
@@ -78,18 +81,16 @@ class TugasService {
     );
     return response as unknown as BackendResponse<null>;
   }
-  async getDetailTugasById(
-    id: string,
-  ): Promise<BackendResponse<TugasStatus[]>> {
+  async getDetailTugasById(id: string): Promise<BackendResponse<TugasSummary>> {
     const cacheKey = `tugas_status_${id}`;
     const cachedItem = this.cache.get(cacheKey);
 
     if (cachedItem && cachedItem.expiry > Date.now()) {
-      return cachedItem.data as BackendResponse<TugasStatus[]>;
+      return cachedItem.data as BackendResponse<TugasSummary>;
     }
 
-    const response = await apiClient.get(`/api/penugasan/${id}/status`);
-    const responseData = response as unknown as BackendResponse<TugasStatus[]>;
+    const response = await apiClient.get(`/api/penugasan/${id}`);
+    const responseData = response as unknown as BackendResponse<TugasSummary>;
     this.cache.set(cacheKey, {
       data: responseData,
       expiry: Date.now() + this.cacheDuration,
@@ -107,7 +108,26 @@ class TugasService {
     });
     return response as unknown as BackendResponse<null>;
   }
+  async getTugasSubmission(
+    id: string,
+  ): Promise<BackendResponse<TugasStatus[]>> {
+    const cacheKey = `tugas_submission_${id}`;
+    const cachedItem = this.cache.get(cacheKey);
 
+    if (cachedItem && cachedItem.expiry > Date.now()) {
+      return cachedItem.data as BackendResponse<TugasStatus[]>;
+    }
+
+    const response = await apiClient.get(`/api/penugasan/${id}/status`);
+    const responseData = response as unknown as BackendResponse<TugasStatus[]>;
+
+    this.cache.set(cacheKey, {
+      data: responseData,
+      expiry: Date.now() + this.cacheDuration,
+    });
+
+    return responseData;
+  }
   async deleteTugas(id: string): Promise<BackendResponse<null>> {
     this.cache.delete("all_tugas");
     const response = await apiClient.delete(`/api/tugas/admin/${id}`);

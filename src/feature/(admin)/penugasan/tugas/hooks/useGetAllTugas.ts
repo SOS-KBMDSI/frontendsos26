@@ -36,7 +36,7 @@ export const useGetAllTugas = () => {
 };
 
 export const useGetDetailTugasById = (id: string) => {
-  const [data, setData] = useState<TugasStatus[] | null>(null);
+  const [data, setData] = useState<TugasSummary | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -62,7 +62,40 @@ export const useGetDetailTugasById = (id: string) => {
 
   return { data, isLoading, error, refresh: fetchStatus };
 };
+export const useGetTugasSubmissions = (id: string) => {
+  // Tipe data diubah menjadi array TugasStatus
+  const [data, setData] = useState<TugasStatus[] | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
+  const fetchSubmissions = useCallback(async () => {
+    if (!id) {
+      setIsLoading(false);
+      return;
+    }
+
+    setIsLoading(true);
+    setError(null);
+    try {
+      const response = await tugasService.getTugasSubmission(id);
+      setData(response.data);
+    } catch (err: unknown) {
+      const errorMessage =
+        err instanceof Error
+          ? err.message
+          : "Terjadi kesalahan saat mengambil data submission";
+      setError(errorMessage);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [id]);
+
+  useEffect(() => {
+    fetchSubmissions();
+  }, [fetchSubmissions]);
+
+  return { data, isLoading, error, refresh: fetchSubmissions };
+};
 export const useCreateTugas = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);

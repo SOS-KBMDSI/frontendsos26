@@ -11,8 +11,11 @@ import {
 } from "@tanstack/react-table";
 import { tugasStatusColumns } from "../type/TugasStatusColumn";
 import { DataTable } from "@/shared/components/table/DataTable";
-import { type TugasStatus } from "@/api/services/admin/tugas";
-import { useGetDetailTugasById } from "../../hooks/useGetAllTugas";
+import {
+  useGetDetailTugasById,
+  useGetTugasSubmissions,
+} from "../../hooks/useGetAllTugas";
+import { TugasStatus } from "@/api/services/admin/tugas";
 
 interface DetailTugasContainerProps {
   id_penugasan: string;
@@ -23,11 +26,11 @@ const DetailTugasContainer: React.FC<DetailTugasContainerProps> = ({
 }) => {
   const {
     data: detailTugas,
-    isLoading: isStatusLoading,
     error: statusError,
     refresh,
   } = useGetDetailTugasById(id_penugasan);
-  console.log(detailTugas);
+  const { data: tugasSubmissions, isLoading: isSubmissionLoading } =
+    useGetTugasSubmissions(id_penugasan);
   const [globalFilter, setGlobalFilter] = useState("");
   const [sorting, setSorting] = useState<SortingState>([]);
   const [pagination, setPagination] = useState<PaginationState>({
@@ -35,7 +38,7 @@ const DetailTugasContainer: React.FC<DetailTugasContainerProps> = ({
     pageSize: 10,
   });
 
-  const tableData = detailTugas ?? [];
+  const tableData = tugasSubmissions ?? [];
 
   const table = useReactTable({
     data: tableData,
@@ -56,12 +59,12 @@ const DetailTugasContainer: React.FC<DetailTugasContainerProps> = ({
 
   return (
     <section>
-      <DetailTugas />
+      <DetailTugas tugas={detailTugas} />
 
       <div className="mt-8">
         <DataTable<TugasStatus>
           table={table}
-          isLoading={isStatusLoading}
+          isLoading={isSubmissionLoading}
           error={statusError}
           refresh={refresh}
           title="Status Pengumpulan Tugas"
