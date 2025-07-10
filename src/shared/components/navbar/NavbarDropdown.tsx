@@ -59,9 +59,6 @@ const NavbarDropdown: React.FC<NavbarDropdownProps> = ({ user, onLogout }) => {
         aria-expanded={isOpen}
         aria-controls={dropdownId}
       >
-        <div className="flex items-center justify-center w-8 h-8 bg-primary-500 text-white rounded-full">
-          <User className="w-4 h-4" />
-        </div>
         <span className="hidden sm:block max-w-32 truncate">
           {user.nama || "Pengguna"}
         </span>
@@ -81,7 +78,6 @@ const NavbarDropdown: React.FC<NavbarDropdownProps> = ({ user, onLogout }) => {
             : "opacity-0 scale-95 -translate-y-1 pointer-events-none"
         }`}
       >
-        {/* Konten dropdown hanya dirender jika ada, untuk performa */}
         {isOpen && (
           <div className="py-2">
             {/* Header Section */}
