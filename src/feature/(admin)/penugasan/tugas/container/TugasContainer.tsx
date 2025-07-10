@@ -8,7 +8,6 @@ import Link from "next/link";
 
 const TugasContainer = () => {
   const { data: tugas, isLoading, error, refresh } = useGetAllTugas();
-  console.log(tugas);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const handleCreateSuccess = () => {
     setIsModalOpen(false);

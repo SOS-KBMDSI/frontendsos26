@@ -18,6 +18,7 @@ interface DataTableProps<TData> {
   headerClassName?: string;
   hideMeta?: boolean;
   hidePagination?: boolean;
+  filterComponent?: React.ReactNode;
 }
 
 export const DataTable = <TData,>({
@@ -30,6 +31,7 @@ export const DataTable = <TData,>({
   headerClassName,
   hideMeta = false,
   hidePagination = false,
+  filterComponent,
 }: DataTableProps<TData>) => {
   if (isLoading) {
     return (
@@ -50,19 +52,21 @@ export const DataTable = <TData,>({
 
   return (
     <div className="mt-12">
-      {!hideSearchInput && (
-        <div className="relative w-full md:w-1/3">
-          <Input
-            className="text-base w-full mb-14 pl-10"
-            variant={"default"}
-            value={(table.getState().globalFilter as string) ?? ""}
-            onChange={(e) => table.setGlobalFilter(e.target.value)}
-            placeholder={searchPlaceholder}
-          />
-          <Search className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
-        </div>
-      )}
-
+      <div className="flex gap-6 items-center  mb-10">
+        {filterComponent}
+        {!hideSearchInput && (
+          <div className="relative flex items-center w-full md:w-1/3 h-14">
+            <Input
+              className="text-base w-full pl-10 h-full"
+              variant={"default"}
+              value={(table.getState().globalFilter as string) ?? ""}
+              onChange={(e) => table.setGlobalFilter(e.target.value)}
+              placeholder={searchPlaceholder}
+            />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
+          </div>
+        )}
+      </div>
       <div className="bg-white w-full rounded-2xl shadow-xl overflow-hidden">
         <div className="flex justify-between items-center border-b px-6 pb-6 pt-6 border-b-black">
           <h4 className="text-2xl font-bold text-primary-500">{title}</h4>
@@ -73,7 +77,6 @@ export const DataTable = <TData,>({
           )}
         </div>
         <div className="w-full overflow-x-auto">
-          {/* 1. Mengubah `table-fixed` menjadi `table-auto` untuk responsivitas */}
           <table className="min-w-[800px] w-full text-sm text-left text-black table-auto">
             <thead className={cn("text-black text-lg", headerClassName)}>
               {table.getHeaderGroups().map((headerGroup) => (
@@ -82,7 +85,6 @@ export const DataTable = <TData,>({
                     <th
                       key={header.id}
                       className="py-4 px-6"
-                      // Lebar kolom diatur agar lebih fleksibel
                       style={{ width: header.getSize() }}
                     >
                       <div>
@@ -100,7 +102,6 @@ export const DataTable = <TData,>({
               {table.getRowModel().rows.map((row, index) => (
                 <tr
                   key={row.id}
-                  // 2. Menghapus `cursor-pointer`
                   className={`h-20 transition-colors ${
                     row.getIsSelected()
                       ? "bg-primary-500 text-white"
@@ -108,8 +109,6 @@ export const DataTable = <TData,>({
                         ? "bg-white"
                         : "bg-primary-500/10"
                   }`}
-                  // 3. Menghapus event `onClick`
-                  // onClick={row.getToggleSelectedHandler()}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <td
