@@ -10,12 +10,10 @@ import {
   getFilteredRowModel,
 } from "@tanstack/react-table";
 import { tugasStatusColumns } from "../type/TugasStatusColumn";
-import { DataTable } from "@/shared/components/table/DataTable";
-import {
-  useGetDetailTugasById,
-  useGetTugasSubmissions,
-} from "../../hooks/useGetAllTugas";
-import { TugasStatus } from "@/api/services/admin/tugas";
+import { useGetDetailTugasById } from "../hooks/useGetDetailTugasById";
+import { useGetTugasSubmissions } from "../hooks/useGetTugasSubmissions";
+import SubmissionTable from "../components/SubmissionTable";
+import { useSelectOptions } from "@/shared/hooks/useGetAllKelompok";
 
 interface DetailTugasContainerProps {
   id_penugasan: string;
@@ -24,13 +22,17 @@ interface DetailTugasContainerProps {
 const DetailTugasContainer: React.FC<DetailTugasContainerProps> = ({
   id_penugasan,
 }) => {
+  const [selectedKelompok, setSelectedKelompok] = useState<string | null>(null);
+  const [selectedDistrik, setSelectedDistrik] = useState<string | null>(null);
+  const { options: kelompokOptions } = useSelectOptions("kelompok");
+  const { options: distrikOptions } = useSelectOptions("distrik");
+  const { data: detailTugas, error: statusError } =
+    useGetDetailTugasById(id_penugasan);
   const {
-    data: detailTugas,
-    error: statusError,
-    refresh,
-  } = useGetDetailTugasById(id_penugasan);
-  const { data: tugasSubmissions, isLoading: isSubmissionLoading } =
-    useGetTugasSubmissions(id_penugasan);
+    data: tugasSubmissions,
+    isLoading: isSubmissionLoading,
+    refresh: refreshSubmission,
+  } = useGetTugasSubmissions(id_penugasan, selectedKelompok, selectedDistrik);
   const [globalFilter, setGlobalFilter] = useState("");
   const [sorting, setSorting] = useState<SortingState>([]);
   const [pagination, setPagination] = useState<PaginationState>({
@@ -56,21 +58,27 @@ const DetailTugasContainer: React.FC<DetailTugasContainerProps> = ({
     getSortedRowModel: getSortedRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
   });
-
+  const handleKelompokChange = (value: string | null) => {
+    setSelectedKelompok(value);
+  };
+  const handleDistrikChange = (value: string | null) => {
+    setSelectedDistrik(value);
+  };
   return (
     <section>
       <DetailTugas tugas={detailTugas} />
-
-      <div className="mt-8">
-        <DataTable<TugasStatus>
-          table={table}
-          isLoading={isSubmissionLoading}
-          error={statusError}
-          refresh={refresh}
-          title="Status Pengumpulan Tugas"
-          searchPlaceholder="Cari mahasiswa..."
-        />
-      </div>
+      <SubmissionTable
+        isSubmissionLoading={isSubmissionLoading}
+        table={table}
+        statusError={statusError}
+        refresh={refreshSubmission}
+        kelompokOptions={kelompokOptions}
+        selectedKelompok={selectedKelompok}
+        onKelompokChange={handleKelompokChange}
+        distrikOptions={distrikOptions}
+        selectedDistrik={selectedDistrik}
+        onDistrikChange={handleDistrikChange}
+      />
     </section>
   );
 };

@@ -36,9 +36,6 @@ const DetailTugas = ({ tugas }: DetailTugasProps) => {
   };
 
   const { date, time } = formatTenggat(tugas?.tenggat);
-
-  const displayRangkaian = tugas?.id_rangkaian.split("-")[0] || "N/A";
-
   return (
     <div className="w-full">
       <h4 className="font-semibold text-2xl md:text-3xl lg:text-4xl text-black">
@@ -83,7 +80,7 @@ const DetailTugas = ({ tugas }: DetailTugasProps) => {
 
           <div className="flex flex-col space-y-2 text-gray-700">
             <span className="text-primary-500 font-medium">Rangkaian:</span>
-            <span className="w-fit">{displayRangkaian}</span>
+            <span className="w-fit">{tugas?.rangkaian?.Name}</span>
           </div>
         </div>
 

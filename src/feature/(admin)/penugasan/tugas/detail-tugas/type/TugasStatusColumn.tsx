@@ -18,6 +18,18 @@ export const tugasStatusColumns = [
     size: 150,
   }),
 
+  tugasStatusColumnHelper.accessor("distrik", {
+    header: "Distrik",
+    cell: (info) => info.getValue(),
+    size: 150,
+  }),
+
+  tugasStatusColumnHelper.accessor("kelompok", {
+    header: "Kelompok",
+    cell: (info) => info.getValue(),
+    size: 150,
+  }),
+
   tugasStatusColumnHelper.accessor("status", {
     header: "Status",
     cell: (info) => info.getValue(),
