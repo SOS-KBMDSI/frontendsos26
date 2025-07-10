@@ -12,7 +12,7 @@ import {
 import { tugasStatusColumns } from "../type/TugasStatusColumn";
 import { DataTable } from "@/shared/components/table/DataTable";
 import { type TugasStatus } from "@/api/services/admin/tugas";
-import { useGetTugasStatusById } from "../../hooks/useGetAllTugas";
+import { useGetDetailTugasById } from "../../hooks/useGetAllTugas";
 
 interface DetailTugasContainerProps {
   id_penugasan: string;
@@ -22,11 +22,12 @@ const DetailTugasContainer: React.FC<DetailTugasContainerProps> = ({
   id_penugasan,
 }) => {
   const {
-    data: statusTugas,
+    data: detailTugas,
     isLoading: isStatusLoading,
     error: statusError,
     refresh,
-  } = useGetTugasStatusById(id_penugasan);
+  } = useGetDetailTugasById(id_penugasan);
+  console.log(detailTugas);
   const [globalFilter, setGlobalFilter] = useState("");
   const [sorting, setSorting] = useState<SortingState>([]);
   const [pagination, setPagination] = useState<PaginationState>({
@@ -34,7 +35,7 @@ const DetailTugasContainer: React.FC<DetailTugasContainerProps> = ({
     pageSize: 10,
   });
 
-  const tableData = statusTugas ?? [];
+  const tableData = detailTugas ?? [];
 
   const table = useReactTable({
     data: tableData,

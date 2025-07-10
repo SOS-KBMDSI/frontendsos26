@@ -63,11 +63,6 @@ class TugasService {
     return responseData;
   }
 
-  async getTugasById(id: string): Promise<BackendResponse<TugasDetail>> {
-    const response = await apiClient.get(`/api/tugas/admin/${id}`);
-    return response as unknown as BackendResponse<TugasDetail>;
-  }
-
   async createTugas(
     id_rangkaian: string,
     data: FormData,
@@ -83,7 +78,7 @@ class TugasService {
     );
     return response as unknown as BackendResponse<null>;
   }
-  async getTugasStatusById(
+  async getDetailTugasById(
     id: string,
   ): Promise<BackendResponse<TugasStatus[]>> {
     const cacheKey = `tugas_status_${id}`;
@@ -95,7 +90,6 @@ class TugasService {
 
     const response = await apiClient.get(`/api/penugasan/${id}/status`);
     const responseData = response as unknown as BackendResponse<TugasStatus[]>;
-
     this.cache.set(cacheKey, {
       data: responseData,
       expiry: Date.now() + this.cacheDuration,

@@ -1,3 +1,5 @@
+import Navbar from "@/shared/components/navbar/Navbar";
+import { AuthProvider } from "@/shared/context/AuthContext";
 import React from "react";
 
 export default function UserLayout({
@@ -5,5 +7,12 @@ export default function UserLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <main className="">{children}</main>;
+  return (
+    <>
+      <AuthProvider>
+        <Navbar />
+      </AuthProvider>
+      <main className="">{children}</main>
+    </>
+  );
 }

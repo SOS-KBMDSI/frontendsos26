@@ -17,6 +17,7 @@ const Sidebar = () => {
       await authService.logout();
     } catch (error) {
       console.error("Gagal melakukan logout:", error);
+    } finally {
     }
   };
 

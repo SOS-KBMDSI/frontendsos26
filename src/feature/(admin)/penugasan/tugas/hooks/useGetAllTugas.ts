@@ -2,7 +2,6 @@ import { useState, useEffect, useCallback } from "react";
 import {
   tugasService,
   TugasSummary,
-  TugasDetail,
   TugasStatus,
 } from "@/api/services/admin/tugas";
 
@@ -36,35 +35,7 @@ export const useGetAllTugas = () => {
   return { data, isLoading, error, refresh: fetchAll };
 };
 
-export const useGetTugasById = (id: string) => {
-  const [data, setData] = useState<TugasDetail | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
-
-  const fetchById = useCallback(async () => {
-    if (!id) return;
-    setIsLoading(true);
-    setError(null);
-    try {
-      const response = await tugasService.getTugasById(id);
-      setData(response.data);
-    } catch (err: unknown) {
-      const errorMessage =
-        err instanceof Error ? err.message : "Terjadi kesalahan";
-      setError(errorMessage);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [id]);
-
-  useEffect(() => {
-    fetchById();
-  }, [fetchById]);
-
-  return { data, isLoading, error, refresh: fetchById };
-};
-
-export const useGetTugasStatusById = (id: string) => {
+export const useGetDetailTugasById = (id: string) => {
   const [data, setData] = useState<TugasStatus[] | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -74,7 +45,7 @@ export const useGetTugasStatusById = (id: string) => {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await tugasService.getTugasStatusById(id);
+      const response = await tugasService.getDetailTugasById(id);
       setData(response.data);
     } catch (err: unknown) {
       const errorMessage =
