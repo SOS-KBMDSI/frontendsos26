@@ -8,9 +8,10 @@ import React from "react";
 
 interface DetailTugasProps {
   tugas: TugasSummary | null;
+  onEdit: () => void;
 }
 
-const DetailTugas = ({ tugas }: DetailTugasProps) => {
+const DetailTugas = ({ tugas, onEdit }: DetailTugasProps) => {
   const formatTenggat = (tenggat: string | undefined) => {
     if (!tenggat) {
       return { date: "N/A", time: "N/A" };
@@ -85,7 +86,9 @@ const DetailTugas = ({ tugas }: DetailTugasProps) => {
         </div>
 
         <div className="mt-12">
-          <Button variant={"primary"}>Edit Tugas</Button>
+          <Button onClick={onEdit} variant={"primary"}>
+            Edit Tugas
+          </Button>
         </div>
       </div>
     </div>

@@ -6,6 +6,10 @@ export interface Rangkaian {
   Start_Date: string;
   End_Date: string;
 }
+
+interface ScoreUpdatePayload {
+  score: number;
+}
 interface ApiSubmission {
   id: string;
   nim: string;
@@ -34,14 +38,17 @@ interface SubmissionData {
 }
 
 export interface TugasStatus {
+  id: string;
+
   nama_mahasiswa: string;
   nim: string;
   distrik: string;
+  assignment_id: string;
   kelompok: string;
   status: string;
   link_pengumpulan: string;
   tenggat: string;
-  nilai: string | number;
+  nilai: number;
   file_link: string | null;
   is_visible: boolean;
 }
@@ -63,6 +70,13 @@ interface BackendResponse<T> {
   status_code: number;
   message: string;
   data: T;
+}
+interface TugasUpdateData {
+  judul: string;
+  deskripsi: string;
+  tenggat: string;
+  file_link: string;
+  is_visible: boolean;
 }
 
 class TugasService {
@@ -129,18 +143,19 @@ class TugasService {
   }
   async updateTugas(
     id: string,
-    data: FormData,
+    data: TugasUpdateData,
   ): Promise<BackendResponse<null>> {
     this.cache.delete("all_tugas");
-    const response = await apiClient.patch(`/api/tugas/admin/${id}`, data, {
-      headers: { "Content-Type": "multipart/form-data" },
+    this.cache.delete(`tugas_status_${id}`);
+    const response = await apiClient.patch(`/api/penugasan/${id}`, data, {
+      headers: { "Content-Type": "application/json" },
     });
     return response as unknown as BackendResponse<null>;
   }
   async getTugasSubmission(
     id: string,
     id_kelompok?: string | null,
-    id_distrik?: string | null, // 1. Tambahkan parameter id_distrik
+    id_distrik?: string | null,
   ): Promise<BackendResponse<TugasStatus[]>> {
     const cacheKey = `tugas_submission_${id}_kelompok_${
       id_kelompok || "all"
@@ -151,13 +166,11 @@ class TugasService {
       return cachedItem.data as BackendResponse<TugasStatus[]>;
     }
 
-    // 3. Gunakan URLSearchParams untuk membangun query string secara dinamis
     const params = new URLSearchParams();
     if (id_kelompok) {
       params.append("id_kelompok", id_kelompok);
     }
     if (id_distrik) {
-      // Asumsi nama query param di API adalah "distrik"
       params.append("id_distrik", id_distrik);
     }
 
@@ -171,9 +184,9 @@ class TugasService {
     const response = await apiClient.get(apiUrl);
     const responseData = response as unknown as BackendResponse<SubmissionData>;
 
-    // Tidak perlu ada perubahan di bagian transformasi data
     const transformedSubmissions: TugasStatus[] =
       responseData.data.submissions.map((sub) => ({
+        id: sub.id,
         nama_mahasiswa: sub.student_name,
         nim: sub.nim,
         status: sub.status,
@@ -184,6 +197,7 @@ class TugasService {
         is_visible: false,
         distrik: sub.distrik,
         kelompok: sub.kelompok,
+        assignment_id: sub.assignment_id,
       }));
 
     const transformedResponse: BackendResponse<TugasStatus[]> = {
@@ -191,13 +205,26 @@ class TugasService {
       message: responseData.message,
       data: transformedSubmissions,
     };
-
     this.cache.set(cacheKey, {
       data: transformedResponse,
       expiry: Date.now() + this.cacheDuration,
     });
 
     return transformedResponse;
+  }
+  async updateSubmissionScore(
+    submissionId: string,
+    data: ScoreUpdatePayload,
+  ): Promise<BackendResponse<null>> {
+    const apiUrl = `/api/submission/scores/${submissionId}`;
+    for (const key of this.cache.keys()) {
+      if (key.startsWith("tugas_submission_")) {
+        this.cache.delete(key);
+      }
+    }
+    const response = await apiClient.patch(apiUrl, data);
+
+    return response as unknown as BackendResponse<null>;
   }
   async deleteTugas(id: string): Promise<BackendResponse<null>> {
     this.cache.delete("all_tugas");

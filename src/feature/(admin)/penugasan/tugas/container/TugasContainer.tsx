@@ -3,8 +3,8 @@ import { useGetAllTugas } from "../hooks/useGetAllTugas";
 import { TugasCard } from "../components/TugasCard";
 import { Button } from "@/shared/components/ui/Button";
 import { Modal } from "@/shared/components/ui/Modal";
-import { FormCreateTugas } from "../components/FormCreateTugas";
 import Link from "next/link";
+import TugasForm from "../components/TugasForm";
 
 const TugasContainer = () => {
   const { data: tugas, isLoading, error, refresh } = useGetAllTugas();
@@ -17,7 +17,7 @@ const TugasContainer = () => {
     return <div>loading</div>;
   }
   if (!tugas) {
-    return <div>Tugas Masih Kosong Jir</div>;
+    return <div>Data Tugas Kosong</div>;
   }
   if (error) {
     return (
@@ -49,7 +49,7 @@ const TugasContainer = () => {
         title="Buat Penugasan Baru"
         desc="Isi semua kolom untuk menambahkan data penugasan."
       >
-        <FormCreateTugas onSuccess={handleCreateSuccess} />
+        <TugasForm onSuccess={handleCreateSuccess} />
       </Modal>
     </section>
   );
