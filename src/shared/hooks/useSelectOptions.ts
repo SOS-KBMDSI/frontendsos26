@@ -2,7 +2,9 @@ import { SelectOption, selectService } from "@/api/services/select/select";
 import { useEffect, useState } from "react";
 
 // Hook ini sekarang menerima 'type' sebagai argumen
-export const useSelectOptions = (type: "kelompok" | "distrik") => {
+export const useSelectOptions = (
+  type: "kelompok" | "distrik" | "mahasiswa" | "rangkaian",
+) => {
   const [options, setOptions] = useState<SelectOption[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 

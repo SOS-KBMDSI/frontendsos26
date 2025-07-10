@@ -13,7 +13,7 @@ import { tugasStatusColumns } from "../type/TugasStatusColumn";
 import { useGetDetailTugasById } from "../hooks/useGetDetailTugasById";
 import { useGetTugasSubmissions } from "../hooks/useGetTugasSubmissions";
 import SubmissionTable from "../components/SubmissionTable";
-import { useSelectOptions } from "@/shared/hooks/useGetAllKelompok";
+import { useSelectOptions } from "@/shared/hooks/useSelectOptions";
 
 interface DetailTugasContainerProps {
   id_penugasan: string;
