@@ -75,7 +75,7 @@ interface TugasUpdateData {
   judul: string;
   deskripsi: string;
   tenggat: string;
-  file_link: string;
+  file: string;
   is_visible: boolean;
 }
 

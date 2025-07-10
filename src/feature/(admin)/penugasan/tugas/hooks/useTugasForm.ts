@@ -85,7 +85,7 @@ export const useTugasForm = ({ initialData, onSuccess }: UseTugasFormProps) => {
           judul,
           deskripsi,
           tenggat: formattedTenggat,
-          file_link: fileLink,
+          file: fileLink,
           is_visible: true,
         };
 
