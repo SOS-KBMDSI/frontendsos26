@@ -1,12 +1,18 @@
 import DetailPresensiContainer from "@/feature/(admin)/presensi/detail-presensi/container/DetailPresensiContainer";
-import React from "react";
+import React, { FunctionComponent } from "react";
 
-const page = () => {
-  return (
-    <>
-      <DetailPresensiContainer />
-    </>
-  );
+type PropsType = {
+  params: Promise<{ id: string }>;
 };
 
-export default page;
+const DetailPresensiPage: FunctionComponent<PropsType> =
+  async function DetailPresensiPage({ params }) {
+    const { id } = await params;
+    return (
+      <>
+        <DetailPresensiContainer id={id} />
+      </>
+    );
+  };
+
+export default DetailPresensiPage;

@@ -14,13 +14,28 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/shared/components/ui/Select";
-// import { usePresensi } from "../hooks/usePresensi";
+import { useGetAllPresensi } from "../hooks/useGetAllPresensi";
 
 const PresensiContainer = () => {
-  // const { data } = usePresensi();
+  const router = useRouter();
+  const { data: allPresensi, isLoading, error, refresh } = useGetAllPresensi();
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const [selectedSession, setSelectedSession] = React.useState<string>("");
   const [selectedNetwork, setSelectedNetwork] = React.useState<string>("");
+
+  if (isLoading) {
+    return <div>loading</div>;
+  }
+  if (!allPresensi) {
+    return <div>Tugas Masih Kosong Jir</div>;
+  }
+  if (error) {
+    return (
+      <div>
+        Error: {error} <button onClick={refresh}>Coba Lagi</button>
+      </div>
+    );
+  }
 
   const sessions = [
     { value: "1", label: "Sesi 1" },
@@ -40,7 +55,6 @@ const PresensiContainer = () => {
     setIsModalOpen(!isModalOpen);
   };
 
-  const router = useRouter();
   return (
     <main className="bg-white p-20 h-screen rounded-xl shadow-lg">
       <button
@@ -55,10 +69,9 @@ const PresensiContainer = () => {
         <Button onClick={handleModal}>Tambah Presensi</Button>
       </div>
       <div className="mt-10 flex flex-col gap-y-5">
-        <PresensiCard href="1" />
-        <PresensiCard href="1" />
-        <PresensiCard href="1" />
-        <PresensiCard href="1" />
+        {allPresensi.map((presensi) => (
+          <PresensiCard key={presensi.kode_id} presensi={presensi} />
+        ))}
       </div>
       <Modal
         isOpen={isModalOpen}

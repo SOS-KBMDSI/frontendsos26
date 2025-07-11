@@ -1,38 +1,218 @@
 "use client";
-
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
-import { ChevronLeft, Search } from "lucide-react";
+import React, { useState, useMemo, useEffect } from "react";
+import { ChevronLeft } from "lucide-react";
 import DateTimeDisplay from "../components/DateTimeDisplay";
 import { Button } from "@/shared/components/ui/Button";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/shared/components/ui/Select";
-import { Input } from "@/shared/components/ui/Input";
+  usePresensiDetailPage,
+  ReactTableState,
+} from "../../hooks/usePresensiDetailPage";
+import { PresensiMahasiswaDetail } from "@/api/services/admin/presensi";
+import {
+  useReactTable,
+  getCoreRowModel,
+  getPaginationRowModel,
+  ColumnDef,
+  getFilteredRowModel,
+  PaginationState,
+} from "@tanstack/react-table";
+import { useSelectOptions } from "@/shared/hooks/useSelectOptions";
+import PresensiTable from "../components/PresensiTable";
 
-const DetailPresensiContainer = () => {
-  const [selectedDistric, setSelectedDistric] = useState<string>("");
-  const [selectedGroup, setSelectedGroup] = useState<string>("");
+interface DetailPresensiContainerProps {
+  id: string;
+}
 
+const DetailPresensiContainer: React.FC<DetailPresensiContainerProps> = ({
+  id,
+}) => {
   const router = useRouter();
-  const districs = [
-    { value: "1", label: "Distrik 1" },
-    { value: "2", label: "Distrik 2" },
-    { value: "3", label: "Distrik 3" },
-    { value: "4", label: "Distrik 4" },
-  ];
-  const groups = [
-    { value: "1", label: "Kelompok 1" },
-    { value: "2", label: "Kelompok 2" },
-    { value: "3", label: "Kelompok 3" },
-    { value: "4", label: "Kelompok 4" },
-  ];
+
+  const [selectedDistrik, setSelectedDistrik] = useState<string | null>(null);
+  const [selectedKelompok, setSelectedKelompok] = useState<string | null>(null);
+  const [uiSearchText, setUiSearchText] = useState<string>("");
+  const [apiSearchText, setApiSearchText] = useState<string>("");
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setApiSearchText(uiSearchText);
+    }, 500);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [uiSearchText]);
+
+  const [paginationState, setPaginationState] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 10,
+  });
+
+  const { options: distrikOptions } = useSelectOptions("distrik");
+  const { options: kelompokOptions } = useSelectOptions("kelompok");
+
+  const reactTableCurrentState: ReactTableState = useMemo(() => {
+    return {
+      globalFilter: apiSearchText,
+      pagination: paginationState,
+    };
+  }, [apiSearchText, paginationState]);
+
+  const {
+    presensiInfo,
+    mahasiswaList,
+    mahasiswaPagination,
+    isLoadingInfo,
+    isLoadingList,
+    errorInfo,
+    errorList,
+    refreshInfo,
+    refreshList,
+  } = usePresensiDetailPage(
+    id,
+    reactTableCurrentState,
+    selectedDistrik,
+    selectedKelompok,
+  );
+
+  const columns: ColumnDef<PresensiMahasiswaDetail>[] = useMemo(
+    () => [
+      {
+        accessorKey: "index",
+        header: "No.",
+        cell: (info) => info.row.index + 1 + (mahasiswaPagination?.from || 0),
+        enableSorting: false,
+        enableColumnFilter: false,
+      },
+      {
+        accessorKey: "nim",
+        header: "NIM",
+        cell: (info) => info.getValue(),
+      },
+      {
+        accessorKey: "nama",
+        header: "Nama",
+        cell: (info) => info.getValue(),
+      },
+      {
+        accessorKey: "status",
+        header: "Status",
+        cell: (info) => info.getValue(),
+      },
+      {
+        accessorKey: "presensi_at",
+        header: "Waktu Presensi",
+        cell: (info) => {
+          const timestamp = info.getValue() as string;
+          return timestamp && timestamp !== "0001-01-01T00:00:00Z"
+            ? new Date(timestamp).toLocaleString("id-ID", {
+                day: "2-digit",
+                month: "2-digit",
+                year: "numeric",
+                hour: "2-digit",
+                minute: "2-digit",
+                second: "2-digit",
+              })
+            : "-";
+        },
+      },
+    ],
+    [mahasiswaPagination?.from],
+  );
+
+  const table = useReactTable({
+    data: mahasiswaList || [],
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    manualPagination: true,
+    pageCount: mahasiswaPagination?.total_pages ?? -1,
+    state: {
+      pagination: paginationState,
+      globalFilter: uiSearchText,
+    },
+    onPaginationChange: (updater) => {
+      const newPaginationState =
+        typeof updater === "function" ? updater(paginationState) : updater;
+      setPaginationState(newPaginationState);
+    },
+    onGlobalFilterChange: (updater) => {
+      const newGlobalFilter =
+        typeof updater === "function" ? updater(uiSearchText) : updater;
+      setUiSearchText(newGlobalFilter as string);
+    },
+  });
+
+  const formatDateTimeForDisplay = (
+    isoString: string | undefined,
+  ): { date: string; time: string } => {
+    if (!isoString) return { date: "N/A", time: "N/A" };
+    try {
+      const date = new Date(isoString);
+      if (isNaN(date.getTime()))
+        return { date: "Invalid Date", time: "Invalid Time" };
+
+      const formattedDate = date
+        .toLocaleDateString("id-ID", {
+          day: "2-digit",
+          month: "2-digit",
+          year: "numeric",
+        })
+        .replace(/\//g, "-");
+      const formattedTime = date.toLocaleTimeString("id-ID", {
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: false,
+      });
+      return { date: formattedDate, time: formattedTime };
+    } catch (e) {
+      console.error("Error formatting date-time:", isoString, e);
+      return { date: "Error", time: "Error" };
+    }
+  };
+
+  if (isLoadingInfo) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <p className="text-lg text-gray-700">Loading presensi details...</p>
+      </div>
+    );
+  }
+
+  if (errorInfo) {
+    return (
+      <div className="flex flex-col items-center justify-center h-screen p-10 bg-white rounded-xl shadow-lg">
+        <p className="text-red-500 text-xl mb-4">Error: {errorInfo}</p>
+        <Button onClick={refreshInfo} className="mt-4 px-6 py-3">
+          Coba Lagi
+        </Button>
+      </div>
+    );
+  }
+
+  if (!presensiInfo) {
+    return (
+      <div className="text-center p-10">
+        <p className="text-gray-500 text-lg">
+          Detail presensi tidak ditemukan.
+        </p>
+        <Button onClick={refreshInfo} className="mt-4">
+          Refresh
+        </Button>
+      </div>
+    );
+  }
+
+  const { kode, rangkaian_nama, sesi, start_at, end_at, status } = presensiInfo;
+
+  const { date: startDate, time: startTime } =
+    formatDateTimeForDisplay(start_at);
+  const { date: endDate, time: endTime } = formatDateTimeForDisplay(end_at);
+
   return (
-    <main className="flex flex-col gap-y-16">
+    <main className="flex flex-col gap-y-16 p-8 md:p-16 lg:p-20 bg-white rounded-xl shadow-lg min-h-screen">
       <div className="flex flex-col gap-y-11">
         <button
           className="flex items-center gap-2 text-primary-500 hover:text-primary-700 transition-colors"
@@ -43,24 +223,33 @@ const DetailPresensiContainer = () => {
         </button>
         <div className="flex flex-col gap-y-9">
           <div className="flex flex-col text-default-dark gap-y-4">
-            <h4 className="text-4xl font-normal">########</h4>
-            <p>Rangkaian (1/2)</p>
+            <h4 className="text-4xl font-normal">{kode || "N/A"}</h4>
+            <p className="text-lg">
+              {rangkaian_nama || "N/A"} (Sesi: {sesi || "N/A"}) -{" "}
+              <span
+                className={`${
+                  status === "aktif" ? "text-green-600" : "text-red-600"
+                } font-semibold`}
+              >
+                {status?.charAt(0).toUpperCase() + status?.slice(1) || "N/A"}
+              </span>
+            </p>
           </div>
-          <div className="text-default-dark flex gap-x-12 items-center">
+          <div className="text-default-dark flex flex-col md:flex-row gap-8 md:gap-x-12 items-start md:items-center">
             <div className="flex flex-col gap-y-2">
               <h6 className="text-lg font-semibold">Mulai</h6>
               <div className="flex items-center gap-x-4">
-                <DateTimeDisplay variant="date" value="18-09-2025" />
-                <div className="w-[1px] h-6 bg-default-dark"></div>
-                <DateTimeDisplay variant="clock" value="23:59" />
+                <DateTimeDisplay variant="date" value={startDate} />
+                <div className="w-[1px] h-6 bg-default-dark hidden md:block"></div>{" "}
+                <DateTimeDisplay variant="clock" value={startTime} />
               </div>
             </div>
-            <div className="flex flex-col gap-y-2">
-              <h6 className="text-lg font-semibold">Mulai</h6>
+            <div className="flex flex-col gap-y-2 mt-4 md:mt-0">
+              <h6 className="text-lg font-semibold">Berakhir</h6>{" "}
               <div className="flex items-center gap-x-4">
-                <DateTimeDisplay variant="date" value="18-09-2025" />
-                <div className="w-[1px] h-6 bg-default-dark"></div>
-                <DateTimeDisplay variant="clock" value="23:59" />
+                <DateTimeDisplay variant="date" value={endDate} />
+                <div className="w-[1px] h-6 bg-default-dark hidden md:block"></div>{" "}
+                <DateTimeDisplay variant="clock" value={endTime} />
               </div>
             </div>
           </div>
@@ -68,51 +257,18 @@ const DetailPresensiContainer = () => {
         </div>
       </div>
       <div className="w-full h-[1px] bg-surface-divider"></div>
-      <div>
-        <div className="flex flex-col gap-y-8">
-          <h2 className="text-3xl font-medium">Daftar Presensi</h2>
-          <div className="flex items-center gap-x-6">
-            <div className="flex gap-x-6">
-              <Select
-                onValueChange={(value) => setSelectedDistric(value)}
-                value={selectedDistric}
-              >
-                <SelectTrigger className="w-[200px]">
-                  <SelectValue placeholder="Distrik" />
-                </SelectTrigger>
-
-                <SelectContent>
-                  {districs.map((distric) => (
-                    <SelectItem key={distric.value} value={distric.value}>
-                      {distric.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              <Select
-                onValueChange={(value) => setSelectedGroup(value)}
-                value={selectedGroup}
-              >
-                <SelectTrigger className="w-[200px]">
-                  <SelectValue placeholder="Kelompok" />
-                </SelectTrigger>
-
-                <SelectContent>
-                  {groups.map((group) => (
-                    <SelectItem key={group.value} value={group.value}>
-                      {group.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-            <Input placeholder="Search..." leftIcon={<Search size={24} />} />
-          </div>
-          <Button disabled className="w-fit">
-            Edit Kehadiran
-          </Button>
-        </div>
-      </div>
+      <PresensiTable
+        table={table}
+        isSubmissionLoading={isLoadingList}
+        statusError={errorList}
+        refresh={refreshList}
+        selectedDistrik={selectedDistrik}
+        onDistrikChange={setSelectedDistrik}
+        selectedKelompok={selectedKelompok}
+        onKelompokChange={setSelectedKelompok}
+        distrikOptions={distrikOptions}
+        kelompokOptions={kelompokOptions}
+      />
     </main>
   );
 };
