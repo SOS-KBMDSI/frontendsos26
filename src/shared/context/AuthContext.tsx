@@ -19,17 +19,13 @@ interface AuthContextType {
 }
 
 export const AuthContext = createContext<AuthContextType | undefined>(
-  undefined
+  undefined,
 );
 
-let authPromise: Promise<AuthProfile | null> | null = null;
-let authCache: { data: AuthProfile | null; timestamp: number } | null = null;
 const CACHE_DURATION = 5 * 60 * 1000;
 const MIN_REFETCH_INTERVAL = 2000;
 const MAX_RETRY_ATTEMPTS = 3;
 const RETRY_DELAY = 1000;
-
-let lastRefetchTime = 0;
 
 const delay = (ms: number): Promise<void> =>
   new Promise((resolve) => setTimeout(resolve, ms));
@@ -37,127 +33,122 @@ const delay = (ms: number): Promise<void> =>
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<AuthProfile | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const mountedRef = useRef(true);
-  const initializationRef = useRef(false);
-  const requestInProgressRef = useRef(false);
 
+  const stateRef = useRef<{
+    authPromise: Promise<AuthProfile | null> | null;
+    authCache: { data: AuthProfile | null; timestamp: number } | null;
+    lastRefetchTime: number;
+    requestInProgress: boolean;
+  }>({
+    authPromise: null,
+    authCache: null,
+    lastRefetchTime: 0,
+    requestInProgress: false,
+  });
+
+  const mountedRef = useRef(true);
   const pathname = usePathname();
 
   const fetchCurrentUser = useCallback(
     async (forceRefresh = false): Promise<void> => {
-      if (!mountedRef.current) return;
-
-      if (requestInProgressRef.current && !forceRefresh) return;
+      if (
+        !mountedRef.current ||
+        (stateRef.current.requestInProgress && !forceRefresh)
+      ) {
+        return;
+      }
 
       const now = Date.now();
-      if (!forceRefresh && now - lastRefetchTime < MIN_REFETCH_INTERVAL) return;
+      if (
+        !forceRefresh &&
+        now - stateRef.current.lastRefetchTime < MIN_REFETCH_INTERVAL
+      ) {
+        return;
+      }
 
+      const { authCache } = stateRef.current;
       if (
         !forceRefresh &&
         authCache &&
         now - authCache.timestamp < CACHE_DURATION
       ) {
-        if (mountedRef.current) {
-          setUser(authCache.data);
-          setIsLoading(false);
-        }
+        setUser(authCache.data);
+        setIsLoading(false);
         return;
       }
 
-      if (authPromise && !forceRefresh) {
+      if (stateRef.current.authPromise && !forceRefresh) {
         try {
-          const result = await authPromise;
-          if (mountedRef.current) {
-            setUser(result);
-            setIsLoading(false);
-          }
+          const result = await stateRef.current.authPromise;
+          if (mountedRef.current) setUser(result);
         } catch {
-          if (mountedRef.current) {
-            setUser(null);
-            setIsLoading(false);
-          }
+          if (mountedRef.current) setUser(null);
+        } finally {
+          if (mountedRef.current) setIsLoading(false);
         }
         return;
       }
 
-      requestInProgressRef.current = true;
-      lastRefetchTime = now;
+      stateRef.current.requestInProgress = true;
+      stateRef.current.lastRefetchTime = now;
 
-      authPromise = (async (): Promise<AuthProfile | null> => {
+      const fetchPromise = (async (): Promise<AuthProfile | null> => {
         let attempts = 0;
-
         while (attempts < MAX_RETRY_ATTEMPTS) {
           try {
             const response = await authService.getMe();
             const userData: AuthProfile = response?.data;
-
-            authCache = {
+            stateRef.current.authCache = {
               data: userData,
               timestamp: Date.now(),
             };
-
             return userData;
-          } catch (error) {
-            const axiosError = error as {
-              response?: { status?: number };
-            };
-
+          } catch {
             attempts++;
-
-            if (axiosError?.response?.status === 429) {
-              if (attempts < MAX_RETRY_ATTEMPTS) {
-                await delay(RETRY_DELAY * attempts);
-                continue;
-              }
-            }
-
-            if (
-              attempts >= MAX_RETRY_ATTEMPTS ||
-              axiosError?.response?.status === 401
-            ) {
-              authCache = { data: null, timestamp: Date.now() };
+            if (attempts >= MAX_RETRY_ATTEMPTS) {
+              stateRef.current.authCache = {
+                data: null,
+                timestamp: Date.now(),
+              };
               return null;
             }
-
-            await delay(RETRY_DELAY);
+            await delay(RETRY_DELAY * attempts);
           }
         }
-
         return null;
       })();
 
+      stateRef.current.authPromise = fetchPromise;
+
       try {
-        const result = await authPromise;
+        const result = await fetchPromise;
         if (mountedRef.current) {
           setUser(result);
         }
       } finally {
-        authPromise = null;
-        requestInProgressRef.current = false;
         if (mountedRef.current) {
           setIsLoading(false);
         }
+        stateRef.current.authPromise = null;
+        stateRef.current.requestInProgress = false;
       }
     },
-    []
+    [],
   );
 
   useEffect(() => {
+    mountedRef.current = true;
     const publicPaths = ["/login", "/register", "/", "/about", "/contact"];
-    if (
-      publicPaths.some(
-        (path) => pathname === path || pathname.startsWith(path + "/")
-      )
-    ) {
+
+    const isPublic = publicPaths.some(
+      (path) =>
+        pathname === path || (path !== "/" && pathname.startsWith(path + "/")),
+    );
+
+    if (isPublic) {
       setIsLoading(false);
-      setUser(null);
       return;
     }
-
-    if (initializationRef.current) return;
-
-    initializationRef.current = true;
-    mountedRef.current = true;
 
     fetchCurrentUser();
 
@@ -169,13 +160,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const refetch = useCallback(async (): Promise<void> => {
     if (!mountedRef.current) return;
 
-    const now = Date.now();
-    if (now - lastRefetchTime < MIN_REFETCH_INTERVAL) return;
-
     setIsLoading(true);
-
-    authCache = null;
-    authPromise = null;
+    stateRef.current.authCache = null;
+    stateRef.current.authPromise = null;
 
     await fetchCurrentUser(true);
   }, [fetchCurrentUser]);
