@@ -26,7 +26,7 @@ const DetailDistrikContainer = ({ distrikId }: { distrikId: string }) => {
     if (!distrik) return [];
     if (!selectedKelompok) return distrik.list_kelompok;
     return distrik.list_kelompok.filter(
-      (k) => k.nama_kelompok === selectedKelompok
+      (k) => k.nama_kelompok === selectedKelompok,
     );
   }, [selectedKelompok, distrik]);
 

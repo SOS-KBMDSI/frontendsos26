@@ -4,7 +4,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { StfSummary } from ".";
 
 export const columns: ColumnDef<StfSummary>[] = [
- {
+  {
     accessorKey: "prodi",
     header: () => <div className="text-left">Prodi</div>,
     size: 200,
@@ -12,7 +12,9 @@ export const columns: ColumnDef<StfSummary>[] = [
   {
     accessorKey: "nama",
     header: () => <div className="text-center">Nama Calon</div>,
-    cell: ({ row }) => <div className="text-center">{row.getValue("nama")}</div>,
+    cell: ({ row }) => (
+      <div className="text-center">{row.getValue("nama")}</div>
+    ),
     size: 250,
   },
   {

@@ -38,7 +38,7 @@ class PresensiService {
     } catch (error) {
       if (error instanceof Error) {
         throw new Error(
-          `Gagal mengambil semua data presensi: ${error.message}`
+          `Gagal mengambil semua data presensi: ${error.message}`,
         );
       }
       throw new Error("Gagal mengambil semua data presensi");
