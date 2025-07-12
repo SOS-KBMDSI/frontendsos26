@@ -43,7 +43,7 @@ const labelVariants = cva("block text-lg font-semibold mb-2", {
       success: "text-primary-500",
     },
     disabled: {
-      true: "text-secondary-700",
+      true: "text-primary-500",
       false: "",
     },
   },

@@ -32,11 +32,7 @@ export const DetailModalTrigger = ({ nim }: DetailModalTriggerProps) => {
         Detail
       </button>
 
-      <Modal
-        isOpen={isOpen}
-        onClose={() => setIsOpen(false)}
-        title="Detail Mahasiswa"
-      >
+      <Modal isOpen={isOpen} onClose={() => setIsOpen(false)} title="">
         <MahasiswaDetailView
           isLoading={isLoading}
           error={error}
