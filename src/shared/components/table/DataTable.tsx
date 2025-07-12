@@ -5,6 +5,7 @@ import { flexRender, Table } from "@tanstack/react-table";
 import { Input } from "@/shared/components/ui/Input";
 import { Loader2, Search } from "lucide-react";
 import { Button } from "@/shared/components/ui/Button";
+import { cn } from "@/shared/utils/cn";
 
 interface DataTableProps<TData> {
   table: Table<TData>;
@@ -12,8 +13,12 @@ interface DataTableProps<TData> {
   error: string | null;
   refresh: () => void;
   title: string;
-  searchPlaceholder: string;
+  searchPlaceholder?: string;
   hideSearchInput?: boolean;
+  headerClassName?: string;
+  hideMeta?: boolean;
+  hidePagination?: boolean;
+  filterComponent?: React.ReactNode;
 }
 
 export const DataTable = <TData,>({
@@ -23,6 +28,10 @@ export const DataTable = <TData,>({
   title,
   searchPlaceholder,
   hideSearchInput = false,
+  headerClassName,
+  hideMeta = false,
+  hidePagination = false,
+  filterComponent,
 }: DataTableProps<TData>) => {
   if (isLoading) {
     return (
@@ -43,30 +52,33 @@ export const DataTable = <TData,>({
 
   return (
     <div className="mt-12">
-      {!hideSearchInput && (
-        <div className="relative w-1/3">
-          <Input
-            className="text-base w-full mb-14 pl-10"
-            variant={"default"}
-            value={(table.getState().globalFilter as string) ?? ""}
-            onChange={(e) => table.setGlobalFilter(e.target.value)}
-            placeholder={searchPlaceholder}
-          />
-          <Search className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
+      <div className="flex gap-6 items-center  mb-10">
+        {filterComponent}
+        {!hideSearchInput && (
+          <div className="relative flex items-center w-full md:w-1/3 h-14">
+            <Input
+              className="text-base w-full pl-10 h-full"
+              variant={"default"}
+              value={(table.getState().globalFilter as string) ?? ""}
+              onChange={(e) => table.setGlobalFilter(e.target.value)}
+              placeholder={searchPlaceholder}
+            />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
+          </div>
+        )}
+      </div>
+      <div className="bg-white w-full rounded-2xl shadow-xl overflow-hidden">
+        <div className="flex justify-between items-center border-b px-6 pb-6 pt-6 border-b-black">
+          <h4 className="text-2xl font-bold text-primary-500">{title}</h4>
+          {!hideMeta && (
+            <span className="text-sm font-medium text-primary-500">
+              Showing {firstRowIndex} - {lastRowIndex} of {totalRows}
+            </span>
+          )}
         </div>
-      )}
-
-      <div className="bg-white w-full  rounded-2xl shadow-xl overflow-hidden">
-        <div className="flex justify-between items-center border-b px-6 pb-6 border-b-black">
-          <h4 className="text-2xl pt-6 font-bold text-primary-500">{title}</h4>
-          <span className="text-sm font-medium text-primary-500">
-            Showing {firstRowIndex} - {lastRowIndex} of {totalRows}
-          </span>
-        </div>
-
         <div className="w-full overflow-x-auto">
-          <table className="min-w-[800px] w-full text-sm text-left text-black table-fixed">
-            <thead className="text-black text-lg">
+          <table className="min-w-[800px] w-full text-sm text-left text-black table-auto">
+            <thead className={cn("text-black text-lg", headerClassName)}>
               {table.getHeaderGroups().map((headerGroup) => (
                 <tr key={headerGroup.id}>
                   {headerGroup.headers.map((header) => (
@@ -78,7 +90,7 @@ export const DataTable = <TData,>({
                       <div>
                         {flexRender(
                           header.column.columnDef.header,
-                          header.getContext()
+                          header.getContext(),
                         )}
                       </div>
                     </th>
@@ -90,17 +102,23 @@ export const DataTable = <TData,>({
               {table.getRowModel().rows.map((row, index) => (
                 <tr
                   key={row.id}
-                  className={`h-20 ${index % 2 === 0 ? "bg-[#F5E6E9]" : ""}`}
+                  className={`h-20 transition-colors ${
+                    row.getIsSelected()
+                      ? "bg-primary-500 text-white"
+                      : index % 2 === 1
+                        ? "bg-white"
+                        : "bg-primary-500/10"
+                  }`}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <td
                       key={cell.id}
-                      className="py-4 px-6 text-gray-900"
+                      className="py-4 px-6 font-medium"
                       style={{ width: cell.column.getSize() }}
                     >
                       {flexRender(
                         cell.column.columnDef.cell,
-                        cell.getContext()
+                        cell.getContext(),
                       )}
                     </td>
                   ))}
@@ -111,20 +129,22 @@ export const DataTable = <TData,>({
         </div>
       </div>
 
-      <div className="pagination-controls mt-6 flex justify-end gap-10">
-        <Button
-          arrow="left"
-          onClick={() => table.previousPage()}
-          disabled={!table.getCanPreviousPage()}
-          className="pagination-arrow"
-        ></Button>
-        <Button
-          arrow="right"
-          onClick={() => table.nextPage()}
-          disabled={!table.getCanNextPage()}
-          className="pagination-arrow"
-        ></Button>
-      </div>
+      {!hidePagination && (
+        <div className="pagination-controls mt-6 flex justify-end gap-10">
+          <Button
+            arrow="left"
+            onClick={() => table.previousPage()}
+            disabled={!table.getCanPreviousPage()}
+            className="pagination-arrow"
+          ></Button>
+          <Button
+            arrow="right"
+            onClick={() => table.nextPage()}
+            disabled={!table.getCanNextPage()}
+            className="pagination-arrow"
+          ></Button>
+        </div>
+      )}
     </div>
   );
 };

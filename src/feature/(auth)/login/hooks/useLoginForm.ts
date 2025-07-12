@@ -19,7 +19,6 @@ export function useLoginForm() {
       const response = await authService.login({ emailornim, password });
 
       const redirectUrl = response.redirectUrl;
-      console.log(redirectUrl);
 
       if (redirectUrl) {
         router.push(redirectUrl);

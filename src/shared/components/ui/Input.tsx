@@ -32,15 +32,15 @@ const inputVariants = cva(
       state: "default",
       size: "default",
     },
-  }
+  },
 );
 
 const labelVariants = cva("block text-lg font-semibold mb-2", {
   variants: {
     variant: {
-      default: "text-black",
-      error: "text-black",
-      success: "text-black",
+      default: "text-primary-500",
+      error: "text-primary-500",
+      success: "text-primary-500",
     },
     disabled: {
       true: "text-secondary-700",
@@ -102,7 +102,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
       disabled,
       ...props
     },
-    ref
+    ref,
   ) => {
     const finalState = disabled ? "disabled" : state;
     const finalVariant = variant || "default";
@@ -116,7 +116,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
                 variant: finalVariant,
                 disabled: disabled,
               }),
-              labelClassName
+              labelClassName,
             )}
           >
             {label}
@@ -139,7 +139,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
               }),
               leftIcon && "pl-10",
               rightIcon && "pr-10",
-              className
+              className,
             )}
             ref={ref}
             disabled={disabled}
@@ -160,7 +160,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
                 variant: finalVariant,
                 disabled: disabled,
               }),
-              statusClassName
+              statusClassName,
             )}
           >
             {status}
@@ -168,7 +168,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         )}
       </div>
     );
-  }
+  },
 );
 
 Input.displayName = "Input";

@@ -7,10 +7,17 @@ interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
   title: string;
+  desc?: string;
   children: ReactNode;
 }
 
-export const Modal = ({ isOpen, onClose, title, children }: ModalProps) => {
+export const Modal = ({
+  isOpen,
+  onClose,
+  title,
+  desc,
+  children,
+}: ModalProps) => {
   if (!isOpen) {
     return null;
   }
@@ -24,14 +31,17 @@ export const Modal = ({ isOpen, onClose, title, children }: ModalProps) => {
         onClick={(e) => e.stopPropagation()}
         className="relative w-full max-w-2xl rounded-2xl bg-white px-8 py-6 shadow-xl"
       >
-        <div className="flex items-center justify-between border-b border-gray-200 pb-4">
-          <h3 className="text-xl font-semibold text-gray-900">{title}</h3>
+        <div className="w-full flex justify-end my-2">
           <button
             onClick={onClose}
             className="rounded-full p-1 text-gray-400 transition hover:bg-gray-100 hover:text-gray-600"
           >
             <X size={24} />
           </button>
+        </div>
+        <div className="flex  flex-col items-center justify-center border-gray-200 pb-4">
+          <h3 className="text-2xl font-semibold text-default-dark">{title}</h3>
+          <p className="text-base text-default-dark-50">{desc}</p>
         </div>
 
         <div className="mt-4 max-h-[70vh] overflow-y-auto ">{children}</div>

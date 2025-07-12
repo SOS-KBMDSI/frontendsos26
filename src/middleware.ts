@@ -17,13 +17,20 @@ export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const token = request.cookies.get("auth_session")?.value;
   const payload = token ? await verifyToken(token) : null;
-
-  // const mabaPaths: string[] = []; //nanti aja ini wak isinya
   const adminPath = "/admin";
   const loginPath = "/login";
+  const profilePath = "/profile";
 
   if (pathname.startsWith(adminPath)) {
     if (!payload || payload.Role !== "admin") {
+      const url = new URL(loginPath, request.url);
+      url.searchParams.set("error", "unauthorized");
+      return NextResponse.redirect(url);
+    }
+  }
+
+  if (pathname.startsWith(profilePath)) {
+    if (!payload) {
       const url = new URL(loginPath, request.url);
       url.searchParams.set("error", "unauthorized");
       return NextResponse.redirect(url);
