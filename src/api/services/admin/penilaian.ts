@@ -1,0 +1,97 @@
+import { apiClient } from "@/api/core/AxiosInstance";
+import {
+  BackendResponse,
+  PaginatedData,
+  Rangkaian,
+  Distrik,
+  Maba,
+  RekapPenilaianItem,
+  DetailPenilaianMaba,
+  PayloadPelanggaran,
+  PayloadKeaktifan,
+} from "@/feature/(admin)/penilaian/types";
+
+class PenilaianService {
+  private static instance: PenilaianService;
+
+  public static getInstance(): PenilaianService {
+    if (!PenilaianService.instance) {
+      PenilaianService.instance = new PenilaianService();
+    }
+    return PenilaianService.instance;
+  }
+
+  async getRangkaian(): Promise<BackendResponse<Rangkaian[]>> {
+    const response = await apiClient.get("/api/rangkaian/");
+    return response as unknown as BackendResponse<Rangkaian[]>;
+  }
+
+  async getRekapPenilaian(
+    id_rangkaian: string,
+  ): Promise<BackendResponse<RekapPenilaianItem[]>> {
+    const response = await apiClient.get(
+      `/api/penilaian/rekap/${id_rangkaian}`,
+    );
+    return response as unknown as BackendResponse<RekapPenilaianItem[]>;
+  }
+
+  async getDetailPenilaianMaba(
+    nim: string,
+    id_rangkaian: string,
+  ): Promise<DetailPenilaianMaba> {
+    const response = await apiClient.get(
+      `/api/penilaian/${nim}/rangkaian/${id_rangkaian}`,
+    );
+    return response as unknown as DetailPenilaianMaba;
+  }
+
+  async postPelanggaran(
+    data: PayloadPelanggaran,
+  ): Promise<BackendResponse<null>> {
+    const response = await apiClient.post("/api/penilaian/pelanggaran", data);
+    return response as unknown as BackendResponse<null>;
+  }
+
+  async postKeaktifan(
+    nim: string,
+    id_rangkaian: string,
+    data: PayloadKeaktifan,
+  ): Promise<BackendResponse<null>> {
+    const response = await apiClient.post(
+      `/api/penilaian/${id_rangkaian}/keaktifan?nim=${nim}`,
+      data,
+    );
+    return response as unknown as BackendResponse<null>;
+  }
+
+  async getDistrik(): Promise<BackendResponse<Distrik[]>> {
+    const response = await apiClient.get("/api/distrik/");
+    return response as unknown as BackendResponse<Distrik[]>;
+  }
+
+  async getMabaByFilter(
+    distrikId: string,
+    kelompokId?: string,
+  ): Promise<BackendResponse<PaginatedData<Maba>>> {
+    if (!distrikId) {
+      return Promise.resolve({
+        status_code: 200,
+        message: "OK",
+        data: {
+          pagination: { page: 1, limit: 10, total_record: 0, total_pages: 0 },
+          records: [],
+        },
+      });
+    }
+
+    let url = `/api/distrik/${distrikId}/maba`;
+    if (kelompokId) {
+      url += `?id_kelompok=${kelompokId}`;
+    }
+
+    const response = await apiClient.get(url);
+    return response as unknown as BackendResponse<PaginatedData<Maba>>;
+  }
+}
+
+export const penilaianService = PenilaianService.getInstance();

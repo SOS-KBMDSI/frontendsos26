@@ -18,6 +18,7 @@ interface DataTableProps<TData> {
   headerClassName?: string;
   hideMeta?: boolean;
   hidePagination?: boolean;
+  whenOnClick?: boolean; // 1. Tambahkan prop baru
 }
 
 export const DataTable = <TData,>({
@@ -30,6 +31,7 @@ export const DataTable = <TData,>({
   headerClassName,
   hideMeta = false,
   hidePagination = false,
+  whenOnClick = false, // 2. Ambil prop-nya, default-nya false
 }: DataTableProps<TData>) => {
   if (isLoading) {
     return (
@@ -49,7 +51,7 @@ export const DataTable = <TData,>({
   const lastRowIndex = Math.min((pageIndex + 1) * pageSize, totalRows);
 
   return (
-    <div className="mt-12">
+    <div className="mt-2">
       {!hideSearchInput && (
         <div className="relative w-full md:w-1/3">
           <Input
@@ -68,12 +70,11 @@ export const DataTable = <TData,>({
           <h4 className="text-2xl font-bold text-primary-500">{title}</h4>
           {!hideMeta && (
             <span className="text-sm font-medium text-primary-500">
-              Showing {firstRowIndex} - {lastRowIndex} of {totalRows}
+              {firstRowIndex} - {lastRowIndex} of {totalRows}
             </span>
           )}
         </div>
         <div className="w-full overflow-x-auto">
-          {/* 1. Mengubah `table-fixed` menjadi `table-auto` untuk responsivitas */}
           <table className="min-w-[800px] w-full text-sm text-left text-black table-auto">
             <thead className={cn("text-black text-lg", headerClassName)}>
               {table.getHeaderGroups().map((headerGroup) => (
@@ -82,7 +83,6 @@ export const DataTable = <TData,>({
                     <th
                       key={header.id}
                       className="py-4 px-6"
-                      // Lebar kolom diatur agar lebih fleksibel
                       style={{ width: header.getSize() }}
                     >
                       <div>
@@ -100,16 +100,19 @@ export const DataTable = <TData,>({
               {table.getRowModel().rows.map((row, index) => (
                 <tr
                   key={row.id}
-                  // 2. Menghapus `cursor-pointer`
-                  className={`h-20 transition-colors ${
+                  // 3. Buat className dan onClick menjadi kondisional
+                  className={cn(
+                    "h-20 transition-colors",
+                    whenOnClick && "cursor-pointer", // Tambah cursor-pointer hanya jika whenOnClick=true
                     row.getIsSelected()
                       ? "bg-primary-500 text-white"
                       : index % 2 === 1
                         ? "bg-white"
-                        : "bg-primary-500/10"
-                  }`}
-                  // 3. Menghapus event `onClick`
-                  // onClick={row.getToggleSelectedHandler()}
+                        : "bg-primary-500/10",
+                  )}
+                  onClick={
+                    whenOnClick ? row.getToggleSelectedHandler() : undefined
+                  }
                 >
                   {row.getVisibleCells().map((cell) => (
                     <td

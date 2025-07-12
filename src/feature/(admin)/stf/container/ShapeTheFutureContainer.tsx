@@ -52,7 +52,6 @@ const StfContainer = () => {
     if (!selectedRowIndex) return;
 
     const selectedCaketang = table.getRow(selectedRowIndex).original;
-    // Arahkan ke halaman edit dengan ID caketang yang dipilih
     router.push(`/admin/stf/edit/${selectedCaketang.id_caketang}`);
   };
 
@@ -74,7 +73,7 @@ const StfContainer = () => {
   const filteredData = useMemo(() => {
     if (!data) return [];
     return data.filter((item) =>
-      prodiFilter ? item.prodi === prodiFilter : true
+      prodiFilter ? item.prodi === prodiFilter : true,
     );
   }, [data, prodiFilter]);
 
@@ -174,6 +173,7 @@ const StfContainer = () => {
         hideSearchInput={true}
         hideMeta={true}
         hidePagination={true}
+        whenOnClick={true}
       />
     </div>
   );
