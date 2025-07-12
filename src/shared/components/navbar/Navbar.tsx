@@ -70,7 +70,7 @@ const Navbar = () => {
                 src={LogoSoS}
                 alt="Logo SoS"
               />
-              <div className="text-white text-sm">
+              <div className="text-white  text-xs md:text-sm">
                 <h1>Synergy Of Symphony & </h1>
                 <h2>Shaping The Futures</h2>
               </div>

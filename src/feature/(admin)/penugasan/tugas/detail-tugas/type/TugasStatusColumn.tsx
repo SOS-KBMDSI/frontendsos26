@@ -1,8 +1,15 @@
 "use client";
 
 import { TugasStatus } from "@/api/services/admin/tugas";
-import { createColumnHelper } from "@tanstack/react-table";
+import { createColumnHelper, RowData } from "@tanstack/react-table";
+import { Edit3Icon } from "lucide-react";
 import Link from "next/link";
+declare module "@tanstack/react-table" {
+  interface TableMeta<TData extends RowData> {
+    openEditModal: (submission: TData) => void;
+  }
+}
+
 const tugasStatusColumnHelper = createColumnHelper<TugasStatus>();
 
 export const tugasStatusColumns = [
@@ -14,6 +21,18 @@ export const tugasStatusColumns = [
 
   tugasStatusColumnHelper.accessor("nim", {
     header: "NIM",
+    cell: (info) => info.getValue(),
+    size: 150,
+  }),
+
+  tugasStatusColumnHelper.accessor("distrik", {
+    header: "Distrik",
+    cell: (info) => info.getValue(),
+    size: 150,
+  }),
+
+  tugasStatusColumnHelper.accessor("kelompok", {
+    header: "Kelompok",
     cell: (info) => info.getValue(),
     size: 150,
   }),
@@ -51,6 +70,22 @@ export const tugasStatusColumns = [
   tugasStatusColumnHelper.accessor("nilai", {
     header: "Nilai",
     cell: (info) => info.getValue(),
-    size: 100,
+    size: 10,
+  }),
+  tugasStatusColumnHelper.display({
+    id: "aksi",
+    header: "Action",
+    cell: ({ row, table }) => (
+      <button
+        type="button"
+        onClick={() => table.options.meta?.openEditModal(row.original)}
+        className="p-2 rounded-full hover:bg-orange-100 focus:outline-none focus:ring-2 focus:ring-orange-200 focus:ring-offset-2 transition-colors"
+        aria-label="Edit Data"
+        title="Edit Data"
+      >
+        <Edit3Icon className="text-orange-500 h-5 w-5" />
+      </button>
+    ),
+    size: 120,
   }),
 ];

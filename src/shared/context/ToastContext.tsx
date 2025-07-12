@@ -1,3 +1,7 @@
+
+
+"use client";
+
 import React, { createContext, useState, ReactNode } from "react";
 import { Toast, ToastProps } from "../components/ui/Toast";
 
@@ -31,7 +35,7 @@ export const ToastProvider: React.FC<{ children: ReactNode }> = ({
   return (
     <ToastContext.Provider value={{ showToast }}>
       {children}
-      <div className="toast-container">
+      <div className="toast-container ">
         {toasts.map((toast) => (
           <Toast key={toast.id} {...toast} />
         ))}

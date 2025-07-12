@@ -1,15 +1,54 @@
 import { apiClient, ApiResponse } from "../core/AxiosInstance";
 import axios from "axios";
+export interface Pjl {
+  nim: string;
+  nama: string;
+  line: string;
+}
+
+export interface Distrik {
+  id_distrik: string;
+  nama_distrik: string;
+  list_pjl: Pjl[];
+}
+
+export interface Kelompok {
+  id_kelompok: string;
+  nama_kelompok: string;
+  distrik: Distrik;
+}
 
 export interface AuthProfile {
   nim: string;
-  full_name: string;
   nama: string;
-  faculty: string;
-  study_program: string;
+  full_name: string;
+  email?: string;
+  kelamin?: string;
+  fakultas?: string;
+  prodi?: string;
   siakad_photo_url: string;
   file_filkom_photo_url: string;
   role: "admin" | "user";
+  telp?: string;
+  line?: string;
+  agama?: string;
+  golongan_darah?: string;
+  riwayat_penyakit?: string;
+  alergi_obat?: string;
+  alergi_makanan?: string;
+
+  kelompok?: Kelompok;
+}
+
+export interface EditProfileRequest {
+  Phone?: string;
+  Line?: string;
+  Agama?: string;
+  GolonganDarah?: string;
+  RiwayatPenyakit?: string;
+  AlergiObat?: string;
+  AlergiMakanan?: string;
+  Kelamin?: string;
 }
 
 interface LoginResponse {
@@ -55,6 +94,22 @@ class AuthService {
         throw new Error(error.message);
       }
       throw new Error("Gagal mengambil data pengguna.");
+    }
+  }
+  async editProfile(
+    profileData: EditProfileRequest,
+  ): Promise<ApiResponse<AuthProfile>> {
+    try {
+      const response = await apiClient.patch<AuthProfile>(
+        "/api/mahasiswa/",
+        profileData,
+      );
+      return response;
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        throw new Error(error.message);
+      }
+      throw new Error("Gagal memperbarui profil pengguna.");
     }
   }
 }

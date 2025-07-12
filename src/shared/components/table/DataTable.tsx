@@ -18,7 +18,9 @@ interface DataTableProps<TData> {
   headerClassName?: string;
   hideMeta?: boolean;
   hidePagination?: boolean;
-  whenOnClick?: boolean; // 1. Tambahkan prop baru
+  whenOnClick?: boolean; 
+  filterComponent?: React.ReactNode;
+
 }
 
 export const DataTable = <TData,>({
@@ -31,7 +33,8 @@ export const DataTable = <TData,>({
   headerClassName,
   hideMeta = false,
   hidePagination = false,
-  whenOnClick = false, // 2. Ambil prop-nya, default-nya false
+  whenOnClick = false,
+  filterComponent,
 }: DataTableProps<TData>) => {
   if (isLoading) {
     return (
@@ -64,7 +67,22 @@ export const DataTable = <TData,>({
           <Search className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
         </div>
       )}
-
+    <div className="mt-12">
+      <div className="flex gap-6 items-center  mb-10">
+        {filterComponent}
+        {!hideSearchInput && (
+          <div className="relative flex items-center w-full md:w-1/3 h-14">
+            <Input
+              className="text-base w-full pl-10 h-full"
+              variant={"default"}
+              value={(table.getState().globalFilter as string) ?? ""}
+              onChange={(e) => table.setGlobalFilter(e.target.value)}
+              placeholder={searchPlaceholder}
+            />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
+          </div>
+        )}
+      </div>
       <div className="bg-white w-full rounded-2xl shadow-xl overflow-hidden">
         <div className="flex justify-between items-center border-b px-6 pb-6 pt-6 border-b-black">
           <h4 className="text-2xl font-bold text-primary-500">{title}</h4>
@@ -100,19 +118,22 @@ export const DataTable = <TData,>({
               {table.getRowModel().rows.map((row, index) => (
                 <tr
                   key={row.id}
-                  // 3. Buat className dan onClick menjadi kondisional
                   className={cn(
                     "h-20 transition-colors",
-                    whenOnClick && "cursor-pointer", // Tambah cursor-pointer hanya jika whenOnClick=true
+                    whenOnClick && "cursor-pointer", 
+                  className={`h-20 transition-colors ${
                     row.getIsSelected()
                       ? "bg-primary-500 text-white"
                       : index % 2 === 1
                         ? "bg-white"
+
                         : "bg-primary-500/10",
                   )}
                   onClick={
                     whenOnClick ? row.getToggleSelectedHandler() : undefined
                   }
+                        : "bg-primary-500/10"
+                  }`}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <td
