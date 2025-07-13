@@ -147,3 +147,7 @@
   background-color: #9c0221;
   border-radius: 10px;
 }
+
+.content-container {
+  @apply right-0 left-0 mx-auto  md:px-12 px-4 xl:px-60;
+}

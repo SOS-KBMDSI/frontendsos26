@@ -36,7 +36,6 @@ export interface AuthProfile {
   riwayat_penyakit?: string;
   alergi_obat?: string;
   alergi_makanan?: string;
-
   kelompok?: Kelompok;
 }
 
