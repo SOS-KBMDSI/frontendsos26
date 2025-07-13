@@ -148,5 +148,6 @@
   border-radius: 10px;
 }
 
-.aktivitas-bg {
+.content-container {
+  @apply right-0 left-0 mx-auto  md:px-12 px-4 xl:px-60;
 }
