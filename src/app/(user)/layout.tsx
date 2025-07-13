@@ -13,11 +13,11 @@ export default function UserLayout({
     <>
       <AuthProvider>
         <Navbar />
+        <ToastProvider>
+          <main className="pt-20">{children}</main>
+        </ToastProvider>
+        <Footer />
       </AuthProvider>
-      <ToastProvider>
-        <main className="pt-20">{children}</main>
-      </ToastProvider>
-      <Footer />
     </>
   );
 }
