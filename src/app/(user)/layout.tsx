@@ -1,3 +1,4 @@
+import { Footer } from "@/shared/components/footer/Footer";
 import Navbar from "@/shared/components/navbar/Navbar";
 import { AuthProvider } from "@/shared/context/AuthContext";
 import { ToastProvider } from "@/shared/context/ToastContext";
@@ -16,6 +17,7 @@ export default function UserLayout({
       <ToastProvider>
         <main className="pt-20">{children}</main>
       </ToastProvider>
+      <Footer />
     </>
   );
 }
