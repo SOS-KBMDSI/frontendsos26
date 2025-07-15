@@ -1,5 +1,5 @@
-import { DepartemenSection } from "./DepartemenSection";
-import { ProdiSection } from "./ProdiSection";
+import { DepartemenSection } from "../components/DepartemenSection";
+import { ProdiSection } from "../components/ProdiSection";
 
 export const AkademikContainer = () => {
   return (

@@ -1,12 +1,12 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import Image from "next/image";
 import { prodiData } from "../data/prodiData";
-import { cn } from "@/shared/utils/cn";
 import PerkamenBg from "@/assets/user/horizontal-perkament.svg";
 import PerkamenBgMobile from "@/assets/user/mobile-perkament.svg";
 import { motion, AnimatePresence } from "framer-motion";
+import { SectionTitle } from "./SectionTitle";
+import { ProdiTabs } from "./ProdiTabs";
 
 export const ProdiSection = () => {
   const [activeProdiId, setActiveProdiId] = useState("sistem_informasi");
@@ -23,50 +23,15 @@ export const ProdiSection = () => {
 
   return (
     <section className="relative bg-primary-600 py-24 px-2 md:px-6 text-white">
-      <div className="mycontainer flex flex-col items-center gap-10 md:gap-20">
-        <div className="flex flex-col items-center gap-3 w-full px-2">
-          <h2 className="text-3xl md:text-7xl font-semibold text-center">
-            Kenalin Prodi DSI
-          </h2>
-          <div className="h-2 w-full md:w-1/2 bg-default-light rounded-full"></div>
-        </div>
+      <div className="mycontainer flex flex-col items-center gap-4 md:gap-20">
+        <SectionTitle>Kenalin Prodi DSI</SectionTitle>
 
         <div className="grid w-full grid-cols-1 md:grid-cols-3 gap-10 md:gap-12 items-start">
           <div className="flex flex-row justify-center md:flex-col gap-4">
-            {prodiData.map((prodi) => (
-              <button
-                key={prodi.id}
-                onClick={() => setActiveProdiId(prodi.id)}
-                className={cn(
-                  "px-4 rounded-2xl border-2 transition-all duration-300 ease-in-out text-center w-full",
-                  "py-3 md:py-6",
-                  activeProdiId === prodi.id
-                    ? "bg-secondary-500 border-none text-default-dark shadow-lg scale-105"
-                    : "bg-transparent border-white/50 hover:bg-white/10",
-                )}
-              >
-                <div
-                  className={cn(
-                    "hidden md:flex flex-col justify-center items-center gap-2",
-                    activeProdiId === prodi.id && "min-h-[200px]",
-                  )}
-                >
-                  {activeProdiId === prodi.id && (
-                    <Image
-                      src={prodi.logo}
-                      alt={`Logo ${prodi.nama}`}
-                      className="w-40 h-40"
-                    />
-                  )}
-                  <span className="text-lg font-medium">{prodi.nama}</span>
-                </div>
-                <div className="md:hidden flex justify-center items-center">
-                  <span className="text-base font-medium">
-                    {prodi.shortName}
-                  </span>
-                </div>
-              </button>
-            ))}
+            <ProdiTabs
+              activeProdiId={activeProdiId}
+              onSelectProdi={setActiveProdiId}
+            />
           </div>
 
           <div className="md:col-span-2">
@@ -78,7 +43,7 @@ export const ProdiSection = () => {
                 borderImageSource: `url(${PerkamenBgMobile.src})`,
                 borderImageSlice: "45 fill",
                 borderImageRepeat: "stretch",
-                height: "780px",
+                height: "850px",
               }}
             >
               <AnimatePresence mode="wait">

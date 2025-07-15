@@ -3,6 +3,7 @@ import LogoDSI from "@/assets/user/logo-dsi.svg";
 import CaturPattern from "@/assets/user/pembatas.svg";
 import BgPattern from "@/assets/user/bg-patern.svg";
 import PerkamentBg from "@/assets/user/parchment-bg.png";
+import { SectionTitle } from "./SectionTitle";
 
 export const DepartemenSection = () => {
   return (
@@ -11,12 +12,7 @@ export const DepartemenSection = () => {
       style={{ backgroundImage: `url(${BgPattern.src})` }}
     >
       <div className="mycontainer text-center py-24 md:py-32">
-        <div className="flex flex-col items-center gap-3 w-full mb-12 px-2">
-          <h2 className="text-3xl md:text-7xl font-semibold text-default-dark">
-            Apa sih itu DSI?
-          </h2>
-          <div className="h-2 w-full md:w-1/2 bg-primary-500 rounded-full"></div>
-        </div>
+        <SectionTitle lineColor="bg-primary-500">Apa sih itu DSI?</SectionTitle>
 
         <div className="flex flex-col md:flex-row items-center justify-center gap-10 md:gap-20 p-1 md:p-8 rounded-2xl">
           <div
