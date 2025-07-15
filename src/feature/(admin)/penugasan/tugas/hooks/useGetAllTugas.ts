@@ -31,31 +31,6 @@ export const useGetAllTugas = () => {
   return { data, isLoading, error, refresh: fetchAll };
 };
 
-export const useUpdateTugas = () => {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
-  const [isSuccess, setIsSuccess] = useState<boolean>(false);
-
-  const updateTugas = async ({ id, data }: { id: string; data: FormData }) => {
-    setIsLoading(true);
-    setError(null);
-    setIsSuccess(false);
-    try {
-      await tugasService.updateTugas(id, data);
-      setIsSuccess(true);
-    } catch (err: unknown) {
-      const errorMessage =
-        err instanceof Error ? err.message : "Gagal memperbarui tugas";
-      setError(errorMessage);
-      throw err;
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  return { updateTugas, isLoading, error, isSuccess };
-};
-
 export const useDeleteTugas = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);

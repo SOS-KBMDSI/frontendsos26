@@ -53,14 +53,13 @@ export const AnggotaDetailModal = ({
 
   return (
     <>
-      <h3 className="mb-4 text-center text-xl font-semibold text-gray-900">
+      <h3 className="mb-4 text-center text-xl font-semibold border-b border-[#D9D9D9] pb-3 text-gray-900">
         Identitas Mahasiswa
       </h3>
       <div className="grid grid-cols-1 gap-x-12 px-10 gap-y-4 md:grid-cols-2">
         {identitasFields.map((field) => (
           <div key={field.label}>
             <p className="text-sm text-primary-500">{field.label}</p>
-            {/* Ini bagian yang menangani data kosong */}
             <p className="font-medium">{field.value || "-"}</p>
           </div>
         ))}

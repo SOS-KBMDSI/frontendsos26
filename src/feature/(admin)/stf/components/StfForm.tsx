@@ -14,7 +14,7 @@ import { Button } from "@/shared/components/ui/Button";
 import { FileInput } from "@/shared/components/ui/FileInput";
 
 interface StfFormProps {
-  mode: 'create' | 'edit';
+  mode: "create" | "edit";
   nama: string;
   setNama: (value: string) => void;
   prodi: string;
@@ -30,17 +30,20 @@ interface StfFormProps {
 
 const StfForm = ({
   mode,
-  nama, setNama,
-  prodi, setProdi,
-  visi, setVisi,
-  misi, setMisi,
+  nama,
+  setNama,
+  prodi,
+  setProdi,
+  visi,
+  setVisi,
+  misi,
+  setMisi,
   setFoto,
   isLoading,
   handleSubmit,
 }: StfFormProps) => {
-
-  const buttonText = mode === 'create' ? 'Tambah' : 'Simpan';
-  const loadingText = mode === 'create' ? 'Menambahkan...' : 'Menyimpan...';
+  const buttonText = mode === "create" ? "Tambah" : "Simpan";
+  const loadingText = mode === "create" ? "Menambahkan..." : "Menyimpan...";
 
   return (
     <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
@@ -85,7 +88,7 @@ const StfForm = ({
           <FileInput
             id="foto"
             onChange={(file) => setFoto(file)}
-            required={mode === 'create'}
+            required={mode === "create"}
           />
         </div>
       </div>

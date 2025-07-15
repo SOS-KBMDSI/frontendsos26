@@ -8,7 +8,7 @@ export const useDeleteStf = (onSuccess: () => void) => {
 
   const handleDelete = async (id: string, nama: string) => {
     const isConfirmed = window.confirm(
-      `Apakah Anda yakin ingin menghapus calon "${nama}"?`
+      `Apakah Anda yakin ingin menghapus calon "${nama}"?`,
     );
 
     if (isConfirmed) {

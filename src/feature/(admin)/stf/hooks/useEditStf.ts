@@ -68,10 +68,14 @@ export const useEditStf = (id: string) => {
   };
 
   return {
-    nama, setNama,
-    prodi, setProdi,
-    visi, setVisi,
-    misi, setMisi,
+    nama,
+    setNama,
+    prodi,
+    setProdi,
+    visi,
+    setVisi,
+    misi,
+    setMisi,
     setFoto,
     initialDataLoading,
     isSubmitting,

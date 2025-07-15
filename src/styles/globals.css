@@ -37,8 +37,9 @@
   --color-badgeOverdue: #cf2a4a;
   --color-badgeSuccess: #4caf50;
 
-  --color-taskCard: #e4e4e4;
-  --color-hoverTask: #bdbdbd;
+  --color-infoNotif: #eaf5f8;
+  --color-borderNotif: #467fbd;
+
   /* == Black Colors */
   --color-black: #383838;
   --color-black-50: rgba(56, 56, 56, 0.5);
@@ -145,4 +146,8 @@
 .overflow-y-auto::-webkit-scrollbar-thumb {
   background-color: #9c0221;
   border-radius: 10px;
+}
+
+.content-container {
+  @apply right-0 left-0 mx-auto  md:px-12 px-4 xl:px-60;
 }

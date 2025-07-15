@@ -56,7 +56,7 @@ export const MahasiswaDetailView = ({
   ];
   return (
     <>
-      <h3 className="mb-4 text-center text-xl font-semibold  text-gray-900">
+      <h3 className="mb-4 text-center text-xl font-semibold border-b border-[#D9D9D9] pb-3 text-gray-900">
         Identitas Mahasiswa
       </h3>
       <div className="grid grid-cols-1 gap-x-12 px-10 gap-y-4 md:grid-cols-2">
