@@ -13,7 +13,7 @@ export const Footer = () => {
       <Image
         src={CaturPattern}
         alt="Footer Pattern"
-        className="w-full h-14 object-cover md:h-auto"
+        className="w-full h-18 object-cover md:h-auto"
         aria-hidden="true"
       />
 
