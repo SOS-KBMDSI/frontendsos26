@@ -1,0 +1,15 @@
+"use client";
+import { useAuthContext } from "@/shared/hooks/useAuthContext";
+import AktivitasBeforeLogin from "../components/AktivitasBeforeLogin";
+import AktivitasAfterLogin from "../components/AktivitasAfterLogin";
+
+const AktivitasContainer = () => {
+  const { user } = useAuthContext();
+  return (
+    <main className="bg-login lg:min-h-screen overflow-x-hidden">
+      {!user ? <AktivitasBeforeLogin /> : <AktivitasAfterLogin user={user} />}
+    </main>
+  );
+};
+
+export default AktivitasContainer;

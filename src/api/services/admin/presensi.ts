@@ -203,6 +203,7 @@ class PresensiService {
       if (error instanceof Error) {
         throw new Error(
           `Gagal mengambil presensi by ID ERROR: ${error.message}`,
+          `Gagal mengambil semua data presensi: ${error.message}`,
         );
       }
       throw new Error(

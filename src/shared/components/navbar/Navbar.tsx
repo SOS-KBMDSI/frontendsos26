@@ -61,7 +61,7 @@ const Navbar = () => {
     <>
       <nav className="w-screen h-20 bg-primary-600 fixed z-50">
         <div className="mycontainer h-full w-full flex items-center justify-between">
-          <div className="flex-1 flex justify-start">
+          <div className="flex-2 md:flex-1 flex justify-start ">
             <div className="flex gap-1 text-white font-semibold items-center">
               <Image
                 className="w-14 h-14"
@@ -70,7 +70,7 @@ const Navbar = () => {
                 src={LogoSoS}
                 alt="Logo SoS"
               />
-              <div className="text-white text-sm">
+              <div className="text-white  text-xs md:text-sm">
                 <h1>Synergy Of Symphony & </h1>
                 <h2>Shaping The Futures</h2>
               </div>

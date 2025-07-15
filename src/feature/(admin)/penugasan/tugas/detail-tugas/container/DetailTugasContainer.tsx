@@ -1,5 +1,6 @@
+"use client";
+
 import React, { useState } from "react";
-import DetailTugas from "../components/DetailTugas";
 import {
   useReactTable,
   getCoreRowModel,
@@ -9,11 +10,17 @@ import {
   type PaginationState,
   getFilteredRowModel,
 } from "@tanstack/react-table";
-import { tugasStatusColumns } from "../type/TugasStatusColumn";
+
+import DetailTugas from "../components/DetailTugas";
+import SubmissionTable from "../components/SubmissionTable";
+import { Modal } from "@/shared/components/ui/Modal";
+import TugasForm from "../../components/TugasForm";
 import { useGetDetailTugasById } from "../hooks/useGetDetailTugasById";
 import { useGetTugasSubmissions } from "../hooks/useGetTugasSubmissions";
-import SubmissionTable from "../components/SubmissionTable";
 import { useSelectOptions } from "@/shared/hooks/useSelectOptions";
+import { TugasStatus, TugasSummary } from "@/api/services/admin/tugas";
+import { tugasStatusColumns } from "../type/TugasStatusColumn";
+import FormEditNilai from "../components/FormEditNilai";
 
 interface DetailTugasContainerProps {
   id_penugasan: string;
@@ -26,59 +33,103 @@ const DetailTugasContainer: React.FC<DetailTugasContainerProps> = ({
   const [selectedDistrik, setSelectedDistrik] = useState<string | null>(null);
   const { options: kelompokOptions } = useSelectOptions("kelompok");
   const { options: distrikOptions } = useSelectOptions("distrik");
-  const { data: detailTugas, error: statusError } =
-    useGetDetailTugasById(id_penugasan);
+
+  const [editingTugas, setEditingTugas] = useState<TugasSummary | null>(null);
+  const handleTugasEditSuccess = () => {
+    setEditingTugas(null);
+    refreshDetailTugas();
+  };
+
+  const [editingSubmission, setEditingSubmission] =
+    useState<TugasStatus | null>(null);
+  const handleSubmissionEditSuccess = () => {
+    setEditingSubmission(null);
+    refreshSubmission();
+  };
+
+  const {
+    data: detailTugas,
+    error: statusError,
+    refresh: refreshDetailTugas,
+  } = useGetDetailTugasById(id_penugasan);
+
   const {
     data: tugasSubmissions,
     isLoading: isSubmissionLoading,
     refresh: refreshSubmission,
   } = useGetTugasSubmissions(id_penugasan, selectedKelompok, selectedDistrik);
+
   const [globalFilter, setGlobalFilter] = useState("");
   const [sorting, setSorting] = useState<SortingState>([]);
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
     pageSize: 10,
   });
-
   const tableData = tugasSubmissions ?? [];
 
   const table = useReactTable({
     data: tableData,
     columns: tugasStatusColumns,
-    getFilteredRowModel: getFilteredRowModel(),
+    state: { sorting, pagination, globalFilter },
     onGlobalFilterChange: setGlobalFilter,
-    state: {
-      sorting,
-      pagination,
-      globalFilter,
-    },
     onSortingChange: setSorting,
     onPaginationChange: setPagination,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    meta: {
+      openEditModal: (submission: TugasStatus) =>
+        setEditingSubmission(submission),
+    },
   });
-  const handleKelompokChange = (value: string | null) => {
-    setSelectedKelompok(value);
-  };
-  const handleDistrikChange = (value: string | null) => {
-    setSelectedDistrik(value);
-  };
+
   return (
     <section>
-      <DetailTugas tugas={detailTugas} />
+      <DetailTugas
+        tugas={detailTugas}
+        onEdit={() => setEditingTugas(detailTugas)}
+      />
+
       <SubmissionTable
-        isSubmissionLoading={isSubmissionLoading}
         table={table}
+        isSubmissionLoading={isSubmissionLoading}
         statusError={statusError}
         refresh={refreshSubmission}
         kelompokOptions={kelompokOptions}
         selectedKelompok={selectedKelompok}
-        onKelompokChange={handleKelompokChange}
+        onKelompokChange={setSelectedKelompok}
         distrikOptions={distrikOptions}
         selectedDistrik={selectedDistrik}
-        onDistrikChange={handleDistrikChange}
+        onDistrikChange={setSelectedDistrik}
       />
+
+      {editingTugas && (
+        <Modal
+          isOpen={!!editingTugas}
+          onClose={() => setEditingTugas(null)}
+          title="Edit Detail Tugas"
+        >
+          <TugasForm
+            initialData={editingTugas}
+            onSuccess={handleTugasEditSuccess}
+          />
+        </Modal>
+      )}
+
+      {editingSubmission && (
+        <Modal
+          isOpen={!!editingSubmission}
+          onClose={() => setEditingSubmission(null)}
+          title="Edit Status Pengumpulan"
+          desc="Ubah nilai atau status pengumpulan tugas mahasiswa."
+        >
+          <FormEditNilai
+            submissionData={editingSubmission}
+            onSuccess={handleSubmissionEditSuccess}
+          />
+        </Modal>
+      )}
     </section>
   );
 };

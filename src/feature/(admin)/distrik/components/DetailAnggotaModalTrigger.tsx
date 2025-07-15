@@ -10,14 +10,11 @@ interface DetailAnggotaModalTriggerProps {
   nim: string;
 }
 
-export const DetailAnggotaModalTrigger = ({ nim }: DetailAnggotaModalTriggerProps) => {
+export const DetailAnggotaModalTrigger = ({
+  nim,
+}: DetailAnggotaModalTriggerProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const {
-    data: profile,
-    isLoading,
-    error,
-    fetchProfile,
-  } = useAnggotaDetail();
+  const { data: profile, isLoading, error, fetchProfile } = useAnggotaDetail();
 
   const handleOpenModal = () => {
     setIsOpen(true);
@@ -35,11 +32,7 @@ export const DetailAnggotaModalTrigger = ({ nim }: DetailAnggotaModalTriggerProp
         Detail
       </Button>
 
-      <Modal
-        isOpen={isOpen}
-        onClose={() => setIsOpen(false)}
-        title="Detail Mahasiswa"
-      >
+      <Modal isOpen={isOpen} onClose={() => setIsOpen(false)} title="">
         <AnggotaDetailModal
           isLoading={isLoading}
           error={error}
