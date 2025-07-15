@@ -2,7 +2,13 @@ import { Presensi, presensiService } from "@/api/services/admin/presensi";
 
 import { useState, useEffect, useCallback } from "react";
 
-export const usePresensi = () => {
+export interface PresensiDetailFilters {
+  nama?: string;
+  page?: number;
+  pageSize?: number;
+}
+
+export const useGetAllPresensi = () => {
   const [data, setData] = useState<Presensi[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
