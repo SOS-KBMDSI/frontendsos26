@@ -44,10 +44,9 @@ const TugasContainer = () => {
         ))}
       </div>
       <Modal
+        title="Tambah Tugas Baru"
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        title="Buat Penugasan Baru"
-        desc="Isi semua kolom untuk menambahkan data penugasan."
       >
         <TugasForm onSuccess={handleCreateSuccess} />
       </Modal>

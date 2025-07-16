@@ -26,18 +26,21 @@ const Modal = ({
   return (
     <Dialog.Root open={isOpen} onOpenChange={onClose}>
       <Dialog.Portal>
-        <Dialog.Overlay className="fixed inset-0 z-50 bg-black/50" />
+        <Dialog.Overlay className="fixed inset-0 z-50 bg-black/60 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0" />
 
         <div className="fixed inset-0 z-50 overflow-y-auto">
           <div className="flex min-h-full items-center justify-center p-4 text-center">
             <Dialog.Content
               className={cn(
-                "relative w-full max-w-3xl transform overflow-hidden rounded-2xl bg-white p-8 text-left align-middle shadow-xl transition-all",
+                "relative w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all",
+                "data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95",
+                "data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95",
+                "lg:max-w-2xl lg:p-8",
                 containerClassName,
               )}
             >
               {title && (
-                <Dialog.Title className="text-2xl font-bold leading-6 text-gray-900">
+                <Dialog.Title className="text-xl font-bold leading-6 text-gray-900 lg:text-2xl">
                   {title}
                 </Dialog.Title>
               )}
@@ -50,7 +53,7 @@ const Modal = ({
                 </VisuallyHidden.Root>
               )}
 
-              <Dialog.Close className="absolute top-10 right-14 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:outline-none">
+              <Dialog.Close className="absolute top-6 right-6 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 lg:top-8 lg:right-8">
                 <X className="h-6 w-6" />
                 <span className="sr-only">Close</span>
               </Dialog.Close>

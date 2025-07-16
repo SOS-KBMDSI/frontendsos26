@@ -14,7 +14,7 @@ export default function UserLayout({
       <AuthProvider>
         <Navbar />
         <ToastProvider>
-          <main className="pt-20">{children}</main>
+          <main className="pt-20 xl:pt-16 2xl:pt-18">{children}</main>
         </ToastProvider>
         <Footer />
       </AuthProvider>
