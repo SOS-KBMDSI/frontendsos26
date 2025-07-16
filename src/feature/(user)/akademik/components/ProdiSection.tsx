@@ -92,15 +92,15 @@ export const ProdiSection = () => {
                       animate="visible"
                       exit="exit"
                     >
-                      <p className="mb-8 text-xl text-justify">
+                      <p className="mb-8 text-lg text-justify">
                         {activeProdiData.deskripsi}
                       </p>
-                      <h4 className="font-bold text-xl mb-4">
+                      <h4 className="font-bold text-lg mb-4">
                         Adapun prospek kerja dari prodi ini sebagai berikut!
                       </h4>
                       <ul className="list-disc pl-5 space-y-3.5">
                         {activeProdiData.prospek.map((item, index) => (
-                          <li key={index} className="text-xl">
+                          <li key={index} className="text-lg">
                             {item}
                           </li>
                         ))}
