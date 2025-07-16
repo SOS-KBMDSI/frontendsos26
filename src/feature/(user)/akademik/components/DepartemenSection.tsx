@@ -30,7 +30,7 @@ export const DepartemenSection = () => {
               className="w-full h-full"
             />
           </div>
-          <div className="max-w-full md:max-w-[37rem] text-justify text-default-dark text-lg md:text-2xl">
+          <div className="max-w-full md:max-w-[34rem] text-justify text-default-dark text-lg md:text-xl">
             <p>
               Departemen Sistem Informasi (DSI) adalah salah satu departemen di
               Fakultas Ilmu Komputer (FILKOM) Universitas Brawijaya (UB). DSI
