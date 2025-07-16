@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import NavbarItem from "./NavbarItems";
 import { navListData } from "../../data/navListData";
 import { Button } from "../ui/Button";
@@ -57,9 +57,14 @@ const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { user } = useAuthContext();
   const pathname = usePathname();
+  useEffect(() => {
+    if (isMenuOpen) {
+      setIsMenuOpen(false);
+    }
+  }, [pathname, user]);
   return (
     <>
-      <nav className="w-screen h-20 bg-primary-600 fixed z-50">
+      <nav className="w-screen xl:max-h-16 max-h-20 h-full  xl:h-full 2xl:max-h-20 bg-primary-600 fixed z-50">
         <div className="mycontainer h-full w-full flex items-center justify-between">
           <div className="flex-2 md:flex-1 flex justify-start ">
             <div className="flex gap-1 text-white font-semibold items-center">
@@ -70,7 +75,7 @@ const Navbar = () => {
                 src={LogoSoS}
                 alt="Logo SoS"
               />
-              <div className="text-white  text-xs md:text-sm">
+              <div className="text-white  text-xs lg:text-xs xl:text-xs 2xl:text-base">
                 <h1>Synergy Of Symphony & </h1>
                 <h2>Shaping The Futures</h2>
               </div>
@@ -100,7 +105,7 @@ const Navbar = () => {
 
             {/* Mobile Menu Button */}
             <div className="lg:hidden">
-              <div className="rounded-xl bg-[#F3EFE8] p-1">
+              <div className="rounded-xl bg-[#F3EFE8] m-1">
                 <Hamburger
                   toggled={isMenuOpen}
                   toggle={setIsMenuOpen}
@@ -113,11 +118,10 @@ const Navbar = () => {
         </div>
       </nav>
 
-      {/* Mobile Menu */}
       <AnimatePresence>
         {isMenuOpen && (
           <motion.div
-            className="fixed inset-0 z-40 bg-primary-600 text-white flex flex-col items-center justify-center md:hidden"
+            className="fixed inset-0 z-40 bg-primary-600 text-white flex flex-col items-center justify-center lg:hidden"
             variants={menuVariants}
             initial="hidden"
             animate="visible"
@@ -130,14 +134,9 @@ const Navbar = () => {
                 </motion.li>
               ))}
             </ul>
-            <motion.div variants={itemVariants} className="mt-12">
+            <motion.div variants={itemVariants} className="mt-8">
               {user ? (
-                <Button
-                  className="bg-[#F3EFE8] px-8 text-black font-bold py-3"
-                  onClick={handleLogout}
-                >
-                  {user.nama || "Pengguna"}
-                </Button>
+                <NavbarDropdown onLogout={handleLogout} user={user} />
               ) : (
                 <Link href="/login">
                   <Button className="bg-[#F3EFE8] px-8 text-black font-bold py-3">

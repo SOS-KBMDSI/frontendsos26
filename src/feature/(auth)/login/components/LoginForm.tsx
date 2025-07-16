@@ -22,21 +22,22 @@ export default function LoginForm({
   handleSubmit,
 }: LoginFormProps) {
   return (
-    <div className="mx-auto h-fit z-20 w-full md:max-w-md max-w-sm lg:max-w-lg xl:max-w-2xl rounded-3xl shadow-lg bg-white ">
-      <div className="p-6 md:p-14">
+    <div className="mx-auto z-20 h-fit w-full md:max-w-md lg:max-w-lg xl:max-w-xl 2xl:max-w-2xl rounded-3xl bg-white shadow-lg">
+      <div className="px-6 py-12 lg:p-14">
         <form onSubmit={handleSubmit}>
-          <div className="grid w-full items-center gap-7 md:gap-8 mb-10 md:mb-20">
-            <div className="flex flex-col space-y-2">
+          <div className="grid w-full items-center gap-8 mb-8">
+            <div className="flex flex-col space-y-1.5">
               <label
-                className="text-base text-primary-500"
+                className="text-sm font-medium text-primary-500"
                 htmlFor="emailornim"
               >
                 Email atau NIM
               </label>
               <Input
+                size={"small"}
                 id="emailornim"
                 type="text"
-                placeholder="Email Atau NIM"
+                placeholder="email atau NIM "
                 value={emailornim}
                 onChange={(e) => setEmailornim(e.target.value)}
                 required
@@ -44,14 +45,18 @@ export default function LoginForm({
                 state={"default"}
               />
             </div>
-            <div className="flex flex-col space-y-2">
-              <label className="text-base text-primary-500" htmlFor="password">
+            <div className="flex flex-col space-y-1.5">
+              <label
+                className="text-sm font-medium text-primary-500"
+                htmlFor="password"
+              >
                 Kata Sandi
               </label>
               <Input
+                size={"small"}
                 id="password"
                 type="password"
-                placeholder="Kata Sandi Siam"
+                placeholder="password siam"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
@@ -59,10 +64,14 @@ export default function LoginForm({
               />
             </div>
           </div>
-          <div>
-            {error && <p className="text-sm text-red-600">{error}</p>}
+          <div className="2xl:mt-12">
+            {error && <p className="text-sm text-red-600 mb-2">{error}</p>}
 
-            <Button type="submit" disabled={isLoading} className="w-full mt-2">
+            <Button
+              type="submit"
+              disabled={isLoading}
+              className="w-full text-sm"
+            >
               {isLoading ? "Memproses..." : "Login"}
             </Button>
           </div>

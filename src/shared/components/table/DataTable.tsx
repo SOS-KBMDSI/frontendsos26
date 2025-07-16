@@ -31,7 +31,6 @@ export const DataTable = <TData extends object>({
   hideSearchInput = false,
   headerClassName,
   hideMeta = false,
-  hidePagination = false,
   whenOnClick = false,
   filterComponent,
 }: DataTableProps<TData>) => {
@@ -53,14 +52,16 @@ export const DataTable = <TData extends object>({
   const lastRowIndex = Math.min((pageIndex + 1) * pageSize, totalRows);
 
   return (
-    <div className="mt-2">
-      <div className="mt-12">
-        <div className="flex gap-6 items-center mb-10">
-          {filterComponent}
+    <div className="mt-4 lg:mt-2">
+      <div className="mt-6 lg:mt-10">
+        <div className="flex flex-col md:flex-row md:justify-between gap-4 items-center mb-5 lg:mb-8">
+          <div className="flex gap-4 items-center w-full md:w-auto">
+            {filterComponent}
+          </div>
           {!hideSearchInput && (
-            <div className="relative flex items-center w-full md:w-1/3 h-14">
+            <div className="relative flex items-center w-full lg:w-1/3 h-11 lg:h-12">
               <Input
-                className="text-base w-full pl-10 h-full"
+                className="text-sm w-full pl-10 h-full"
                 variant="default"
                 value={(table.getState().globalFilter as string) ?? ""}
                 onChange={(e) => table.setGlobalFilter(e.target.value)}
@@ -71,8 +72,10 @@ export const DataTable = <TData extends object>({
           )}
         </div>
         <div className="bg-white w-full rounded-2xl shadow-xl overflow-hidden">
-          <div className="flex justify-between items-center border-b px-6 pb-6 pt-6 border-b-black">
-            <h4 className="text-2xl font-bold text-primary-500">{title}</h4>
+          <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-2 border-b px-4 lg:px-6 py-3 lg:py-4 border-b-black">
+            <h4 className="text-lg lg:text-xl font-bold text-primary-500">
+              {title}
+            </h4>
             {!hideMeta && (
               <span className="text-sm font-medium text-primary-500">
                 {firstRowIndex} - {lastRowIndex} of {totalRows}
@@ -81,13 +84,13 @@ export const DataTable = <TData extends object>({
           </div>
           <div className="w-full overflow-x-auto">
             <table className="min-w-[800px] w-full text-sm text-left text-black table-auto">
-              <thead className={cn("text-black text-lg", headerClassName)}>
+              <thead className={cn("text-black text-base", headerClassName)}>
                 {table.getHeaderGroups().map((headerGroup) => (
                   <tr key={headerGroup.id}>
                     {headerGroup.headers.map((header) => (
                       <th
                         key={header.id}
-                        className="py-4 px-6"
+                        className="py-2 px-4 lg:py-3 lg:px-6"
                         style={{ width: header.getSize() }}
                       >
                         <div>
@@ -106,7 +109,7 @@ export const DataTable = <TData extends object>({
                   <tr
                     key={row.id}
                     className={cn(
-                      "h-20 transition-colors",
+                      "h-14 lg:h-16 transition-colors",
                       whenOnClick && "cursor-pointer",
                       row.getIsSelected()
                         ? "bg-primary-500 text-white"
@@ -121,7 +124,7 @@ export const DataTable = <TData extends object>({
                     {row.getVisibleCells().map((cell) => (
                       <td
                         key={cell.id}
-                        className="py-4 px-6 font-medium"
+                        className="py-2 px-4 lg:py-3 lg:px-6 font-medium"
                         style={{ width: cell.column.getSize() }}
                       >
                         {flexRender(
@@ -137,22 +140,20 @@ export const DataTable = <TData extends object>({
           </div>
         </div>
 
-        {!hidePagination && (
-          <div className="pagination-controls mt-6 flex justify-end gap-10">
-            <Button
-              arrow="left"
-              onClick={() => table.previousPage()}
-              disabled={!table.getCanPreviousPage()}
-              className="pagination-arrow"
-            ></Button>
-            <Button
-              arrow="right"
-              onClick={() => table.nextPage()}
-              disabled={!table.getCanNextPage()}
-              className="pagination-arrow"
-            ></Button>
-          </div>
-        )}
+        <div className="pagination-controls mt-6 flex justify-end gap-4">
+          <Button
+            arrow="left"
+            onClick={() => table.previousPage()}
+            disabled={!table.getCanPreviousPage()}
+            className="pagination-arrow"
+          ></Button>
+          <Button
+            arrow="right"
+            onClick={() => table.nextPage()}
+            disabled={!table.getCanNextPage()}
+            className="pagination-arrow"
+          ></Button>
+        </div>
       </div>
     </div>
   );

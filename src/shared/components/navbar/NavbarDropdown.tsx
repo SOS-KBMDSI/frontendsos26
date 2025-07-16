@@ -49,8 +49,7 @@ const NavbarDropdown: React.FC<NavbarDropdownProps> = ({ user, onLogout }) => {
   }, []);
 
   return (
-    <div className="relative" ref={dropdownRef}>
-      {/* Trigger Button */}
+    <div className="relative " ref={dropdownRef}>
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
@@ -59,7 +58,7 @@ const NavbarDropdown: React.FC<NavbarDropdownProps> = ({ user, onLogout }) => {
         aria-expanded={isOpen}
         aria-controls={dropdownId}
       >
-        <span className="hidden sm:block max-w-32 truncate">
+        <span className="block max-w-32 truncate">
           {user.nama || "Pengguna"}
         </span>
         <ChevronDown
@@ -72,7 +71,7 @@ const NavbarDropdown: React.FC<NavbarDropdownProps> = ({ user, onLogout }) => {
       {/* Dropdown Menu */}
       <div
         id={dropdownId}
-        className={`absolute right-0 mt-2 w-64 origin-top-right rounded-2xl bg-white border border-gray-200 shadow-2xl ring-1 ring-black/5 transition-all duration-200 ease-out backdrop-blur-sm ${
+        className={`absolute right-1/2 transform translate-x-1/2 lg:right-0 lg:translate-x-0 mt-2 w-64 origin-top rounded-2xl bg-white border border-gray-200 shadow-2xl ring-1 ring-black/5 transition-all duration-200 ease-out backdrop-blur-sm ${
           isOpen
             ? "opacity-100 scale-100 translate-y-0"
             : "opacity-0 scale-95 -translate-y-1 pointer-events-none"
