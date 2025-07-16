@@ -19,7 +19,7 @@ const DistrikContainer = () => {
           <span className="text-xl">Kembali</span>
         </Link>
       </div>
-      <h1 className="text-6xl text-black font-semibold">Daftar Distrik</h1>
+      <h1 className="text-4xl text-black font-semibold">Daftar Distrik</h1>
 
       {isLoading && (
         <div className="flex justify-center items-center h-40">
@@ -31,7 +31,7 @@ const DistrikContainer = () => {
           <p className="text-red-500">{error}</p>
         </div>
       )}
-      
+
       {!isLoading && !error && districts && (
         <DistrikList districts={districts} />
       )}

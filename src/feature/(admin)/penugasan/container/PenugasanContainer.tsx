@@ -6,12 +6,15 @@ const PenugasanContainer = () => {
   const [activeTab, setActiveTab] = useState<"tugas" | "quiz">("tugas");
 
   return (
-    <div className="w-full  bg-white rounded-xl p-20">
-      <h4 className="text-center font-bold text-5xl text-[#383838]">
+    // Padding diubah menjadi responsif
+    <div className="w-full bg-white rounded-xl p-5 sm:p-8 lg:p-14">
+      {/* Ukuran font judul diubah menjadi responsif */}
+      <h4 className="text-center font-bold text-xl sm:text-2xl lg:text-3xl text-[#383838]">
         Penugasan
       </h4>
-      <section className="w-full flex justify-center mt-9">
-        <div className="relative w-72 h-12 bg-white rounded-full border-2 border-primary-500 mb-6">
+      {/* Margin atas diubah menjadi responsif */}
+      <section className="w-full flex justify-center mt-6 sm:mt-9">
+        <div className="relative w-64 h-10 bg-white rounded-full border-2 border-primary-500 mb-6">
           <div
             className={`absolute w-1/2 h-full rounded-full bg-primary-600 transition-transform duration-300 ease-in-out`}
             style={{
@@ -41,7 +44,7 @@ const PenugasanContainer = () => {
       </section>
 
       <div className="w-full">
-        {activeTab === "tugas" ? <TugasContainer /> : <div>Quiz</div>}
+        {activeTab === "tugas" ? <TugasContainer /> : <div>Konten Kuis</div>}
       </div>
     </div>
   );
