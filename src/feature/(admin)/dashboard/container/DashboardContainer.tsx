@@ -105,13 +105,10 @@ const DashboardContainer = () => {
     return <div className="p-6">No data available.</div>;
   }
 
-  // --- RENDER ---
   return (
     <main className="font-poppins p-4 md:p-6">
-      <h4 className="text-black font-semibold text-3xl md:text-4xl">
-        Halo, Admin SOS!
-      </h4>
-      <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-10">
+      <h4 className="text-black font-semibold text-2xl">Halo, Admin SOS!</h4>
+      <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-4">
         <DashboardCard
           title="Jumlah Mahasiswa baru"
           value={data.jumlah_maba}

@@ -11,8 +11,8 @@ interface TugasCardProps {
 
 export const TugasCard: React.FC<TugasCardProps> = ({ tugas, idx }) => {
   return (
-    <div className="bg-gray-200/50 hover:cursor-pointer  flex justify-between rounded-lg px-6 py-5">
-      <div className="text-2xl text-black">
+    <div className="bg-gray-200/50 hover:cursor-pointer  flex justify-between rounded-lg p-4">
+      <div className="text-xl text-black">
         Tugas {idx} : ({tugas.judul})
       </div>
       <div>
