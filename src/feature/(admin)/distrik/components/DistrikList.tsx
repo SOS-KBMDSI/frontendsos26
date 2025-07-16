@@ -7,9 +7,8 @@ interface DistrikListProps {
 }
 
 const DistrikList = ({ districts }: DistrikListProps) => {
-
   return (
-    <div className="w-full h-full max-h-[60vh] overflow-y-auto pr-4 space-y-4">
+    <div className="w-full h-full  overflow-y-auto pr-4 space-y-4">
       {districts.map((distrik) => (
         <DistrikItem key={distrik.id_distrik} distrik={distrik} />
       ))}
