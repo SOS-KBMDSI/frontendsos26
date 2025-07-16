@@ -31,7 +31,6 @@ export const DataTable = <TData extends object>({
   hideSearchInput = false,
   headerClassName,
   hideMeta = false,
-  hidePagination = false,
   whenOnClick = false,
   filterComponent,
 }: DataTableProps<TData>) => {
@@ -53,19 +52,16 @@ export const DataTable = <TData extends object>({
   const lastRowIndex = Math.min((pageIndex + 1) * pageSize, totalRows);
 
   return (
-    // Mengurangi margin atas untuk layar kecil
     <div className="mt-4 lg:mt-2">
-      <div className="mt-8 lg:mt-12">
-        {/* Mengubah layout menjadi vertikal di layar kecil */}
-        <div className="flex flex-col md:flex-row md:justify-between gap-4 md:gap-6 items-center mb-6 lg:mb-10">
+      <div className="mt-6 lg:mt-10">
+        <div className="flex flex-col md:flex-row md:justify-between gap-4 items-center mb-5 lg:mb-8">
           <div className="flex gap-4 items-center w-full md:w-auto">
             {filterComponent}
           </div>
           {!hideSearchInput && (
-            // Mengurangi tinggi input di layar kecil
-            <div className="relative flex items-center w-full lg:w-1/3 h-12 lg:h-14">
+            <div className="relative flex items-center w-full lg:w-1/3 h-11 lg:h-12">
               <Input
-                className="text-sm lg:text-base w-full pl-10 h-full"
+                className="text-sm w-full pl-10 h-full"
                 variant="default"
                 value={(table.getState().globalFilter as string) ?? ""}
                 onChange={(e) => table.setGlobalFilter(e.target.value)}
@@ -76,10 +72,8 @@ export const DataTable = <TData extends object>({
           )}
         </div>
         <div className="bg-white w-full rounded-2xl shadow-xl overflow-hidden">
-          {/* Mengurangi padding dan gap di header card */}
-          <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-2 border-b px-4 lg:px-6 py-4 lg:py-6 border-b-black">
-            {/* Mengurangi ukuran font judul */}
-            <h4 className="text-xl lg:text-2xl font-bold text-primary-500">
+          <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-2 border-b px-4 lg:px-6 py-3 lg:py-4 border-b-black">
+            <h4 className="text-lg lg:text-xl font-bold text-primary-500">
               {title}
             </h4>
             {!hideMeta && (
@@ -90,20 +84,13 @@ export const DataTable = <TData extends object>({
           </div>
           <div className="w-full overflow-x-auto">
             <table className="min-w-[800px] w-full text-sm text-left text-black table-auto">
-              {/* Mengurangi ukuran font header tabel */}
-              <thead
-                className={cn(
-                  "text-black text-base lg:text-lg",
-                  headerClassName,
-                )}
-              >
+              <thead className={cn("text-black text-base", headerClassName)}>
                 {table.getHeaderGroups().map((headerGroup) => (
                   <tr key={headerGroup.id}>
                     {headerGroup.headers.map((header) => (
                       <th
                         key={header.id}
-                        // Mengurangi padding sel header
-                        className="py-3 px-4 lg:py-4 lg:px-6"
+                        className="py-2 px-4 lg:py-3 lg:px-6"
                         style={{ width: header.getSize() }}
                       >
                         <div>
@@ -122,8 +109,7 @@ export const DataTable = <TData extends object>({
                   <tr
                     key={row.id}
                     className={cn(
-                      // Mengurangi tinggi baris
-                      "h-16 lg:h-20 transition-colors",
+                      "h-14 lg:h-16 transition-colors",
                       whenOnClick && "cursor-pointer",
                       row.getIsSelected()
                         ? "bg-primary-500 text-white"
@@ -138,8 +124,7 @@ export const DataTable = <TData extends object>({
                     {row.getVisibleCells().map((cell) => (
                       <td
                         key={cell.id}
-                        // Mengurangi padding sel body
-                        className="py-3 px-4 lg:py-4 lg:px-6 font-medium"
+                        className="py-2 px-4 lg:py-3 lg:px-6 font-medium"
                         style={{ width: cell.column.getSize() }}
                       >
                         {flexRender(
@@ -155,22 +140,20 @@ export const DataTable = <TData extends object>({
           </div>
         </div>
 
-        {!hidePagination && (
-          <div className="pagination-controls mt-6 flex justify-end gap-4 lg:gap-10">
-            <Button
-              arrow="left"
-              onClick={() => table.previousPage()}
-              disabled={!table.getCanPreviousPage()}
-              className="pagination-arrow"
-            ></Button>
-            <Button
-              arrow="right"
-              onClick={() => table.nextPage()}
-              disabled={!table.getCanNextPage()}
-              className="pagination-arrow"
-            ></Button>
-          </div>
-        )}
+        <div className="pagination-controls mt-6 flex justify-end gap-4">
+          <Button
+            arrow="left"
+            onClick={() => table.previousPage()}
+            disabled={!table.getCanPreviousPage()}
+            className="pagination-arrow"
+          ></Button>
+          <Button
+            arrow="right"
+            onClick={() => table.nextPage()}
+            disabled={!table.getCanNextPage()}
+            className="pagination-arrow"
+          ></Button>
+        </div>
       </div>
     </div>
   );

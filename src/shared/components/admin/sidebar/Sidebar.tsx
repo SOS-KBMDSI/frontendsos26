@@ -1,15 +1,14 @@
 "use client";
 
-import { useAuthContext } from "@/shared/hooks/useAuthContext";
 import { authService } from "@/api/services/auth";
 import React from "react";
 import { sidebarMenuItems } from "@/shared/data/SidebarData";
 import Link from "next/link";
 import { LogOut } from "lucide-react";
 import { usePathname } from "next/navigation";
-
+import Image from "next/image";
+import LogoSoS from "@/assets/logo-sos.svg";
 const Sidebar = () => {
-  const { user } = useAuthContext();
   const pathname = usePathname();
 
   const handleLogout = async () => {
@@ -21,23 +20,22 @@ const Sidebar = () => {
   };
 
   return (
-    <aside className="hidden sm:flex fixed top-0 left-0 z-40 flex-col border-r border-gray-200 bg-white shadow-xl px-3 lg:px-4 py-5 w-20 lg:w-64 min-h-screen transition-all duration-300">
-      <div className="flex items-center justify-center lg:justify-start gap-3">
-        <div className="bg-gray-500 w-12 h-12 rounded-xl flex-shrink-0"></div>
-        <p className="hidden lg:block text-sm font-semibold">
+    <aside className="hidden sm:flex fixed top-0 left-0 z-40 flex-col border-r border-gray-200 bg-white shadow-xl p-4 w-20 lg:w-64 min-h-screen transition-all duration-300">
+      <div className="flex items-center justify-center  lg:justify-start gap-3">
+        <div className="w-10 h-10 rounded-lg flex-shrink-0">
+          <Image alt="logo SOS " className="w-full h-full" src={LogoSoS} />
+        </div>
+        <p className="hidden lg:block text-sm font-semibold ">
           Synergy Of Symphony & Shaping The Future
         </p>
       </div>
 
-      <div className="hidden lg:block mt-4 px-4 py-2 bg-gray-200 rounded-lg">
-        <span className="text-gray-700 font-medium text-base truncate">
-          Welcome, {user?.nama || "Admin"}!
-        </span>
-      </div>
-
-      <ul className="xl:mt-10 lg:mt-2 md:mt-4 mt-10 flex flex-col gap-3">
+      <ul className="mt-8 flex flex-col gap-3">
         {sidebarMenuItems.map((sidebar) => {
-          const isActive = pathname === sidebar.path;
+          const isActive =
+            sidebar.path === "/"
+              ? pathname === sidebar.path
+              : pathname.startsWith(sidebar.path);
           return (
             <Link
               key={sidebar.id}
@@ -55,7 +53,7 @@ const Sidebar = () => {
                 {React.createElement(sidebar.icon, {
                   className: "h-6 w-6 flex-shrink-0",
                 })}
-                <span className="hidden  lg:inline text-base">
+                <span className="hidden lg:inline text-base">
                   {sidebar.label}
                 </span>
               </li>
@@ -68,9 +66,9 @@ const Sidebar = () => {
         <button
           onClick={handleLogout}
           title="Logout"
-          className="w-full flex gap-3 items-center justify-center rounded-xl bg-primary-500 h-14 text-white hover:bg-red-600 transition-colors"
+          className="w-full flex gap-3 items-center justify-center lg:justify-start rounded-xl bg-primary-500 p-3 h-auto lg:h-14 text-white hover:bg-red-600 transition-colors"
         >
-          <LogOut size={22} />
+          <LogOut size={22} className="flex-shrink-0" />
           <span className="hidden lg:inline font-medium text-base">Logout</span>
         </button>
       </div>

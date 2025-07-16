@@ -6,12 +6,12 @@ import { Button } from "@/shared/components/ui/Button";
 import Link from "next/link";
 const AktivitasBeforeLogin = () => {
   return (
-    <div className="mycontainer w-full lg:min-h-screen relative flex items-start lg:items-center py-24">
-      <div className="flex lg:-mt-20 flex-col-reverse w-full lg:flex-row items-center gap-10  ">
+    <div className="mycontainer w-full  overflow-hidden lg:min-h-screen relative flex items-start lg:items-center py-24">
+      <div className="flex lg:-mt-20  justify-center flex-col-reverse w-full lg:flex-row items-center gap-10  ">
         <Image
           src={Maskot}
           alt="Maskot"
-          className="w-[18rem] z-20 relative md:w-[25rem] lg:w-[35rem] h-auto"
+          className="w-[18rem] z-20 relative md:w-[25rem] lg:w-[25rem] 2xl:w-[30rem] h-auto"
         />
         <div className="lg:bg-secondary-100  lg:border z-20 flex lg:w-[35rem] flex-col items-center lg:border-secondary-700 lg:shadow-xl rounded-2xl lg:p-10 h-fit ">
           <h4 className="text-4xl text-center font-semibold text-primary-500">
