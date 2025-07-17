@@ -150,7 +150,6 @@ export const EditPenilaianModal = ({
                       </label>
                       <Select
                         value={p.kategori}
-                        // FIX: Ganti 'as any' dengan tipe yang benar
                         onValueChange={(value) =>
                           handlePelanggaranChange(p.id, "kategori", value)
                         }
