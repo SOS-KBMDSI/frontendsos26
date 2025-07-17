@@ -8,8 +8,23 @@ export interface Presensi {
   status: "aktif" | "non-aktif";
 }
 
+export interface PresensiSummary {
+  kode: string;
+  sesi: string;
+  rangkaian_id: string;
+  presensi_id: string | null;
+  status: "aktif" | "non-aktif";
+}
+
+export interface PresensiMahasiswaSummary {
+  nama: string | null;
+  nim: string;
+  status: "hadir" | "tidak-hadir";
+}
+
 export interface presensiInfo {
   presensi_id: string;
+  rangkaian_id: string;
   rangkaian_nama: string;
   kode: string;
   sesi: string;
@@ -82,7 +97,7 @@ class PresensiService {
   }
 
   async getAllPresensi(): Promise<ApiResponse<Presensi[]>> {
-    const cacheKey = "all_tugas";
+    const cacheKey = "all_presensi";
     const cachedItem = this.cache.get(cacheKey);
 
     if (cachedItem && cachedItem.expiry > Date.now()) {
@@ -209,6 +224,53 @@ class PresensiService {
         "Terjadi kesalahan yang tidak diketahui saat mengambil data by ID.",
       );
     }
+  }
+
+  async createPresensi(data: PresensiSummary): Promise<BackendResponse<null>> {
+    this.cache.delete("all_presensi");
+
+    const response = await apiClient.post("/api/presensi/", data, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+
+    return response as unknown as BackendResponse<null>;
+  }
+
+  async updatePresensi(
+    id: string,
+    data: PresensiSummary,
+  ): Promise<BackendResponse<null>> {
+    this.cache.delete("all_presensi");
+    this.cache.delete(`presensi_info_${id}`);
+
+    const response = await apiClient.patch(`/api/presensi/${id}`, data, {
+      headers: { "Content-Type": "application/json" },
+    });
+    return response as unknown as BackendResponse<null>;
+  }
+
+  async updateMahasiswaPresensi(
+    presensi_id: string,
+    data: PresensiMahasiswaSummary,
+  ): Promise<BackendResponse<null>> {
+    this.cache.delete(`presensi_info_${presensi_id}`);
+    this.cache.forEach((_value, key) => {
+      if (
+        typeof key === "string" &&
+        key.startsWith(`mahasiswa_list_${presensi_id}_`)
+      ) {
+        this.cache.delete(key);
+      }
+    });
+
+    const response = await apiClient.patch(
+      `/api/presensi/${presensi_id}/mahasiswa`,
+      data,
+      {
+        headers: { "Content-Type": "application/json" },
+      },
+    );
+    return response as unknown as BackendResponse<null>;
   }
 }
 

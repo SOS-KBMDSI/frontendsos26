@@ -20,6 +20,7 @@ interface DataTableProps<TData> {
   hidePagination?: boolean;
   whenOnClick?: boolean;
   filterComponent?: React.ReactNode;
+  onRowClick?: (rowData: TData) => void;
 }
 
 export const DataTable = <TData extends object>({
@@ -33,6 +34,7 @@ export const DataTable = <TData extends object>({
   hideMeta = false,
   whenOnClick = false,
   filterComponent,
+  onRowClick,
 }: DataTableProps<TData>) => {
   if (isLoading) {
     return (
@@ -118,7 +120,14 @@ export const DataTable = <TData extends object>({
                           : "bg-primary-500/10",
                     )}
                     onClick={
-                      whenOnClick ? row.getToggleSelectedHandler() : undefined
+                      whenOnClick
+                        ? (e) => {
+                            if (onRowClick) {
+                              onRowClick(row.original);
+                            }
+                            row.getToggleSelectedHandler()(e);
+                          }
+                        : undefined
                     }
                   >
                     {row.getVisibleCells().map((cell) => (

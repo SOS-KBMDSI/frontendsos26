@@ -1,7 +1,12 @@
+"use client";
+
 import React from "react";
 import { Table } from "@tanstack/react-table";
 import { DataTable } from "@/shared/components/table/DataTable";
-import { PresensiMahasiswaDetail } from "@/api/services/admin/presensi";
+import {
+  PresensiMahasiswaDetail,
+  PresensiMahasiswaSummary,
+} from "@/api/services/admin/presensi";
 import {
   Select,
   SelectContent,
@@ -30,6 +35,7 @@ interface PresensiTableProps {
   distrikOptions: DistrikOption[];
   selectedDistrik: string | null;
   onDistrikChange: (value: string | null) => void;
+  onRowSelect: (rowData: PresensiMahasiswaSummary) => void;
 }
 
 const PresensiTable = ({
@@ -43,6 +49,7 @@ const PresensiTable = ({
   distrikOptions,
   selectedDistrik,
   onDistrikChange,
+  onRowSelect,
 }: PresensiTableProps) => {
   return (
     <div className="flex flex-col gap-y-4">
@@ -101,6 +108,15 @@ const PresensiTable = ({
             </Select>
           </>
         }
+        whenOnClick={true}
+        onRowClick={(rowData) => {
+          const summary: PresensiMahasiswaSummary = {
+            nama: rowData.nama,
+            nim: rowData.nim,
+            status: rowData.status as "hadir" | "tidak-hadir",
+          };
+          onRowSelect(summary);
+        }}
       />
     </div>
   );
