@@ -1,5 +1,5 @@
 import React from "react";
-import PenilaianContainer from "@/feature/(admin)/penilaian/container/PenilaianContainer";
+import PenilaianContainer from "@/feature/(admin)/penilaian-pelanggaran/container/PenilaianContainer";
 
 const page = () => {
   return (

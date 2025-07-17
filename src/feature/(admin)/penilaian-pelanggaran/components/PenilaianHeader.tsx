@@ -112,7 +112,7 @@ export const PenilaianHeader = ({
 
       <div>
         <Button onClick={onEditClick} disabled={isEditButtonDisabled}>
-          Edit Penilaian
+          Edit Penilaian dan Pelanggaran
         </Button>
       </div>
     </div>
