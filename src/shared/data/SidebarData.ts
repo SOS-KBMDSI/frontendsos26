@@ -32,9 +32,9 @@ const baseSidebarItems = [
   },
   {
     id: 3,
-    label: "Penilaian",
+    label: "Rekap Penilaian & Pelanggaran",
     icon: Star,
-    path: "penilaian",
+    path: "penilaian-pelanggaran",
   },
   {
     id: 4,
@@ -61,5 +61,5 @@ export const sidebarMenuItems: SidebarMenuItem[] = baseSidebarItems.map(
     ...item,
 
     path: `${basePath}/${item.path.replace(/^\//, "")}`,
-  })
+  }),
 );

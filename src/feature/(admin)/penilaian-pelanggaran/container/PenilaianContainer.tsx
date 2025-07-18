@@ -44,7 +44,9 @@ const PenilaianContainer = () => {
           <ChevronLeft size={24} />
           <span className="text-xl font-medium">Kembali</span>
         </Link>
-        <h1 className="text-4xl font-semibold text-default-dark">Penilaian</h1>
+        <h1 className="text-4xl font-semibold text-default-dark">
+          Rekap Penilaian & Pelanggaran
+        </h1>
       </div>
 
       <PenilaianHeader

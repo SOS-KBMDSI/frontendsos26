@@ -9,7 +9,8 @@ import {
   DetailPenilaianMaba,
   PayloadPelanggaran,
   PayloadKeaktifan,
-} from "@/feature/(admin)/penilaian/types";
+  PenilaianUpdatePayload,
+} from "@/feature/(admin)/penilaian-pelanggaran/types";
 
 class PenilaianService {
   private static instance: PenilaianService;
@@ -91,6 +92,16 @@ class PenilaianService {
 
     const response = await apiClient.get(url);
     return response as unknown as BackendResponse<PaginatedData<Maba>>;
+  }
+
+  async updatePenilaian(
+    nim: string,
+    id_rangkaian: string,
+    data: PenilaianUpdatePayload,
+  ): Promise<BackendResponse<null>> {
+    const url = `/api/penilaian/${nim}/rangkaian/${id_rangkaian}`;
+    const response = await apiClient.put(url, data);
+    return response as unknown as BackendResponse<null>;
   }
 }
 

@@ -69,6 +69,7 @@ export interface DetailPenilaianMaba {
   nama_mahasiswa: string;
   penilaian: PenilaianTugas[];
   keaktifan: number;
+  pelanggaran: (PelanggaranItem & { id_pelanggaran: string })[] | null;
 }
 
 export interface PelanggaranItem {
@@ -84,4 +85,9 @@ export interface PayloadPelanggaran {
 
 export interface PayloadKeaktifan {
   keaktifan: number;
+}
+
+export interface PenilaianUpdatePayload {
+  keaktifan: number;
+  pelanggaran: PelanggaranItem[];
 }

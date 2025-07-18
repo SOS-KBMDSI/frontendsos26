@@ -42,10 +42,10 @@ const TaskCard = forwardRef<HTMLDivElement, TaskCardProps>(
         </div>
 
         <div className="flex flex-col gap-5">
-          <h3 className="text-3xl font-semibold text-default-dark group-hover:text-taskCard">
+          <h3 className="text-3xl font-semibold text-default-dark group-hover:text-default-light">
             {taskName}
           </h3>
-          <p className="text-default-dark group-hover:text-taskCard">
+          <p className="text-default-dark group-hover:text-default-light">
             {deadline}
           </p>
         </div>
