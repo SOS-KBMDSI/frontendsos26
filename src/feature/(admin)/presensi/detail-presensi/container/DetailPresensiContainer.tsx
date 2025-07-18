@@ -8,7 +8,10 @@ import {
   usePresensiDetailPage,
   ReactTableState,
 } from "../../hooks/usePresensiDetailPage";
-import { PresensiMahasiswaDetail } from "@/api/services/admin/presensi";
+import {
+  PresensiMahasiswaDetail,
+  PresensiMahasiswaSummary,
+} from "@/api/services/admin/presensi";
 import {
   useReactTable,
   getCoreRowModel,
@@ -19,6 +22,9 @@ import {
 } from "@tanstack/react-table";
 import { useSelectOptions } from "@/shared/hooks/useSelectOptions";
 import PresensiTable from "../components/PresensiTable";
+import { Modal } from "@/shared/components/ui/Modal";
+import PresensiForm from "../../components/PresensiForm";
+import PresensiMahasiswaForm from "../components/PresensiMahasiswaForm";
 
 interface DetailPresensiContainerProps {
   id: string;
@@ -49,8 +55,35 @@ const DetailPresensiContainer: React.FC<DetailPresensiContainerProps> = ({
     pageSize: 10,
   });
 
+  const [selectedMahasiswa, setSelectedMahasiswa] =
+    useState<PresensiMahasiswaSummary>();
   const { options: distrikOptions } = useSelectOptions("distrik");
   const { options: kelompokOptions } = useSelectOptions("kelompok");
+  const [isModalOpen, setIsModalOpen] = React.useState(false);
+  const [isModalMahasiswaOpen, setIsModalMahasiswaOpen] = React.useState(false);
+
+  const handleSelectedMahasiswa = (e: PresensiMahasiswaSummary) => {
+    setSelectedMahasiswa(e);
+    setIsModalMahasiswaOpen(true);
+  };
+
+  const handleCreateSuccess = () => {
+    setIsModalOpen(false);
+    refreshInfo();
+  };
+
+  const HandleUpdateSuccess = () => {
+    setIsModalMahasiswaOpen(false);
+    refreshList();
+  };
+
+  const handleModal = () => {
+    setIsModalOpen(!isModalOpen);
+  };
+
+  const handleModalMahasiswa = () => {
+    setIsModalMahasiswaOpen(!isModalMahasiswaOpen);
+  };
 
   const reactTableCurrentState: ReactTableState = useMemo(() => {
     return {
@@ -253,7 +286,9 @@ const DetailPresensiContainer: React.FC<DetailPresensiContainerProps> = ({
               </div>
             </div>
           </div>
-          <Button className="w-fit">Edit Presensi</Button>
+          <Button onClick={handleModal} className="w-fit">
+            Edit Presensi
+          </Button>
         </div>
       </div>
       <div className="w-full h-[1px] bg-surface-divider"></div>
@@ -268,7 +303,31 @@ const DetailPresensiContainer: React.FC<DetailPresensiContainerProps> = ({
         onKelompokChange={setSelectedKelompok}
         distrikOptions={distrikOptions}
         kelompokOptions={kelompokOptions}
+        onRowSelect={handleSelectedMahasiswa}
       />
+      <Modal
+        isOpen={isModalOpen}
+        onClose={handleModal}
+        title="Edit Kode Presensi"
+        desc="Isi form di bawah ini untuk edit  kode presensi "
+      >
+        <PresensiForm
+          onSuccess={handleCreateSuccess}
+          initialData={presensiInfo}
+        />
+      </Modal>
+      <Modal
+        isOpen={isModalMahasiswaOpen}
+        onClose={handleModalMahasiswa}
+        title="Edit Kode Presensi"
+        desc="Isi form di bawah ini untuk edit  kode presensi "
+      >
+        <PresensiMahasiswaForm
+          onSuccess={HandleUpdateSuccess}
+          initialData={selectedMahasiswa}
+          presensi_id={presensiInfo.presensi_id}
+        />
+      </Modal>
     </main>
   );
 };
