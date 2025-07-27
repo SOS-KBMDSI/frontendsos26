@@ -145,6 +145,7 @@ export const CalendarPicker: React.FC<CalendarPickerProps> = ({
       days.push(
         <button
           key={day}
+          type="button"
           onClick={() => handleDateSelect(day)}
           disabled={isPast}
           className={`w-6 h-6 text-xs rounded transition-all flex items-center justify-center ${
@@ -167,6 +168,7 @@ export const CalendarPicker: React.FC<CalendarPickerProps> = ({
         {/* Header */}
         <div className="flex items-center justify-between mb-2">
           <button
+            type="button"
             onClick={() => navigateMonth(-1)}
             className="p-1 hover:bg-gray-100 rounded"
           >
@@ -176,6 +178,7 @@ export const CalendarPicker: React.FC<CalendarPickerProps> = ({
             {monthNames[month]} {year}
           </h3>
           <button
+            type="button"
             onClick={() => navigateMonth(1)}
             className="p-1 hover:bg-gray-100 rounded"
           >
