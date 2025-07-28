@@ -10,16 +10,16 @@ export const daftarAktivitas: Aktivitas[] = [
   {
     nama: "Presensi",
     icon: CalendarDays,
-    href: "/presensi",
+    href: "/aktivitas/presensi",
   },
   {
     nama: "Penugasan",
     icon: FileText,
-    href: "/penugasan",
+    href: "/aktivitas/penugasan",
   },
   {
     nama: "Penilaian",
     icon: Star,
-    href: "/penilaian",
+    href: "/aktivitas/penilaian",
   },
 ];

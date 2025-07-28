@@ -1,16 +1,12 @@
 import Image from "next/image";
 import LogoDSI from "@/assets/user/logo-dsi.svg";
 import CaturPattern from "@/assets/user/pembatas.svg";
-import BgPattern from "@/assets/user/bg-patern.svg";
 import PerkamentBg from "@/assets/user/parchment-bg.png";
 import { SectionTitle } from "./SectionTitle";
 
 export const DepartemenSection = () => {
   return (
-    <section
-      className="bg-no-repeat bg-cover bg-secondary-200"
-      style={{ backgroundImage: `url(${BgPattern.src})` }}
-    >
+    <section className="bg-no-repeat bg-cover bg-login">
       <div className="mycontainer text-center py-24 md:py-32">
         <SectionTitle lineColor="bg-primary-500">Apa sih itu DSI?</SectionTitle>
 
