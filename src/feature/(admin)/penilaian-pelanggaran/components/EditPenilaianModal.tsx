@@ -153,7 +153,6 @@ export const EditPenilaianModal = ({
                         onValueChange={(value) =>
                           handlePelanggaranChange(p.id, "kategori", value)
                         }
-                        disabled={!p.isNew}
                       >
                         <SelectTrigger>
                           <SelectValue placeholder="Pilih tingkat pelanggaran" />
