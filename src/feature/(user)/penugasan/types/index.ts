@@ -1,5 +1,7 @@
+// src/feature/(user)/penugasan/types/index.ts
+
 export interface BackendResponse<T> {
-  status_code: number;
+  success: boolean; // Disesuaikan dengan ApiResponse
   message: string;
   data: T;
 }
@@ -95,19 +97,19 @@ export interface KuisDetail {
 
 export interface Tugas {
   id_penugasan: string;
-  id_rangkaian: string;
+  id_rangkaian?: string;
   judul: string;
   deskripsi: string;
   tenggat: string;
   file_link: string;
-  is_visible: string;
-  icon: string;
-  created_at: string;
-  rangkaian: Rangkaian;
-  Status?:
-    | "belum tersubmit"
-    | "tersubmit"
-    | "terlambat"
-    | "dinilai"
-    | "belum_dikerjakan";
+  is_visible?: string;
+  icon?: string;
+  created_at?: string;
+  rangkaian?: Rangkaian;
+  status?: "Selesai" | "Belum Selesai" | string;
+}
+
+// Tipe untuk payload submit tugas
+export interface SubmissionPayload {
+  drive_link: string;
 }

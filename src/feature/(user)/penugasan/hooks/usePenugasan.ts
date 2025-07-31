@@ -8,78 +8,57 @@ import {
   MahasiswaLevel,
   Tugas,
   Kuis,
-  Submission,
+  Rangkaian,
 } from "../types";
-
-type TugasStatus =
-  | "belum tersubmit"
-  | "tersubmit"
-  | "terlambat"
-  | "dinilai"
-  | "belum_dikerjakan";
 
 export const usePenugasan = () => {
   const [profile, setProfile] = useState<MahasiswaProfile | null>(null);
   const [level, setLevel] = useState<MahasiswaLevel | null>(null);
   const [tugas, setTugas] = useState<Tugas[]>([]);
   const [kuis, setKuis] = useState<Kuis[]>([]);
+  const [rangkaian, setRangkaian] = useState<Rangkaian[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<"tugas" | "kuis">("tugas");
 
   const fetchData = useCallback(async () => {
     setIsLoading(true);
     try {
-      const profileRes = await mahasiswaService.getMyProfile();
-      const myNim = profileRes.data.nim;
-
-      const [levelRes, tugasRes, kuisRes] = await Promise.all([
+      const [profileRes, levelRes, kuisRes, rangkaianRes] = await Promise.all([
+        mahasiswaService.getMyProfile(),
         mahasiswaService.getMyLevel(),
-        penugasanService.getAllTugas(),
         penugasanService.getAllKuis(),
+        penugasanService.getAllRangkaian(),
       ]);
-
-      const allTugas = tugasRes.data;
-      const allKuis = kuisRes.data;
-
-      const tugasWithStatusPromises = (allTugas || []).map(async (tugas) => {
-        try {
-          const submissionRes = await penugasanService.getTugasSubmission(
-            tugas.id_penugasan,
-          );
-          const mySubmission = submissionRes.data.submissions.find(
-            (sub: Submission) => sub.nim === myNim,
-          );
-          const status = (mySubmission?.status ||
-            "belum_dikerjakan") as TugasStatus;
-          return { ...tugas, Status: status };
-        } catch (e) {
-          // PERBAIKAN 1: Gunakan variabel 'e' untuk logging
-          console.error(
-            `Gagal fetch status untuk tugas ${tugas.id_penugasan}:`,
-            e,
-          );
-          return { ...tugas, Status: "belum_dikerjakan" as TugasStatus };
-        }
-      });
-
-      const kuisWithStatusPromises = (allKuis || []).map(async (kuis) => {
-        try {
-          const detailRes = await penugasanService.getKuisDetail(kuis.id_kuis);
-          return { ...kuis, status_kuis: detailRes.data.status_kuis };
-        } catch (e) {
-          // PERBAIKAN 2: Gunakan variabel 'e' untuk logging
-          console.error(`Gagal fetch status untuk kuis ${kuis.id_kuis}:`, e);
-          return { ...kuis, status_kuis: "Belum Mulai" as const };
-        }
-      });
-
-      const finalTugasList = await Promise.all(tugasWithStatusPromises);
-      const finalKuisList = await Promise.all(kuisWithStatusPromises);
 
       setProfile(profileRes.data);
       setLevel(levelRes.data);
-      setTugas(finalTugasList);
-      setKuis(finalKuisList);
+      setKuis(kuisRes.data || []);
+      setRangkaian(rangkaianRes.data || []);
+
+      if (rangkaianRes.data && rangkaianRes.data.length > 0) {
+        const firstRangkaianId = rangkaianRes.data[0].ID;
+        const tugasRes =
+          await penugasanService.getTugasByRangkaian(firstRangkaianId);
+        const tugasList = tugasRes.data || [];
+
+        const tugasWithStatusPromises = tugasList.map(async (tugasItem) => {
+          try {
+            const detailRes = await penugasanService.getTugasDetailWithStatus(
+              tugasItem.id_penugasan,
+            );
+            return { ...tugasItem, status: detailRes.data.status };
+          } catch (e) {
+            console.error(
+              `Gagal fetch status untuk tugas ${tugasItem.id_penugasan}:`,
+              e,
+            );
+            return { ...tugasItem, status: "Belum Selesai" };
+          }
+        });
+
+        const finalTugasList = await Promise.all(tugasWithStatusPromises);
+        setTugas(finalTugasList);
+      }
     } catch (error) {
       console.error("Gagal mengambil data halaman penugasan:", error);
     } finally {
@@ -96,6 +75,7 @@ export const usePenugasan = () => {
     level,
     tugas,
     kuis,
+    rangkaian,
     isLoading,
     activeTab,
     setActiveTab,
