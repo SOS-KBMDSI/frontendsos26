@@ -102,6 +102,7 @@ export interface Tugas {
   deskripsi: string;
   tenggat: string;
   file_link: string;
+  file?: string;
   is_visible?: string;
   icon?: string;
   created_at?: string;

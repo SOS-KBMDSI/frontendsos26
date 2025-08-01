@@ -36,12 +36,13 @@ export const LevelSection = ({ level }: LevelSectionProps) => {
           src={Maskot}
           alt="Maskot"
           className="w-14 h-14 md:w-20 md:h-20"
+          priority
         />
         <div className="flex flex-col gap-2">
           <p className="text-default-dark font-semibold text-lg md:text-2xl">
             Level {displayLevel}
           </p>
-          <p className="text-xs text-default-dark md:text-base">
+          <p className="text-xs text-default-dark md:text-xl">
             Selamat! kamu telah mengumpulkan {completedTaskCount} penugasan
           </p>
         </div>
