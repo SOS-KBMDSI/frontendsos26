@@ -17,7 +17,7 @@ export const ProdiTabs = ({ activeProdiId, onSelectProdi }: ProdiTabsProps) => {
           key={prodi.id}
           onClick={() => onSelectProdi(prodi.id)}
           className={cn(
-            "px-4 rounded-2xl border-2 transition-all duration-300 ease-in-out text-center",
+            "px-4 rounded-2xl border-2 transition-all duration-500 ease-in-out text-center",
             "py-3",
             activeProdiId === prodi.id
               ? "bg-secondary-500 border-none text-default-dark shadow-lg scale-100"

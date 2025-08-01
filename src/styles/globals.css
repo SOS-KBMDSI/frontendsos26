@@ -124,6 +124,19 @@
   }
 }
 
+@keyframes shimmer-animation {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+
+.animate-shimmer-bar {
+  animation: shimmer-animation 2.5s infinite linear;
+}
+
 .bg-navbar {
   background: linear-gradient(
     90deg,
