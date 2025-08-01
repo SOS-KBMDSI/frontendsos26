@@ -32,7 +32,7 @@ const baseSidebarItems = [
   },
   {
     id: 3,
-    label: "Rekap Penilaian & Pelanggaran",
+    label: "Rekap ",
     icon: Star,
     path: "penilaian-pelanggaran",
   },

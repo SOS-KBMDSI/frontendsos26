@@ -39,7 +39,6 @@ interface SubmissionData {
 
 export interface TugasStatus {
   id: string;
-
   nama_mahasiswa: string;
   nim: string;
   distrik: string;
