@@ -15,7 +15,7 @@ export default function AdminLayout({
       <ToastProvider>
         <div className="bg-[#E9E9E9CC] min-h-screen">
           <Sidebar />
-          <section className="w-auto transition-all duration-300 sm:ml-20 lg:ml-64">
+          <section className="w-auto transition-all duration-300 sm:ml-20 xl:ml-64">
             <div className="px-6 py-8 md:px-8 lg:px-10">{children}</div>
           </section>
         </div>

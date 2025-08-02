@@ -34,7 +34,6 @@ export const useGetTugasSubmissions = (
     } finally {
       setIsLoading(false);
     }
-    // 3. Tambahkan `id_distrik` ke dependency array
   }, [id, id_kelompok, id_distrik]);
 
   useEffect(() => {

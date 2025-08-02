@@ -6,6 +6,7 @@ import {
   Search,
   Crown,
   LucideIcon,
+  LayoutDashboard,
 } from "lucide-react";
 
 export interface SidebarMenuItem {
@@ -18,6 +19,12 @@ export interface SidebarMenuItem {
 const basePath = "/admin";
 
 const baseSidebarItems = [
+  {
+    id: 0,
+    label: "Dashboard",
+    icon: LayoutDashboard,
+    path: "/dashboard",
+  },
   {
     id: 1,
     label: "Presensi",
@@ -32,7 +39,7 @@ const baseSidebarItems = [
   },
   {
     id: 3,
-    label: "Rekap Penilaian & Pelanggaran",
+    label: "Rekap ",
     icon: Star,
     path: "penilaian-pelanggaran",
   },
