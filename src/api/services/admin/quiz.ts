@@ -64,6 +64,14 @@ export interface Quiz {
   tenggat_kuis: string;
   durasi_kuis: string;
 }
+export interface CreateQuizPayload {
+  kuis_nama: string;
+  tenggat: string;
+  kuis_deskripsi: string;
+  kesempatan: number;
+  id_rangkaian: string;
+  durasi_kuis: string;
+}
 
 class KuisService {
   private static instance: KuisService;
@@ -119,15 +127,12 @@ class KuisService {
   }
 
   async createKuis(
-    id_rangkaian: string,
-    data: FormData,
-  ): Promise<BackendResponse<null>> {
+    data: CreateQuizPayload,
+  ): Promise<BackendResponse<CreateQuizPayload>> {
     this.cache.delete("all_kuis");
 
-    const response = await apiClient.post(`/api/kuis/${id_rangkaian}`, data, {
-      headers: { "Content-Type": "multipart/form-data" },
-    });
-    return response as unknown as BackendResponse<null>;
+    const response = await apiClient.post(`/api/kuis/sos/admin/`, data);
+    return response as unknown as BackendResponse<CreateQuizPayload>;
   }
 
   async getDetailKuisById(id: string): Promise<BackendResponse<DetailQuiz>> {

@@ -73,11 +73,11 @@ const DetailQuiz = ({ quiz, onEdit, onDelete }: DetailQuizProps) => {
           </div>
         </div>
 
-        <div className="mt-12 grid grid-cols-2 w-1/3 gap-10">
-          <Button onClick={onEdit} variant={"primary"}>
+        <div className="mt-12 flex  gap-10">
+          <Button className="w-60" onClick={onEdit} variant={"primary"}>
             Edit Quiz
           </Button>
-          <Button onClick={onDelete} variant={"outline"}>
+          <Button className="w-60" onClick={onDelete} variant={"outline"}>
             <Trash2 size={16} className="mr-2" />
             Hapus Quiz
           </Button>

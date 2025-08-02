@@ -94,7 +94,9 @@ const EditQuizForm: React.FC<EditQuizFormProps> = ({
       : "border border-gray-300";
   };
 
-  const questionCount = formData.pertanyaan_list.length;
+  // Safe access to pertanyaan_list with null check
+  const pertanyaanList = formData.pertanyaan_list || [];
+  const questionCount = pertanyaanList.length;
 
   return (
     <section className="space-y-6">
@@ -128,7 +130,7 @@ const EditQuizForm: React.FC<EditQuizFormProps> = ({
             <Input
               id="kuis_nama"
               name="kuis_nama"
-              value={formData.kuis_nama}
+              value={formData.kuis_nama || ""}
               onChange={handleInputChange}
               disabled={isSubmitting}
               className={errors.kuis_nama ? "border-red-500" : ""}
@@ -147,7 +149,7 @@ const EditQuizForm: React.FC<EditQuizFormProps> = ({
             <Textarea
               id="kuis_deskripsi"
               name="kuis_deskripsi"
-              value={formData.kuis_deskripsi}
+              value={formData.kuis_deskripsi || ""}
               onChange={handleInputChange}
               disabled={isSubmitting}
               className={errors.kuis_deskripsi ? "border-red-500" : ""}
@@ -170,7 +172,7 @@ const EditQuizForm: React.FC<EditQuizFormProps> = ({
                 id="tenggat"
                 name="tenggat"
                 type="datetime-local"
-                value={formData.tenggat}
+                value={formData.tenggat || ""}
                 onChange={handleInputChange}
                 disabled={isSubmitting}
                 className={errors.tenggat ? "border-red-500" : ""}
@@ -190,7 +192,7 @@ const EditQuizForm: React.FC<EditQuizFormProps> = ({
                 id="durasi_kuis"
                 name="durasi_kuis"
                 type="number"
-                value={formData.durasi_kuis}
+                value={formData.durasi_kuis || ""}
                 onChange={handleInputChange}
                 disabled={isSubmitting}
                 className={errors.durasi_kuis ? "border-red-500" : ""}
@@ -212,7 +214,7 @@ const EditQuizForm: React.FC<EditQuizFormProps> = ({
                 id="kesempatan"
                 name="kesempatan"
                 type="number"
-                value={formData.kesempatan}
+                value={formData.kesempatan || ""}
                 onChange={handleInputChange}
                 disabled={isSubmitting}
                 className={errors.kesempatan ? "border-red-500" : ""}
@@ -230,7 +232,7 @@ const EditQuizForm: React.FC<EditQuizFormProps> = ({
               Rangkaian
             </label>
             <Select
-              value={formData.id_rangkaian}
+              value={formData.id_rangkaian || ""}
               onValueChange={(value) =>
                 handleSelectChange("id_rangkaian", value)
               }
@@ -283,7 +285,7 @@ const EditQuizForm: React.FC<EditQuizFormProps> = ({
         </div>
 
         <div className="space-y-4">
-          {formData.pertanyaan_list.map((item, index) => (
+          {pertanyaanList.map((item, index) => (
             <div
               key={item.id_pertanyaan}
               className="bg rounded-lg p-4 space-y-3 relative "
@@ -292,7 +294,7 @@ const EditQuizForm: React.FC<EditQuizFormProps> = ({
               <div>
                 <Input
                   placeholder="Tulis judul pertanyaan di sini..."
-                  value={item.judul_pertanyaan}
+                  value={item.judul_pertanyaan || ""}
                   onChange={(e) =>
                     handleQuestionChange(
                       index,
@@ -319,14 +321,14 @@ const EditQuizForm: React.FC<EditQuizFormProps> = ({
                   </div>
                   <Input
                     placeholder="Pilihan A"
-                    value={item.pilihan_a}
+                    value={item.pilihan_a || ""}
                     onChange={(e) =>
                       handleQuestionChange(index, "pilihan_a", e.target.value)
                     }
                     disabled={isSubmitting}
                     className={`pl-12 ${getChoiceBorderClass(
                       "A",
-                      item.jawaban_benar,
+                      item.jawaban_benar || "",
                       !!errors[`question_${index}_a`],
                     )}`}
                   />
@@ -344,14 +346,14 @@ const EditQuizForm: React.FC<EditQuizFormProps> = ({
                   </div>
                   <Input
                     placeholder="Pilihan B"
-                    value={item.pilihan_b}
+                    value={item.pilihan_b || ""}
                     onChange={(e) =>
                       handleQuestionChange(index, "pilihan_b", e.target.value)
                     }
                     disabled={isSubmitting}
                     className={`pl-12 ${getChoiceBorderClass(
                       "B",
-                      item.jawaban_benar,
+                      item.jawaban_benar || "",
                       !!errors[`question_${index}_b`],
                     )}`}
                   />
@@ -369,14 +371,14 @@ const EditQuizForm: React.FC<EditQuizFormProps> = ({
                   </div>
                   <Input
                     placeholder="Pilihan C"
-                    value={item.pilihan_c}
+                    value={item.pilihan_c || ""}
                     onChange={(e) =>
                       handleQuestionChange(index, "pilihan_c", e.target.value)
                     }
                     disabled={isSubmitting}
                     className={`pl-12 ${getChoiceBorderClass(
                       "C",
-                      item.jawaban_benar,
+                      item.jawaban_benar || "",
                       !!errors[`question_${index}_c`],
                     )}`}
                   />
@@ -394,14 +396,14 @@ const EditQuizForm: React.FC<EditQuizFormProps> = ({
                   </div>
                   <Input
                     placeholder="Pilihan D"
-                    value={item.pilihan_d}
+                    value={item.pilihan_d || ""}
                     onChange={(e) =>
                       handleQuestionChange(index, "pilihan_d", e.target.value)
                     }
                     disabled={isSubmitting}
                     className={`pl-12 ${getChoiceBorderClass(
                       "D",
-                      item.jawaban_benar,
+                      item.jawaban_benar || "",
                       !!errors[`question_${index}_d`],
                     )}`}
                   />
@@ -419,14 +421,14 @@ const EditQuizForm: React.FC<EditQuizFormProps> = ({
                   </div>
                   <Input
                     placeholder="Pilihan E"
-                    value={item.pilihan_e}
+                    value={item.pilihan_e || ""}
                     onChange={(e) =>
                       handleQuestionChange(index, "pilihan_e", e.target.value)
                     }
                     disabled={isSubmitting}
                     className={`pl-12 ${getChoiceBorderClass(
                       "E",
-                      item.jawaban_benar,
+                      item.jawaban_benar || "",
                       !!errors[`question_${index}_e`],
                     )}`}
                   />
@@ -443,7 +445,7 @@ const EditQuizForm: React.FC<EditQuizFormProps> = ({
                     Jawaban Benar
                   </label>
                   <Select
-                    value={item.jawaban_benar}
+                    value={item.jawaban_benar || ""}
                     onValueChange={(value) =>
                       handleQuestionChange(index, "jawaban_benar", value)
                     }

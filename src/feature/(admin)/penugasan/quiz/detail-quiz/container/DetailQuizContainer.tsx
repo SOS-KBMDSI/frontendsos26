@@ -23,7 +23,6 @@ import EditQuizForm from "../components/EditQuiz";
 import { useToast } from "@/shared/hooks/useToast";
 import { ConfirmDeleteModal } from "../components/DeleteConfirmation";
 import { useDeleteQuiz } from "../hooks/useDeleteQuiz";
-import { redirect } from "next/navigation";
 
 interface DetailQuizContainerProps {
   id_quiz: string;
@@ -68,7 +67,7 @@ const DetailQuizContainer: React.FC<DetailQuizContainerProps> = ({
         message: "Kuis telah dihapus.",
         type: "success",
       });
-      redirect("/admin/kuis");
+      window.location.href = "/admin/penugasan";
     },
     onError: (error) => {
       showToast({ title: "Gagal", message: error, type: "error" });

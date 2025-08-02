@@ -43,16 +43,19 @@ export const useEditQuizForm = (initialData: DetailQuiz | null) => {
   useEffect(() => {
     if (initialData) {
       setFormData({
-        kuis_nama: initialData.nama_kuis,
-        kuis_deskripsi: initialData.deskripsi_kuis,
-        tenggat: new Date(initialData.tenggat_kuis).toISOString().slice(0, 16),
-        kesempatan: initialData.kesempatan,
-        id_rangkaian: initialData.data_rangkaian.ID,
-        durasi_kuis: String(parseHHMMToMenit(initialData.durasi_kuis)),
-        pertanyaan_list: initialData.list_pertanyaan,
+        kuis_nama: initialData.nama_kuis || "",
+        kuis_deskripsi: initialData.deskripsi_kuis || "",
+        tenggat: initialData.tenggat_kuis
+          ? new Date(initialData.tenggat_kuis).toISOString().slice(0, 16)
+          : "",
+        kesempatan: initialData.kesempatan || 1,
+        id_rangkaian: initialData.data_rangkaian?.ID || "",
+        durasi_kuis: String(parseHHMMToMenit(initialData.durasi_kuis || "60")),
+        pertanyaan_list: initialData.list_pertanyaan || [],
       });
     }
   }, [initialData]);
+
   const clearError = (fieldName: string) => {
     setErrors((prev) => {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -65,12 +68,12 @@ export const useEditQuizForm = (initialData: DetailQuiz | null) => {
     const newErrors: ValidationErrors = {};
     let isValid = true;
 
-    if (!formData.kuis_nama.trim()) {
+    if (!formData.kuis_nama?.trim()) {
       newErrors.kuis_nama = "Nama kuis tidak boleh kosong";
       isValid = false;
     }
 
-    if (!formData.kuis_deskripsi.trim()) {
+    if (!formData.kuis_deskripsi?.trim()) {
       newErrors.kuis_deskripsi = "Deskripsi tidak boleh kosong";
       isValid = false;
     }
@@ -95,41 +98,43 @@ export const useEditQuizForm = (initialData: DetailQuiz | null) => {
       isValid = false;
     }
 
-    if (formData.pertanyaan_list.length === 0) {
+    // Safe check for pertanyaan_list
+    const pertanyaanList = formData.pertanyaan_list || [];
+    if (pertanyaanList.length === 0) {
       newErrors.pertanyaan_list = "Minimal harus ada 1 soal";
       isValid = false;
     }
 
-    formData.pertanyaan_list.forEach((question, index) => {
+    pertanyaanList.forEach((question, index) => {
       const questionPrefix = `question_${index}`;
 
-      if (!question.judul_pertanyaan.trim()) {
+      if (!question.judul_pertanyaan?.trim()) {
         newErrors[`${questionPrefix}_title`] =
           "Judul pertanyaan tidak boleh kosong";
         isValid = false;
       }
 
-      if (!question.pilihan_a.trim()) {
+      if (!question.pilihan_a?.trim()) {
         newErrors[`${questionPrefix}_a`] = "Pilihan A tidak boleh kosong";
         isValid = false;
       }
 
-      if (!question.pilihan_b.trim()) {
+      if (!question.pilihan_b?.trim()) {
         newErrors[`${questionPrefix}_b`] = "Pilihan B tidak boleh kosong";
         isValid = false;
       }
 
-      if (!question.pilihan_c.trim()) {
+      if (!question.pilihan_c?.trim()) {
         newErrors[`${questionPrefix}_c`] = "Pilihan C tidak boleh kosong";
         isValid = false;
       }
 
-      if (!question.pilihan_d.trim()) {
+      if (!question.pilihan_d?.trim()) {
         newErrors[`${questionPrefix}_d`] = "Pilihan D tidak boleh kosong";
         isValid = false;
       }
 
-      if (!question.pilihan_e.trim()) {
+      if (!question.pilihan_e?.trim()) {
         newErrors[`${questionPrefix}_e`] = "Pilihan E tidak boleh kosong";
         isValid = false;
       }
@@ -166,20 +171,25 @@ export const useEditQuizForm = (initialData: DetailQuiz | null) => {
     field: keyof Pertanyaan,
     value: string | number,
   ) => {
-    const updatedQuestions = [...formData.pertanyaan_list];
-    const finalValue =
-      field === "durasi_pertanyaan"
-        ? value === ""
-          ? 0
-          : Number(value)
-        : value;
+    setFormData((prev) => {
+      const updatedQuestions = [...(prev.pertanyaan_list || [])];
+      const finalValue =
+        field === "durasi_pertanyaan"
+          ? value === ""
+            ? 0
+            : Number(value)
+          : value;
 
-    updatedQuestions[index] = {
-      ...updatedQuestions[index],
-      [field]: finalValue,
-    };
+      // Ensure the question exists before updating
+      if (updatedQuestions[index]) {
+        updatedQuestions[index] = {
+          ...updatedQuestions[index],
+          [field]: finalValue,
+        };
+      }
 
-    setFormData((prev) => ({ ...prev, pertanyaan_list: updatedQuestions }));
+      return { ...prev, pertanyaan_list: updatedQuestions };
+    });
 
     const questionPrefix = `question_${index}`;
     if (field === "judul_pertanyaan" && String(value).trim()) {
@@ -203,57 +213,62 @@ export const useEditQuizForm = (initialData: DetailQuiz | null) => {
   };
 
   const addQuestion = () => {
-    setFormData((prev) => ({
-      ...prev,
-      pertanyaan_list: [
-        ...prev.pertanyaan_list,
-        {
-          id_pertanyaan: `new_${Date.now()}`,
-          judul_pertanyaan: "",
-          pilihan_a: "",
-          pilihan_b: "",
-          pilihan_c: "",
-          pilihan_d: "",
-          pilihan_e: "",
-          jawaban_benar: "A",
-          durasi_pertanyaan: 30,
-        },
-      ],
-    }));
+    setFormData((prev) => {
+      const currentList = prev.pertanyaan_list || [];
+      const newQuestion = {
+        id_pertanyaan: `new_${Date.now()}`,
+        judul_pertanyaan: "",
+        pilihan_a: "",
+        pilihan_b: "",
+        pilihan_c: "",
+        pilihan_d: "",
+        pilihan_e: "",
+        jawaban_benar: "A",
+        durasi_pertanyaan: 30,
+      };
 
-    // Clear pertanyaan_list error if this is the first question
-    if (formData.pertanyaan_list.length === 0) {
-      clearError("pertanyaan_list");
-    }
+      return {
+        ...prev,
+        pertanyaan_list: [...currentList, newQuestion],
+      };
+    });
+
+    // Clear pertanyaan_list error when adding a question
+    clearError("pertanyaan_list");
   };
 
   const removeQuestion = (index: number) => {
-    setFormData((prev) => ({
-      ...prev,
-      pertanyaan_list: prev.pertanyaan_list.filter((_, i) => i !== index),
-    }));
+    setFormData((prev) => {
+      const currentList = prev.pertanyaan_list || [];
+      return {
+        ...prev,
+        pertanyaan_list: currentList.filter((_, i) => i !== index),
+      };
+    });
   };
 
   const getSubmitPayload = () => {
+    const pertanyaanList = formData.pertanyaan_list || [];
+
     const payloadSesuaiDokumentasi = {
-      kuis_nama: formData.kuis_nama,
-      kuis_deskripsi: formData.kuis_deskripsi,
+      kuis_nama: formData.kuis_nama || "",
+      kuis_deskripsi: formData.kuis_deskripsi || "",
       tenggat: `${formData.tenggat}:00Z`,
-      kesempatan: formData.kesempatan,
-      id_rangkaian: formData.id_rangkaian,
-      durasi_kuis: formatDurasiToHHMM(Number(formData.durasi_kuis)),
-      pertanyaan_list: formData.pertanyaan_list.map((q) => ({
-        id_pertanyaan: q.id_pertanyaan.startsWith("new_")
+      kesempatan: formData.kesempatan || 1,
+      id_rangkaian: formData.id_rangkaian || "",
+      durasi_kuis: formatDurasiToHHMM(Number(formData.durasi_kuis) || 60),
+      pertanyaan_list: pertanyaanList.map((q) => ({
+        id_pertanyaan: q.id_pertanyaan?.startsWith("new_")
           ? undefined
           : q.id_pertanyaan,
-        title: q.judul_pertanyaan,
-        opsi_a: q.pilihan_a,
-        opsi_b: q.pilihan_b,
-        opsi_c: q.pilihan_c,
-        opsi_d: q.pilihan_d,
-        opsi_e: q.pilihan_e,
-        jawaban_benar: q.jawaban_benar,
-        durasi: q.durasi_pertanyaan,
+        title: q.judul_pertanyaan || "",
+        opsi_a: q.pilihan_a || "",
+        opsi_b: q.pilihan_b || "",
+        opsi_c: q.pilihan_c || "",
+        opsi_d: q.pilihan_d || "",
+        opsi_e: q.pilihan_e || "",
+        jawaban_benar: q.jawaban_benar || "A",
+        durasi: q.durasi_pertanyaan || 30,
       })),
     };
     return payloadSesuaiDokumentasi as unknown as UpdateQuizPayload;
