@@ -1,102 +1,69 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState } from "react";
 import { mahasiswaService } from "@/api/services/user/maba";
 import { penugasanService } from "@/api/services/user/penugasan";
-import {
-  MahasiswaProfile,
-  MahasiswaLevel,
-  Tugas,
-  Kuis,
-  Submission,
-} from "../types";
-
-type TugasStatus =
-  | "belum tersubmit"
-  | "tersubmit"
-  | "terlambat"
-  | "dinilai"
-  | "belum_dikerjakan";
+import { useQuery } from "@tanstack/react-query";
 
 export const usePenugasan = () => {
-  const [profile, setProfile] = useState<MahasiswaProfile | null>(null);
-  const [level, setLevel] = useState<MahasiswaLevel | null>(null);
-  const [tugas, setTugas] = useState<Tugas[]>([]);
-  const [kuis, setKuis] = useState<Kuis[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<"tugas" | "kuis">("tugas");
+  const { data: profile } = useQuery({
+    queryKey: ["mahasiswaProfile"],
+    queryFn: () => mahasiswaService.getMyProfile().then((res) => res.data),
+  });
 
-  const fetchData = useCallback(async () => {
-    setIsLoading(true);
-    try {
-      const profileRes = await mahasiswaService.getMyProfile();
-      const myNim = profileRes.data.nim;
+  const { data: level } = useQuery({
+    queryKey: ["mahasiswaLevel"],
+    queryFn: () => mahasiswaService.getMyLevel().then((res) => res.data),
+  });
 
-      const [levelRes, tugasRes, kuisRes] = await Promise.all([
-        mahasiswaService.getMyLevel(),
-        penugasanService.getAllTugas(),
-        penugasanService.getAllKuis(),
-      ]);
+  const { data: kuis } = useQuery({
+    queryKey: ["kuisList"],
+    queryFn: () => penugasanService.getAllKuis().then((res) => res.data),
+  });
 
-      const allTugas = tugasRes.data;
-      const allKuis = kuisRes.data;
+  const { data: rangkaian, isSuccess: isRangkaianSuccess } = useQuery({
+    queryKey: ["rangkaianList"],
+    queryFn: () => penugasanService.getAllRangkaian().then((res) => res.data),
+  });
 
-      const tugasWithStatusPromises = (allTugas || []).map(async (tugas) => {
+  const { data: tugas, isLoading: isTugasLoading } = useQuery({
+    queryKey: ["tugasListWithStatus", rangkaian?.[0]?.ID],
+    queryFn: async () => {
+      if (!rangkaian || rangkaian.length === 0) return [];
+
+      const firstRangkaianId = rangkaian[0].ID;
+      const tugasRes =
+        await penugasanService.getTugasByRangkaian(firstRangkaianId);
+      const tugasList = tugasRes.data || [];
+
+      const tugasWithStatusPromises = tugasList.map(async (tugasItem) => {
         try {
-          const submissionRes = await penugasanService.getTugasSubmission(
-            tugas.id_penugasan,
+          const detailRes = await penugasanService.getTugasDetailWithStatus(
+            tugasItem.id_penugasan,
           );
-          const mySubmission = submissionRes.data.submissions.find(
-            (sub: Submission) => sub.nim === myNim,
-          );
-          const status = (mySubmission?.status ||
-            "belum_dikerjakan") as TugasStatus;
-          return { ...tugas, Status: status };
+          return { ...tugasItem, status: detailRes.data.status };
         } catch (e) {
-          // PERBAIKAN 1: Gunakan variabel 'e' untuk logging
           console.error(
-            `Gagal fetch status untuk tugas ${tugas.id_penugasan}:`,
+            `Gagal fetch status untuk tugas ${tugasItem.id_penugasan}:`,
             e,
           );
-          return { ...tugas, Status: "belum_dikerjakan" as TugasStatus };
+          return { ...tugasItem, status: "Belum Selesai" };
         }
       });
 
-      const kuisWithStatusPromises = (allKuis || []).map(async (kuis) => {
-        try {
-          const detailRes = await penugasanService.getKuisDetail(kuis.id_kuis);
-          return { ...kuis, status_kuis: detailRes.data.status_kuis };
-        } catch (e) {
-          // PERBAIKAN 2: Gunakan variabel 'e' untuk logging
-          console.error(`Gagal fetch status untuk kuis ${kuis.id_kuis}:`, e);
-          return { ...kuis, status_kuis: "Belum Mulai" as const };
-        }
-      });
-
-      const finalTugasList = await Promise.all(tugasWithStatusPromises);
-      const finalKuisList = await Promise.all(kuisWithStatusPromises);
-
-      setProfile(profileRes.data);
-      setLevel(levelRes.data);
-      setTugas(finalTugasList);
-      setKuis(finalKuisList);
-    } catch (error) {
-      console.error("Gagal mengambil data halaman penugasan:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    fetchData();
-  }, [fetchData]);
+      return Promise.all(tugasWithStatusPromises);
+    },
+    enabled: isRangkaianSuccess && !!rangkaian && rangkaian.length > 0,
+  });
 
   return {
-    profile,
-    level,
-    tugas,
-    kuis,
-    isLoading,
+    profile: profile || null,
+    level: level || null,
+    tugas: tugas || [],
+    kuis: kuis || [],
+    rangkaian: rangkaian || [],
+    isLoading: isTugasLoading,
     activeTab,
     setActiveTab,
   };
