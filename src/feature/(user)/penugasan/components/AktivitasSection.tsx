@@ -3,6 +3,7 @@ import { Kuis, Tugas } from "../types";
 import { cn } from "@/shared/utils/cn";
 import { Button } from "@/shared/components/ui/Button";
 import { getIconForTask } from "../data/tugasIconData";
+import Link from "next/link";
 
 interface AktivitasSectionProps {
   tugas: Tugas[];
@@ -47,7 +48,13 @@ export const AktivitasSection = ({
             tugas.map((item) => {
               const Icon = getIconForTask(item.judul, "tugas");
               const deadlineDate = new Date(item.tenggat);
-              const formattedDeadline = `${deadlineDate.toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" })} • ${deadlineDate.toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit" })} WIB`;
+              const formattedDeadline = `${deadlineDate.toLocaleDateString(
+                "id-ID",
+                { day: "numeric", month: "long", year: "numeric" },
+              )} • ${deadlineDate.toLocaleTimeString("id-ID", {
+                hour: "2-digit",
+                minute: "2-digit",
+              })} WIB`;
 
               return (
                 <TaskCard
@@ -71,17 +78,27 @@ export const AktivitasSection = ({
             kuis.map((item) => {
               const Icon = getIconForTask(item.nama_kuis, "kuis");
               const deadlineDate = new Date(item.tenggat_kuis);
-              const formattedDeadline = `${deadlineDate.toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" })} • ${deadlineDate.toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit" })} WIB`;
+              const formattedDeadline = `${deadlineDate.toLocaleDateString(
+                "id-ID",
+                { day: "numeric", month: "long", year: "numeric" },
+              )} • ${deadlineDate.toLocaleTimeString("id-ID", {
+                hour: "2-digit",
+                minute: "2-digit",
+              })} WIB`;
 
               return (
-                <TaskCard
+                <Link
                   key={item.id_kuis}
-                  taskName={item.nama_kuis}
-                  deadline={formattedDeadline}
-                  icon={
-                    <Icon className="w-12 h-12 md:w-16 md:h-16 text-default-light group-hover:text-primary-500" />
-                  }
-                />
+                  href={`/aktivitas/kuis/${item.id_kuis}`}
+                >
+                  <TaskCard
+                    taskName={item.nama_kuis}
+                    deadline={formattedDeadline}
+                    icon={
+                      <Icon className="w-12 h-12 md:w-16 md:h-16 text-default-light group-hover:text-primary-500" />
+                    }
+                  />
+                </Link>
               );
             })
           ) : (

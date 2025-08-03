@@ -1,0 +1,168 @@
+"use client";
+
+import { useState, useEffect, useMemo, useCallback } from "react";
+import { useGetSoalKuis } from "./useGetSoalQuiz";
+import { useSubmitKuis } from "./useSubmitJawaban";
+import { useRouter } from "next/navigation";
+
+type ModalContent = {
+  isOpen: boolean;
+  title: string;
+  message: string;
+  onConfirm: () => void;
+  confirmText: string;
+  hideCancelButton?: boolean;
+};
+
+const formatTime = (seconds: number): string => {
+  const h = Math.floor(seconds / 3600);
+  const m = Math.floor((seconds % 3600) / 60);
+  const s = seconds % 60;
+  return [h, m, s].map((v) => (v < 10 ? "0" + v : v)).join(":");
+};
+
+const parseDurationToSeconds = (duration: string): number => {
+  const parts = duration.split(":").map(Number);
+  return (parts[0] || 0) * 3600 + (parts[1] || 0) * 60 + (parts[2] || 0);
+};
+
+export const useQuiz = (id_kuis: string) => {
+  const router = useRouter();
+  const { data: kuisData, isLoading, error } = useGetSoalKuis(id_kuis);
+  const { submitJawaban, isLoading: isSubmitting } = useSubmitKuis();
+
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [answers, setAnswers] = useState<Record<string, string>>({});
+  const [timeLeft, setTimeLeft] = useState(0);
+  const [isFinished, setIsFinished] = useState(false);
+  const [modalContent, setModalContent] = useState<ModalContent | null>(null);
+
+  const totalDuration = useMemo(() => {
+    return kuisData ? parseDurationToSeconds(kuisData.durasi_kuis) : 0;
+  }, [kuisData]);
+
+  useEffect(() => {
+    if (totalDuration > 0) setTimeLeft(totalDuration);
+  }, [totalDuration]);
+
+  const closeModal = () => setModalContent(null);
+
+  const executeSubmit = useCallback(async () => {
+    if (!kuisData || isFinished) return;
+    closeModal();
+
+    const payloadList = Object.entries(answers).map(([id, jawaban]) => ({
+      id_pertanyaan: id,
+      jawaban: jawaban,
+    }));
+
+    try {
+      const result = await submitJawaban(id_kuis, {
+        pertanyaan_list: payloadList,
+      });
+      if (result) {
+        localStorage.setItem(`quizResult-${id_kuis}`, JSON.stringify(result));
+      }
+      setIsFinished(true);
+      router.push(`/aktivitas/kuis/hasil/${id_kuis}`);
+    } catch {
+      setModalContent({
+        isOpen: true,
+        title: "Gagal Mengumpulkan",
+        message: "Terjadi kesalahan saat menyimpan jawaban. Silakan coba lagi.",
+        onConfirm: closeModal,
+        confirmText: "Tutup",
+        hideCancelButton: true,
+      });
+    }
+  }, [answers, kuisData, id_kuis, submitJawaban, router, isFinished]);
+
+  const handleSubmit = useCallback(() => {
+    if (!kuisData || isFinished) return;
+    const totalSoal = kuisData.list_pertanyaan.length;
+    const soalDijawab = Object.keys(answers).length;
+
+    if (timeLeft > 1 && soalDijawab < totalSoal) {
+      const belumTerjawab = totalSoal - soalDijawab;
+      setModalContent({
+        isOpen: true,
+        title: "Konfirmasi Pengumpulan",
+        message: `Anda belum menjawab ${belumTerjawab} soal. Apakah Anda yakin ingin mengumpulkan jawaban sekarang?`,
+        onConfirm: executeSubmit,
+        confirmText: "Ya, Kumpulkan",
+      });
+    } else {
+      executeSubmit();
+    }
+  }, [kuisData, isFinished, answers, timeLeft, executeSubmit]);
+
+  useEffect(() => {
+    if (isFinished || timeLeft <= 0) return;
+    if (timeLeft === 1) handleSubmit();
+    const timerId = setInterval(() => setTimeLeft((prev) => prev - 1), 1000);
+    return () => clearInterval(timerId);
+  }, [timeLeft, isFinished, handleSubmit]);
+
+  useEffect(() => {
+    if (isFinished) return;
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      e.preventDefault();
+      e.returnValue =
+        "Anda yakin ingin meninggalkan halaman? Progres kuis Anda akan hilang.";
+    };
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
+  }, [isFinished]);
+
+  const handleSelectAnswer = useCallback(
+    (questionId: string, answerLabel: string) => {
+      setAnswers((prev) => ({ ...prev, [questionId]: answerLabel }));
+    },
+    [],
+  );
+
+  const handleJumpToQuestion = (index: number) => {
+    if (kuisData && index >= 0 && index < kuisData.list_pertanyaan.length) {
+      setCurrentQuestionIndex(index);
+    }
+  };
+
+  const handleNext = () => {
+    if (
+      kuisData &&
+      currentQuestionIndex < kuisData.list_pertanyaan.length - 1
+    ) {
+      setCurrentQuestionIndex((prev) => prev + 1);
+    }
+  };
+
+  const handlePrev = () => {
+    if (currentQuestionIndex > 0) {
+      setCurrentQuestionIndex((prev) => prev - 1);
+    }
+  };
+
+  const currentQuestion = kuisData?.list_pertanyaan[currentQuestionIndex];
+  const isLastQuestion = kuisData
+    ? currentQuestionIndex === kuisData.list_pertanyaan.length - 1
+    : false;
+
+  return {
+    isLoading,
+    isSubmitting,
+    error,
+    kuisData,
+    currentQuestion,
+    currentQuestionIndex,
+    answers,
+    timeLeft: formatTime(timeLeft),
+    isLastQuestion,
+    modalContent,
+    closeModal,
+    onSelectAnswer: handleSelectAnswer,
+    onSubmit: handleSubmit,
+    onNext: handleNext,
+    onPrev: handlePrev,
+    onJumpToQuestion: handleJumpToQuestion,
+  };
+};
