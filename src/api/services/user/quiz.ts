@@ -27,6 +27,9 @@ export interface Quiz {
   tenggat_kuis: string;
   durasi_kuis: string;
   status_kuis: string;
+  score?: number;
+  jawaban_benar?: number;
+  total_pertanyaan?: number;
 }
 
 export interface Pilihan {

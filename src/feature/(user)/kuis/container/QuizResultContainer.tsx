@@ -4,10 +4,10 @@ import React from "react";
 import { Loader2 } from "lucide-react";
 import { Button } from "@/shared/components/ui/Button";
 import { QuizResultView } from "../components/QuizResultView";
-import { useQuizResult } from "../hooks/useHasilQuiz";
+import { useGetDetailQuiz } from "../hooks/useGetQuiz";
 
 const QuizResultContainer = ({ id_kuis }: { id_kuis: string }) => {
-  const { result, isLoading, error } = useQuizResult(id_kuis);
+  const { data: result, isLoading, error } = useGetDetailQuiz(id_kuis);
 
   if (isLoading) {
     return (
@@ -30,7 +30,7 @@ const QuizResultContainer = ({ id_kuis }: { id_kuis: string }) => {
     );
   }
 
-  return <QuizResultView id_kuis={id_kuis} />;
+  return <QuizResultView quiz={result} />;
 };
 
 export default QuizResultContainer;
