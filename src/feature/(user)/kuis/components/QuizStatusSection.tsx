@@ -48,7 +48,7 @@ const QuizStatusSection = ({ Quiz }: { Quiz: Quiz | null }) => {
       </div>
       <div className="mt-20">
         {Quiz?.status_kuis === "Selesai" ? (
-          <QuizResultView id_kuis={Quiz.id_kuis} />
+          <QuizResultView quiz={Quiz} />
         ) : (
           <QuizBefore quiz={Quiz} />
         )}

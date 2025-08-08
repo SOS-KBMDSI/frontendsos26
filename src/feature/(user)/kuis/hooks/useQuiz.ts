@@ -64,7 +64,7 @@ export const useQuiz = (id_kuis: string) => {
         localStorage.setItem(`quizResult-${id_kuis}`, JSON.stringify(result));
       }
       setIsFinished(true);
-      router.push(`/aktivitas/kuis/hasil/${id_kuis}`);
+      router.push(`/aktivitas/kuis/${id_kuis}`);
     } catch {
       setModalContent({
         isOpen: true,
