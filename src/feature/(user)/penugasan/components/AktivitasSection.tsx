@@ -104,7 +104,7 @@ export const AktivitasSection = ({
               return (
                 <Link
                   key={item.id_kuis}
-                  href={`/aktivitas/penugasan/${item.id_kuis}`}
+                  href={`/aktivitas/kuis/${item.id_kuis}`}
                   className="contents"
                 >
                   <TaskCard
