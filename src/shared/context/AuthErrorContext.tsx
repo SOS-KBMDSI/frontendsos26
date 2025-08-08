@@ -77,6 +77,15 @@ export const AuthErrorProvider = ({
 
   const handleAuthError = (error: AuthError | AxiosError): void => {
     console.log("Auth error handled:", error);
+    if (error.code === "ERR_NETWORK") {
+      showToast({
+        type: "error",
+        title: "Koneksi Gagal",
+        message:
+          "Anda tidak terhubung ke internet. Mohon periksa koneksi Anda.",
+        duration: 10000,
+      });
+    }
     if (isAuthError(error)) {
       showSessionExpiredToast();
     }

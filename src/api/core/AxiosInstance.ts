@@ -112,6 +112,12 @@ class ApiCore {
     this.client.interceptors.response.use(
       (response: AxiosResponse) => response,
       (error: AxiosError) => {
+        if (error.code === "ERR_NETWORK") {
+          console.log("Network Error detected");
+          if (this.authErrorHandler) {
+            this.authErrorHandler(error);
+          }
+        }
         if (error.response?.status === 401 && this.isCurrentRouteProtected()) {
           console.log(
             "401 Unauthorized detected in protected route:",
