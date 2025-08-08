@@ -33,7 +33,11 @@ const ProfileForm: React.FC<ProfileFormProps> = ({
   const handleGolonganDarahChange = (newValue: string) => {
     onFormChange("GolonganDarah", newValue);
   };
-
+  const isShow = () => {
+    const currentDate = new Date();
+    const targetDate = new Date("2024-09-21");
+    return currentDate < targetDate;
+  };
   return (
     <>
       <div className="bg-white rounded-lg shadow-lg md:px-20 md:py-16 px-6 py-8 mt-8 transition-all duration-300 ease-in-out hover:shadow-xl">
@@ -229,25 +233,31 @@ const ProfileForm: React.FC<ProfileFormProps> = ({
             Detail Kelompok
           </h2>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-          <div className="flex flex-col transition-transform duration-300 ease-in-out hover:scale-[1.02]">
-            <label className="text-primary-500 text-base md:text-lg mb-1 font-semibold">
-              Nama Distrik
-            </label>
-            <p className="px-3 py-2 bg-gray-100 rounded-lg text-gray-500 cursor-not-allowed text-sm md:text-base">
-              {/* Asumsi: nama distrik ada di user.kelompok.distrik.nama_distrik */}
-              {user?.kelompok?.distrik?.nama_distrik || "-"}
-            </p>
-          </div>
-          <div className="flex flex-col transition-transform duration-300 ease-in-out hover:scale-[1.02]">
-            <label className="text-primary-500 text-base md:text-lg mb-1 font-semibold">
-              Nama Kelompok
-            </label>
-            <p className="px-3 py-2 bg-gray-100 rounded-lg text-gray-500 cursor-not-allowed text-sm md:text-base">
-              {user?.kelompok?.nama_kelompok || "-"}
-            </p>
-          </div>
-        </div>
+        {isShow() ? (
+          <>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+              <div className="flex flex-col transition-transform duration-300 ease-in-out hover:scale-[1.02]">
+                <label className="text-primary-500 text-base md:text-lg mb-1 font-semibold">
+                  Nama Distrik
+                </label>
+                <p className="px-3 py-2 bg-gray-100 rounded-lg text-gray-500 cursor-not-allowed text-sm md:text-base">
+                  {/* Asumsi: nama distrik ada di user.kelompok.distrik.nama_distrik */}
+                  {user?.kelompok?.distrik?.nama_distrik || "-"}
+                </p>
+              </div>
+              <div className="flex flex-col transition-transform duration-300 ease-in-out hover:scale-[1.02]">
+                <label className="text-primary-500 text-base md:text-lg mb-1 font-semibold">
+                  Nama Kelompok
+                </label>
+                <p className="px-3 py-2 bg-gray-100 rounded-lg text-gray-500 cursor-not-allowed text-sm md:text-base">
+                  {user?.kelompok?.nama_kelompok || "-"}
+                </p>
+              </div>
+            </div>
+          </>
+        ) : (
+          <div>IHH KEPO DEH AMA KELOMPOK NYA</div>
+        )}
       </div>
     </>
   );
