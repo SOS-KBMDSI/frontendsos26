@@ -19,6 +19,7 @@ import {
   ColumnDef,
   getFilteredRowModel,
   PaginationState,
+  getSortedRowModel,
 } from "@tanstack/react-table";
 import { useSelectOptions } from "@/shared/hooks/useSelectOptions";
 import PresensiTable from "../components/PresensiTable";
@@ -160,6 +161,7 @@ const DetailPresensiContainer: React.FC<DetailPresensiContainerProps> = ({
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
+    getSortedRowModel: getSortedRowModel(),
     manualPagination: true,
     pageCount: mahasiswaPagination?.total_pages ?? -1,
     state: {
