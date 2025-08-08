@@ -3,7 +3,13 @@
 import React from "react";
 import { flexRender, Table } from "@tanstack/react-table";
 import { Input } from "@/shared/components/ui/Input";
-import { Loader2, Search } from "lucide-react";
+import {
+  ChevronDown,
+  ChevronsUpDown,
+  ChevronUp,
+  Loader2,
+  Search,
+} from "lucide-react";
 import { Button } from "@/shared/components/ui/Button";
 import { cn } from "@/shared/utils/cn";
 
@@ -95,12 +101,42 @@ export const DataTable = <TData extends object>({
                         className="py-2 px-4 lg:py-3 lg:px-6"
                         style={{ width: header.getSize() }}
                       >
-                        <div>
-                          {flexRender(
-                            header.column.columnDef.header,
-                            header.getContext(),
-                          )}
-                        </div>
+                        {header.isPlaceholder ? null : (
+                          <div
+                            className={cn(
+                              "flex items-center gap-2",
+                              header.column.getCanSort() &&
+                                "cursor-pointer select-none",
+                            )}
+                            onClick={header.column.getToggleSortingHandler()}
+                            title={
+                              header.column.getCanSort()
+                                ? header.column.getNextSortingOrder() === "asc"
+                                  ? "Sort ascending"
+                                  : header.column.getNextSortingOrder() ===
+                                      "desc"
+                                    ? "Sort descending"
+                                    : "Clear sort"
+                                : undefined
+                            }
+                          >
+                            {flexRender(
+                              header.column.columnDef.header,
+                              header.getContext(),
+                            )}
+                            {{
+                              asc: (
+                                <ChevronUp className="h-4 w-4 text-primary-500" />
+                              ),
+                              desc: (
+                                <ChevronDown className="h-4 w-4 text-primary-500" />
+                              ),
+                            }[header.column.getIsSorted() as string] ??
+                              (header.column.getCanSort() ? (
+                                <ChevronsUpDown className="h-4 w-4  text-primary-500" />
+                              ) : null)}
+                          </div>
+                        )}
                       </th>
                     ))}
                   </tr>

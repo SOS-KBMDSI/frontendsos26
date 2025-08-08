@@ -4,6 +4,8 @@ import { AuthProvider } from "@/shared/context/AuthContext";
 import { ToastProvider } from "@/shared/context/ToastContext";
 import { QueryProvider } from "@/shared/components/provider/QueryProvider";
 import React from "react";
+import { AuthErrorProvider } from "@/shared/context/AuthErrorContext";
+import { protectedRoutes } from "@/shared/data/protectedRoutes";
 
 export default function UserLayout({
   children,
@@ -15,8 +17,10 @@ export default function UserLayout({
       <QueryProvider>
         <AuthProvider>
           <ToastProvider>
-            <Navbar />
-            <main className="pt-20 xl:pt-16 2xl:pt-18">{children}</main>
+            <AuthErrorProvider protectedRoutes={protectedRoutes}>
+              <Navbar />
+              <main className="pt-20 xl:pt-16 2xl:pt-18">{children}</main>
+            </AuthErrorProvider>
             <Footer />
           </ToastProvider>
         </AuthProvider>
