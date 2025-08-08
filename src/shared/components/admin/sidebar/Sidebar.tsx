@@ -1,5 +1,3 @@
-// /components/admin/sidebar/Sidebar.js
-
 "use client";
 
 import React, { useState } from "react";
@@ -7,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Menu, X, LogOut } from "lucide-react";
+import * as Tooltip from "@radix-ui/react-tooltip";
 
 import { sidebarMenuItems } from "@/shared/data/SidebarData";
 import { authService } from "@/api/services/auth";
@@ -26,11 +25,8 @@ export const Sidebar = () => {
   };
 
   return (
-    <>
-      {/* ================================================================== */}
-      {/* 1. SIDEBAR VERSI DESKTOP (TIDAK ADA PERUBAHAN)                   */}
-      {/* ================================================================== */}
-      <aside className="hidden sm:flex fixed top-0 left-0 z-40 flex-col border-r border-gray-200 bg-white shadow-xl p-4 w-20 xl:w-64 min-h-screen transition-all duration-300">
+    <Tooltip.Provider delayDuration={0}>
+      <aside className="hidden sm:flex sm:overflow-y-scroll lg:overflow-hidden fixed top-0 left-0 z-40 flex-col border-r border-gray-200 bg-white shadow-xl p-4 w-20 xl:w-64 h-screen transition-all duration-300">
         <div className="flex items-center justify-center xl:justify-start gap-3">
           <div className="w-10 h-10 rounded-xl flex-shrink-0">
             <Image alt="logo SOS" className="w-full h-full" src={LogoSoS} />
@@ -47,22 +43,35 @@ export const Sidebar = () => {
                 ? pathname === item.path
                 : pathname.startsWith(item.path);
             return (
-              <Link key={item.id} href={item.path} passHref title={item.label}>
-                <li
-                  className={`flex items-center justify-center xl:justify-start gap-x-3 rounded-xl p-3 transition-all duration-300 ${
-                    isActive
-                      ? "bg-primary-500 text-white"
-                      : "text-primary-500 hover:bg-primary-500 hover:text-white"
-                  }`}
-                >
-                  {React.createElement(item.icon, {
-                    className: "h-6 w-6 flex-shrink-0",
-                  })}
-                  <span className="hidden xl:inline text-base">
+              <Tooltip.Root key={item.id}>
+                <Tooltip.Trigger asChild>
+                  <Link href={item.path} passHref>
+                    <li
+                      className={`flex items-center justify-center xl:justify-start gap-x-3 rounded-xl p-3 transition-all duration-300 ${
+                        isActive
+                          ? "bg-primary-500 text-white"
+                          : "text-primary-500 hover:bg-primary-500 hover:text-white"
+                      }`}
+                    >
+                      {React.createElement(item.icon, {
+                        className: "h-6 w-6 flex-shrink-0",
+                      })}
+                      <span className="hidden xl:inline text-base">
+                        {item.label}
+                      </span>
+                    </li>
+                  </Link>
+                </Tooltip.Trigger>
+                <Tooltip.Portal>
+                  <Tooltip.Content
+                    side="right"
+                    className="z-50 xl:hidden px-3 py-1.5 text-sm font-medium text-white bg-primary-500 rounded-md shadow-sm"
+                  >
                     {item.label}
-                  </span>
-                </li>
-              </Link>
+                    <Tooltip.Arrow className="fill-current text-white" />
+                  </Tooltip.Content>
+                </Tooltip.Portal>
+              </Tooltip.Root>
             );
           })}
         </ul>
@@ -81,9 +90,6 @@ export const Sidebar = () => {
         </div>
       </aside>
 
-      {/* ================================================================== */}
-      {/* 2. FLOATING BUTTON VERSI MOBILE (TIDAK ADA PERUBAHAN)              */}
-      {/* ================================================================== */}
       <div className="sm:hidden">
         <button
           onClick={() => setIsMobileSidebarOpen(true)}
@@ -94,9 +100,6 @@ export const Sidebar = () => {
         </button>
       </div>
 
-      {/* ================================================================== */}
-      {/* 3. PANEL SIDEBAR VERSI MOBILE (DENGAN PERBAIKAN)                 */}
-      {/* ================================================================== */}
       {isMobileSidebarOpen && (
         <div className="sm:hidden fixed inset-0 z-50">
           <div
@@ -114,10 +117,8 @@ export const Sidebar = () => {
                 <X size={24} />
               </button>
             </div>
-            {/* --- PERBAIKAN DI SINI --- */}
             <ul className="flex-grow mt-6 flex flex-col gap-2">
               {sidebarMenuItems.map((item) => {
-                // 1. Logika 'isActive' ditambahkan di sini
                 const isActive =
                   item.path === "/"
                     ? pathname === item.path
@@ -127,7 +128,6 @@ export const Sidebar = () => {
                     key={item.id}
                     href={item.path}
                     onClick={() => setIsMobileSidebarOpen(false)}
-                    // 2. className sekarang kondisional berdasarkan 'isActive'
                     className={`flex items-center gap-4 p-3 rounded-lg transition-colors ${
                       isActive
                         ? "bg-primary-500 text-white"
@@ -152,7 +152,7 @@ export const Sidebar = () => {
           </aside>
         </div>
       )}
-    </>
+    </Tooltip.Provider>
   );
 };
 
