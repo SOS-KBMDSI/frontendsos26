@@ -29,7 +29,7 @@ const TaskCard = forwardRef<HTMLDivElement, TaskCardProps>(
         ref={ref}
         className={cn(
           "group flex w-full flex-col items-center gap-3 rounded-xl py-6 px-3 text-center transition-colors duration-300",
-          "md:max-w-xs md:gap-10 md:py-10 md:px-8",
+          "md:max-w-xs md:gap-10 md:py-10 md:px-8 hover:cursor-pointer",
           "hover:bg-primary-500 active:bg-primary-600",
           className,
         )}

@@ -1,0 +1,63 @@
+"use client";
+
+import { Quiz } from "@/api/services/admin/quiz";
+import { Button } from "@/shared/components/ui/Button";
+import React, { useState } from "react";
+import { ConfirmationModal } from "./ConfirmationModal";
+
+const convertDurationToMinutes = (duration: string | undefined): number => {
+  if (!duration) return 0;
+  try {
+    const parts = duration.split(":");
+    if (parts.length !== 3) return 0;
+    const hours = parseInt(parts[0], 10);
+    const minutes = parseInt(parts[1], 10);
+    return hours * 60 + minutes;
+  } catch {
+    return 0;
+  }
+};
+
+const QuizBefore = ({ quiz }: { quiz: Quiz | null }) => {
+  const totalMinutes = convertDurationToMinutes(quiz?.durasi_kuis);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleStartQuiz = () => {
+    if (!quiz?.id_kuis) return;
+    window.location.href = `/aktivitas/kuis/start/${quiz.id_kuis}`;
+  };
+
+  return (
+    <>
+      <div className="w-full space-y-4 px-8 py-6 rounded-2xl mt-20 min-h-[15rem] bg-[#F5E6E9]">
+        <h4 className="font-bold text-black">Siap Taklukan Quiz?</h4>
+        <p className="text-justify">
+          Ini adalah kesempatanmu untuk menunjukkan pemahamanmu pada Kuis:
+          <span className="font-semibold mx-2">{quiz?.nama_kuis}</span>. Kamu
+          punya <span className="font-semibold">{totalMinutes} Menit</span>{" "}
+          penuh untuk fokus. Ingat, timer akan terus berjalan. Percayalah pada
+          persiapan yang sudah kamu lakukan!
+        </p>
+        <Button
+          onClick={() => setIsModalOpen(true)}
+          className="mx-auto cursor-pointer text-sm mt-10"
+        >
+          Mulai Kuis Sekarang
+        </Button>
+      </div>
+
+      <ConfirmationModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onConfirm={handleStartQuiz}
+        title="Mulai Kuis"
+        message="Apakah Anda yakin ingin memulai kuis sekarang? Waktu akan langsung berjalan setelah Anda menekan 'Mulai'."
+        confirmText="Ya, Mulai Sekarang"
+        cancelText="Nanti Dulu"
+      />
+    </>
+  );
+};
+
+export default QuizBefore;
