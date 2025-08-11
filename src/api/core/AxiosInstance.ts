@@ -19,9 +19,23 @@ export interface BlobResponse {
   status: number;
 }
 
+interface AuthError extends Error {
+  response?: {
+    status: number;
+    data?: unknown;
+  };
+  status?: number;
+  code?: number;
+}
+
+type AuthErrorHandler = (error: AuthError | AxiosError) => void;
+
 class ApiCore {
   private client: AxiosInstance;
   private static instance: ApiCore;
+  private authErrorHandler: AuthErrorHandler | null = null;
+  private protectedRoutes: string[] = [];
+  private isRouteProtectionEnabled = false;
 
   private constructor() {
     this.client = axios.create({
@@ -39,6 +53,37 @@ class ApiCore {
       ApiCore.instance = new ApiCore();
     }
     return ApiCore.instance;
+  }
+
+  public setProtectedRoutes(routes: string[]): void {
+    this.protectedRoutes = routes;
+    this.isRouteProtectionEnabled = true;
+  }
+
+  public disableRouteProtection(): void {
+    this.isRouteProtectionEnabled = false;
+  }
+
+  private isCurrentRouteProtected(): boolean {
+    if (!this.isRouteProtectionEnabled) return true;
+
+    if (typeof window === "undefined") return false;
+
+    const currentPath = window.location.pathname;
+
+    return this.protectedRoutes.some((route) => {
+      if (route.endsWith("/*")) {
+        const basePath = route.slice(0, -2);
+        return (
+          currentPath !== basePath && currentPath.startsWith(basePath + "/")
+        );
+      }
+      return currentPath === route;
+    });
+  }
+
+  public setAuthErrorHandler(handler: AuthErrorHandler): void {
+    this.authErrorHandler = handler;
   }
 
   private setupInterceptors(): void {
@@ -67,11 +112,41 @@ class ApiCore {
     this.client.interceptors.response.use(
       (response: AxiosResponse) => response,
       (error: AxiosError) => {
-        if (error.response?.status === 401) {
+        if (error.code === "ERR_NETWORK") {
+          console.log("Network Error detected");
+          if (this.authErrorHandler) {
+            this.authErrorHandler(error);
+          }
         }
+        if (error.response?.status === 401 && this.isCurrentRouteProtected()) {
+          console.log(
+            "401 Unauthorized detected in protected route:",
+            window.location.pathname,
+          );
+
+          if (this.authErrorHandler) {
+            this.authErrorHandler(error);
+          } else {
+            this.handleDefaultAuthError();
+          }
+        }
+
         return Promise.reject(error);
       },
     );
+  }
+
+  private handleDefaultAuthError(): void {
+    console.warn("No auth error handler set, using default behavior");
+
+    if (typeof window !== "undefined") {
+      document.cookie =
+        "auth_session=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+
+      setTimeout(() => {
+        window.location.href = "/login";
+      }, 1000);
+    }
   }
 
   public async get<T>(

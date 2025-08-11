@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import TugasContainer from "../tugas/container/TugasContainer";
+import QuizContainer from "../quiz/container/QuizContainer";
 
 const PenugasanContainer = () => {
   const [activeTab, setActiveTab] = useState<"tugas" | "quiz">("tugas");
@@ -44,7 +45,7 @@ const PenugasanContainer = () => {
       </section>
 
       <div className="w-full">
-        {activeTab === "tugas" ? <TugasContainer /> : <div>Konten Kuis</div>}
+        {activeTab === "tugas" ? <TugasContainer /> : <QuizContainer />}
       </div>
     </div>
   );

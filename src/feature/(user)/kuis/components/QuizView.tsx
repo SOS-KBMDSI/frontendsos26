@@ -1,0 +1,149 @@
+import React from "react";
+import { QuizSoal, Pertanyaan, Pilihan } from "@/api/services/user/quiz";
+import { Button } from "@/shared/components/ui/Button";
+
+interface QuizViewProps {
+  isLoading: boolean;
+  isSubmitting: boolean;
+  error: string | null;
+  kuisData?: QuizSoal | null;
+  currentQuestion?: Pertanyaan;
+  currentQuestionIndex: number;
+  answers: Record<string, string>;
+  timeLeft: string;
+  isLastQuestion: boolean;
+  onSelectAnswer: (questionId: string, answerLabel: string) => void;
+  onSubmit: () => void;
+  onNext: () => void;
+  onPrev: () => void;
+  onJumpToQuestion: (index: number) => void;
+}
+
+export const QuizView = ({
+  isLoading,
+  isSubmitting,
+  error,
+  kuisData,
+  currentQuestion,
+  currentQuestionIndex,
+  answers,
+  timeLeft,
+  isLastQuestion,
+  onSelectAnswer,
+  onSubmit,
+  onNext,
+  onPrev,
+  onJumpToQuestion,
+}: QuizViewProps) => {
+  if (isLoading)
+    return <div className="text-center text-white">Memuat soal...</div>;
+  if (error)
+    return <div className="text-center text-red-500">Error: {error}</div>;
+  if (!kuisData || !currentQuestion)
+    return (
+      <div className="text-center text-white">Data kuis tidak ditemukan.</div>
+    );
+
+  const sortedPilihan = [...currentQuestion.pilihan].sort((a, b) =>
+    a.label.localeCompare(b.label),
+  );
+
+  return (
+    <main className="mycontainer py-10 ">
+      <div className="max-w-4xl bg-white space-y-6 px-8 sm:px-16 py-12 rounded-2xl mx-auto">
+        <div className="flex flex-col lg:flex-row justify-center lg:justify-between items-center">
+          <div className="space-y-2">
+            <h1 className="text-xl  sm:text-2xl text-primary-500 font-bold">
+              {kuisData.nama_kuis}
+            </h1>
+            <p className="text-black text-center lg:text-left">
+              Soal {currentQuestionIndex + 1} dari{" "}
+              {kuisData.list_pertanyaan.length}
+            </p>
+          </div>
+          <Button
+            variant={"outline"}
+            disabled={true}
+            size={"small"}
+            className="border-primary-500"
+          >
+            Sisa Waktu: {timeLeft}
+          </Button>
+        </div>
+
+        <div className="border-t border-b border-gray-200 py-4">
+          <h3 className="font-semibold mb-3">Navigasi Soal</h3>
+          <div className="grid grid-cols-5 sm:grid-cols-10 md:grid-cols-12 lg:grid-cols-15 gap-4 lg:gap-2">
+            {kuisData.list_pertanyaan.map((soal, index) => {
+              const isAnswered = !!answers[soal.id_pertanyaan];
+              const isCurrent = index === currentQuestionIndex;
+
+              let buttonClass = "bg-gray-200 hover:bg-gray-300 text-black";
+              if (isAnswered) {
+                buttonClass =
+                  "bg-primary-500 text-white ring-2 ring-primary-300";
+              }
+              if (isCurrent) {
+                buttonClass =
+                  "bg-primary-500 text-white ring-2 ring-primary-300";
+              }
+
+              return (
+                <button
+                  key={soal.id_pertanyaan}
+                  onClick={() => onJumpToQuestion(index)}
+                  className={`w-9 h-9 flex items-center justify-center rounded-md font-medium text-sm transition-all ${buttonClass}`}
+                >
+                  {index + 1}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        <div className="p-6 rounded-lg bg-[#F5E6E9]">
+          <h5 className="font-semibold text-lg sm:text-xl">Pertanyaan</h5>
+          <p className="text-base sm:text-lg mb-6">
+            {currentQuestion.pertanyaan}
+          </p>
+
+          <div className="grid grid-cols-1 gap-4">
+            {sortedPilihan.map((pilihan: Pilihan) => (
+              <button
+                key={pilihan.label}
+                onClick={() =>
+                  onSelectAnswer(currentQuestion.id_pertanyaan, pilihan.label)
+                }
+                className={`w-full py-3 px-4 rounded-2xl border text-left transition-colors ${
+                  answers[currentQuestion.id_pertanyaan] === pilihan.label
+                    ? "border-primary-500 text-primary-500 bg-primary-100 hover:bg-primary-200"
+                    : "bg-white border-black/50 hover:bg-gray-100"
+                }`}
+              >
+                <span className="font-bold mr-3">{pilihan.label}.</span>
+                {pilihan.value}
+              </button>
+            ))}
+          </div>
+
+          <div className="lg:flex grid grid-cols-2 gap-4 lg:gap-0  lg:justify-between mt-8">
+            <Button
+              onClick={onPrev}
+              variant={"outline"}
+              disabled={currentQuestionIndex === 0}
+            >
+              Sebelumnya
+            </Button>
+            {isLastQuestion ? (
+              <Button onClick={onSubmit} disabled={isSubmitting}>
+                {isSubmitting ? "Mengumpulkan..." : "Selesai"}
+              </Button>
+            ) : (
+              <Button onClick={onNext}>Selanjutnya</Button>
+            )}
+          </div>
+        </div>
+      </div>
+    </main>
+  );
+};

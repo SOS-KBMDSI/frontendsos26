@@ -74,6 +74,7 @@ const Navbar = () => {
                 height={300}
                 src={LogoSoS}
                 alt="Logo SoS"
+                priority
               />
               <div className="text-white  text-xs lg:text-xs xl:text-xs 2xl:text-base">
                 <h1>Synergy Of Symphony & </h1>

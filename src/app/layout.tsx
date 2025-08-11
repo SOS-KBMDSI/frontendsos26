@@ -1,13 +1,6 @@
 import type { Metadata } from "next";
-import { Poppins } from "next/font/google";
 import "@/styles/globals.css";
-import { upanddownNormal } from "@/shared/utils/font";
-const poppins = Poppins({
-  variable: "--font-poppins",
-  subsets: ["latin"],
-  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
-  style: ["normal", "italic"],
-});
+import { upanddownNormal, poppins } from "@/shared/utils/font";
 
 export const metadata: Metadata = {
   title: "Synergy of Symphony",

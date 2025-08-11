@@ -5,6 +5,7 @@ import { Button } from "@/shared/components/ui/Button";
 import { Modal } from "@/shared/components/ui/Modal";
 import Link from "next/link";
 import TugasForm from "../components/TugasForm";
+import { Plus } from "lucide-react";
 
 const TugasContainer = () => {
   const { data: tugas, isLoading, error, refresh } = useGetAllTugas();
@@ -30,6 +31,7 @@ const TugasContainer = () => {
     <section className="">
       <div className="flex justify-end">
         <Button variant={"outline"} onClick={() => setIsModalOpen(true)}>
+          <Plus size={16} className="mr-2" />
           Tambah Penugasan
         </Button>
       </div>
@@ -39,7 +41,7 @@ const TugasContainer = () => {
             href={`/admin/penugasan/tugas/${tugas.id_penugasan}`}
             key={tugas.id_penugasan}
           >
-            <TugasCard tugas={tugas} idx={idx} />
+            <TugasCard tugas={tugas} idx={idx + 1} />
           </Link>
         ))}
       </div>
