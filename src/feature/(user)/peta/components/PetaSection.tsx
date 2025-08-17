@@ -4,19 +4,23 @@ import { motion } from "framer-motion";
 import BgPattern from "@/assets/user/bg-patern.svg";
 import { SectionTitle } from "../../akademik/components/SectionTitle";
 import PetaContent from "./PetaContent";
-import Example1 from "@/assets/peta/example-1.png";
-import Example2 from "@/assets/peta/example-2.png";
+import Rangkaian11 from "@/assets/peta/rangkaian1-1.png";
+import Rangkaian12 from "@/assets/peta/rangkaian1-2.png";
+import Rangkaian21 from "@/assets/peta/rangkaian2-1.png";
+import Rangkaian22 from "@/assets/peta/rangkaian2-2.png";
 import CaturPattern from "@/assets/user/pembatas.svg";
 import Image from "next/image";
 import PetaCountDown from "./PetaCountDown";
+import { useAuthContext } from "@/shared/hooks/useAuthContext";
 
 const PetaSection = () => {
+  const { user } = useAuthContext();
   return (
     <section
       className="bg-no-repeat bg-cover bg-secondary-200 relative overflow-hidden"
       style={{ backgroundImage: `url(${BgPattern.src})` }}
     >
-      <div className="mycontainer text-center py-24 md:py-32 relative z-10">
+      <div className="text-center py-24 md:py-32 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -26,20 +30,28 @@ const PetaSection = () => {
           <SectionTitle lineColor="bg-primary-500">Rangkaian</SectionTitle>
         </motion.div>
 
-        <PetaCountDown />
+        {user && <PetaCountDown />}
 
-        <div className="flex flex-col gap-48 mt-64 relative z-10">
+        <div className="flex flex-col gap-48 mt-64 relative px-24">
           <PetaContent
             title="Initiating the Odyssey"
             description="Berisi pengenalan Departemen Sistem Informasi, prospek karier di bidang IT, serta cara menyusun surat lamaran kerja yang dikemas secara interaktif melalui aktivitas dan games yang seru."
-            image={Example1}
+            imageTop={Rangkaian11}
+            imageBottom={Rangkaian12}
+            altTop="Rangkaian 1-1"
+            altBottom="Rangkaian 1-2"
+            rotate={0}
             isDecoration
           />
           <PetaContent
             mode="right"
             title="Navigating the Currents"
             description="Membahas pengembangan diri dan personal branding, dengan berdiskusi mahasiswa baru saling bertukar pendapat sekaligus menentukan calon pemimpin angkatan dari tiap prodi."
-            image={Example2}
+            imageTop={Rangkaian21}
+            imageBottom={Rangkaian22}
+            altTop="Rangkaian 2-1"
+            altBottom="Rangkaian 2-2"
+            rotate={0}
             isDecoration
           />
         </div>

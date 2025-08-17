@@ -1,23 +1,31 @@
 import Image, { StaticImageData } from "next/image";
 import React from "react";
 import { motion } from "framer-motion";
-import PhotoFrame from "@/assets/peta/photo-frame.svg";
 import Ship from "@/assets/peta/ship.svg";
 import Map from "@/assets/peta/map.svg";
+import PhotoWithFrame from "./PhotoWithFrame";
 
 interface PetaContentProps {
   mode?: "left" | "right";
   title: string;
   description: string;
-  image: StaticImageData;
+  imageTop: StaticImageData;
+  altTop: string;
+  imageBottom?: StaticImageData;
+  altBottom?: string;
   isDecoration?: boolean;
+  rotate?: number;
 }
 
 const PetaContent = ({
   mode = "left",
   title,
   description,
-  image,
+  imageTop,
+  altTop,
+  imageBottom,
+  altBottom,
+  rotate = 7,
   isDecoration = false,
 }: PetaContentProps) => {
   return (
@@ -51,30 +59,34 @@ const PetaContent = ({
             {description}
           </motion.p>
         </div>
+
         <motion.div
-          className="w-1/2 flex justify-end items-end relative"
-          initial={{ opacity: 0, scale: 0.8, rotate: 0 }}
-          whileInView={{ opacity: 1, scale: 1, rotate: 9 }}
-          transition={{ duration: 0.8, delay: 0.6 }}
+          className="w-1/2 relative min-h-[450px]"
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.5 }}
           viewport={{ once: true, amount: 0.3 }}
         >
-          <div className="relative">
-            <Image
-              src={PhotoFrame}
-              width={400}
-              height={400}
-              className="w-full h-auto"
-              alt="Frame Rangkaian Photo"
-            />
-            <div className="absolute inset-0 flex items-center justify-center px-[4.4rem] py-[3.7rem] mb-1">
-              <Image
-                src={image}
-                width={300}
-                height={300}
-                className="w-full h-full object-cover"
-                alt="Rangkaian Photo"
-              />
+          {imageBottom && altBottom && (
+            <div
+              className={`absolute top-[40%] w-[85%] z-10 ${
+                mode === "left" ? "left-38" : "left-0"
+              }`}
+              style={{
+                rotate: mode === "left" ? `15deg` : `-15deg`,
+              }}
+            >
+              <PhotoWithFrame image={imageBottom} alt={altBottom} />
             </div>
+          )}
+
+          <div
+            className={`absolute w-[90%] z-0 top-0  ${
+              mode === "left" ? "right-0 " : "right-40"
+            }`}
+            style={{ rotate: `${rotate}deg` }}
+          >
+            <PhotoWithFrame image={imageTop} alt={altTop} />
           </div>
         </motion.div>
       </div>

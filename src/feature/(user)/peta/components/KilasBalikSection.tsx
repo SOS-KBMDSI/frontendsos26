@@ -5,6 +5,10 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence, Variants } from "framer-motion";
 import SwiperFrame from "@/assets/peta/swiper-frame.svg";
 import KilasBalik from "@/assets/peta/kilas-balik.jpg";
+import Rangkaian11 from "@/assets/peta/rangkaian1-1.png";
+import Rangkaian12 from "@/assets/peta/rangkaian1-2.png";
+import Rangkaian21 from "@/assets/peta/rangkaian2-1.png";
+import Rangkaian22 from "@/assets/peta/rangkaian2-2.png";
 import PrevArrow from "@/assets/peta/prev.svg";
 import NextArrow from "@/assets/peta/next.svg";
 import { Title } from "./Title";
@@ -16,9 +20,10 @@ const KilasBalikSection = () => {
 
   const images = [
     { src: KilasBalik, alt: "Kilas Balik 1" },
-    { src: KilasBalik, alt: "Kilas Balik 2" },
-    { src: KilasBalik, alt: "Kilas Balik 3" },
-    { src: KilasBalik, alt: "Kilas Balik 4" },
+    { src: Rangkaian11, alt: "Rangkaian 1 - 1" },
+    { src: Rangkaian12, alt: "Rangkaian 1 - 2" },
+    { src: Rangkaian21, alt: "Rangkaian 2 - 1" },
+    { src: Rangkaian22, alt: "Rangkaian 2 - 2" },
   ];
 
   const handlePrevious = () => {
@@ -155,7 +160,7 @@ const KilasBalikSection = () => {
                   src={images[currentIndex].src}
                   width={500}
                   height={500}
-                  className="w-[527px] border-5 border-default-light h-auto"
+                  className="w-[527px] h-72 object-cover border-5 border-default-light"
                   alt={images[currentIndex].alt}
                   priority
                 />
