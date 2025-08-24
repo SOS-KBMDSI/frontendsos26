@@ -32,6 +32,7 @@
   --color-default-dark: #383838;
   --color-default-dark-50: rgba(56, 56, 56, 0.5);
   --color-default-light: #f9f9f9;
+  --color-default-white: #fafafa;
 
   --color-bg-primary: #a61b37;
   --color-bg-secondary: #ece5db;
@@ -134,6 +135,25 @@
 .overflow-y-auto::-webkit-scrollbar-thumb {
   background-color: #9c0221;
   border-radius: 10px;
+}
+.bg-radial-kiri {
+  border-radius: 1446.37px;
+  background: radial-gradient(
+    45.21% 45.15% at 42.87% 63.48%,
+    #8c021e 0%,
+    rgba(234, 91, 67, 0.32) 100%
+  );
+  filter: blur(60px);
+}
+
+.bg-radial-kanan {
+  border-radius: 1448.931px;
+  background: radial-gradient(
+    44.88% 44.88% at 50.29% 57.43%,
+    #7d021a 0%,
+    rgba(125, 2, 26, 0.34) 100%
+  );
+  filter: blur(60px);
 }
 
 .content-container {
