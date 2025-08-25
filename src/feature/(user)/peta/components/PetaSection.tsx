@@ -1,7 +1,6 @@
 "use client";
 import React from "react";
 import { motion } from "framer-motion";
-import BgPattern from "@/assets/user/bg-patern.svg";
 import { SectionTitle } from "../../akademik/components/SectionTitle";
 import PetaContent from "./PetaContent";
 import Rangkaian11 from "@/assets/peta/rangkaian1-1.png";
@@ -16,11 +15,8 @@ import { useAuthContext } from "@/shared/hooks/useAuthContext";
 const PetaSection = () => {
   const { user } = useAuthContext();
   return (
-    <section
-      className="bg-no-repeat bg-cover bg-secondary-200 relative overflow-hidden"
-      style={{ backgroundImage: `url(${BgPattern.src})` }}
-    >
-      <div className="text-center py-24 md:py-32 relative z-10">
+    <section className="bg-login relative overflow-hidden">
+      <div className="text-center py-24 md:py-32 relative z-10 mycontainer">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
