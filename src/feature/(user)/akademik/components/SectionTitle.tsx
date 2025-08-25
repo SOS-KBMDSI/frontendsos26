@@ -17,10 +17,9 @@ export const SectionTitle = ({
       <h2 className="text-3xl md:text-7xl font-semibold text-center">
         {children}
       </h2>
-
       {underline && (
         <div
-          className={cn("h-2 w-full md:w-1/2 rounded-full", lineColor)}
+          className={cn("h-2 w-full md:w-2/3 rounded-full", lineColor)}
         ></div>
       )}
     </div>
