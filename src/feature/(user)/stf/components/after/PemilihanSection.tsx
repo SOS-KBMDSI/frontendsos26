@@ -37,7 +37,7 @@ const PemilihanSection = ({
 
   const handleVote = () => {
     if (activeCaketang) {
-      vote("activeCaketang.id_caketang");
+      vote(activeCaketang.id_caketang);
       setIsConfirmationModalOpen(false);
       setIsResultModalOpen(true);
       refresh();
