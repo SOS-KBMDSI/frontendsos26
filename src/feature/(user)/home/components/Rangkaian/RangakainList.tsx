@@ -33,7 +33,7 @@ const RangakainList = () => {
   };
 
   return (
-    <section className="relative content-container min-h-[100vh] overflow-hidden">
+    <section className="relative  min-h-[100vh]  overflow-hidden">
       <div className="absolute -top-[70vh] inset-0 flex justify-center items-center">
         <Image
           className="w-[100vw] h-auto max-w-none object-cover"
@@ -44,7 +44,7 @@ const RangakainList = () => {
       </div>
 
       {isDesktop ? (
-        <div className="relative z-10 lg:flex gap-[30vh] -mt-4 justify-center items-center min-h-[100vh]">
+        <div className="relative z-10  lg:flex gap-[30vh] -mt-4 justify-center items-center min-h-[100vh]">
           {rangkaianData.map((rangkaian) => (
             <PolaroidCard
               rotation={rangkaian.id === 1 ? 10 : rangkaian.id === 2 ? -10 : 0}
@@ -55,7 +55,7 @@ const RangakainList = () => {
         </div>
       ) : (
         <div className="relative z-10  flex flex-col justify-center items-center min-h-[100vh] ">
-          <div className="relative w-full  max-w-md mb-8 overflow-hidden">
+          <div className="relative w-full max-w-md mb-8 overflow-hidden">
             <div
               className="flex transition-transform duration-300 ease-in-out"
               style={{ transform: `translateX(-${currentIndex * 100}%)` }}
@@ -68,7 +68,7 @@ const RangakainList = () => {
             </div>
           </div>
 
-          <div className="flex justify-between  items-center w-full max-w-sm mb-6">
+          <div className="flex justify-between  content-container  items-center w-full max-w-sm mb-6">
             <Button
               arrow="left"
               variant="outline"
