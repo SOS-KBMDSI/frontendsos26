@@ -1,4 +1,5 @@
 import Guidebook from "./Guidebook";
+import MemoriSection from "./MemoriSection";
 import RangakainList from "./RangakainList";
 
 const RangkaianSection = () => {
@@ -9,6 +10,7 @@ const RangkaianSection = () => {
       </h4>
       <RangakainList />
       <Guidebook />
+      <MemoriSection />
     </section>
   );
 };
