@@ -157,7 +157,7 @@
 }
 
 .content-container {
-  @apply right-0 left-0 mx-auto  md:px-12 px-4 xl:px-60;
+  @apply right-0 left-0 mx-auto  md:px-12 px-8 xl:px-60;
 }
 
 @theme inline {
@@ -266,7 +266,11 @@
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
 }
-
+.hero-bg {
+  background: url("../assets/home/hero.webp");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
 @layer base {
   * {
     @apply border-border outline-ring/50;
