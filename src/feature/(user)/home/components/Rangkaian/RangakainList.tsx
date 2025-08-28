@@ -36,7 +36,7 @@ const RangakainList = () => {
     <section className="relative  min-h-[100vh]  overflow-hidden">
       <div className="absolute -top-[70vh] inset-0 flex justify-center items-center">
         <Image
-          className="w-[100vw] h-auto max-w-none object-cover"
+          className="w-[100vw] scale-105 h-auto max-w-none object-cover"
           src={Elips}
           alt="elips"
           priority
@@ -44,7 +44,7 @@ const RangakainList = () => {
       </div>
 
       {isDesktop ? (
-        <div className="relative z-10  lg:flex gap-[30vh] -mt-4 justify-center items-center min-h-[100vh]">
+        <div className="relative z-10  lg:flex gap-[30vh] -mt-2 justify-center items-center min-h-[100vh]">
           {rangkaianData.map((rangkaian) => (
             <PolaroidCard
               rotation={rangkaian.id === 1 ? 10 : rangkaian.id === 2 ? -10 : 0}
