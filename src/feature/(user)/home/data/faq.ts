@@ -7,26 +7,21 @@ export interface FAQ {
 export const faqData: FAQ[] = [
   {
     id: 1,
-    question: "Lorem ipsum dolor sit amet?",
+    question: "Apakah akan ada penilaian selama OSPEK?",
     answer:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+      "Selama masa kegiatan OSPEK akan ada penilaian ya adik-adik terutama di penugasan dan tata tertib jadi persiapkan diri kalian sebaik mungkin, semangat adik-adik maba",
   },
   {
     id: 2,
-    question: "Lorem ipsum dolor sit amet consectetur?",
+    question:
+      "Apakah ada kegiatan OSPEK yang melibatkan kegiatan di luar kampus?",
     answer:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+      "Kegiatan OSPEK sepenuhnya di lingkungan kampus yaaa terutama di fakultas ilmu komputer",
   },
   {
     id: 3,
-    question: "Lorem ipsum dolor sit amet adipiscing?",
-    answer:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum consequat hendrerit lacus, ac molestie nulla. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
-  },
-  {
-    id: 4,
-    question: "Lorem ipsum dolor sit amet tempor?",
-    answer:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, nunc id aliquam tincidunt, nisl nunc tincidunt nunc, vitae aliquam nunc nisi quis nunc. Duis aute irure dolor in reprehenderit.",
+    question:
+      "Bagaimana system komunikasi resmi dari panitia (LINE, email, grup WA)",
+    answer: "untuk komunikasi kita menggunakan line yaa",
   },
 ];
