@@ -137,7 +137,7 @@
 }
 
 .content-container {
-  @apply right-0 left-0 mx-auto  md:px-12 px-8 xl:px-60;
+  @apply right-0 left-0 mx-auto  md:px-12 lg:px-32 px-8 xl:px-60;
 }
 
 @theme inline {

@@ -19,7 +19,7 @@ const ProfileContainer: React.FC = () => {
 
   return (
     <main className="bg-login min-h-screen py-14">
-      <section className="mycontainer px-4 md:px-0">
+      <section className="content-container px-4 md:px-0">
         <div className="flex flex-row justify-between items-center md:items-center">
           <h4 className="text-black text-4xl md:text-4xl font-semibold">
             Profil
