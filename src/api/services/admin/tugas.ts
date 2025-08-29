@@ -61,6 +61,7 @@ export interface TugasSummary {
   file_link: string | null;
   is_visible: string;
   rangkaian: Rangkaian;
+  target?: string;
 }
 
 export type TugasDetail = TugasSummary;

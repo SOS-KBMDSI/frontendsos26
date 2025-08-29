@@ -3,7 +3,7 @@
 import { TugasSummary } from "@/api/services/admin/tugas";
 import { Button } from "@/shared/components/ui/Button";
 import { Input } from "@/shared/components/ui/Input";
-import { Calendar, Clock } from "lucide-react";
+import { Calendar, Clock, Eye, EyeOff, Target } from "lucide-react";
 import React from "react";
 
 interface DetailTugasProps {
@@ -37,6 +37,7 @@ const DetailTugas = ({ tugas, onEdit }: DetailTugasProps) => {
   };
 
   const { date, time } = formatTenggat(tugas?.tenggat);
+
   return (
     <div className="w-full">
       <h4 className="font-semibold text-2xl md:text-3xl lg:text-4xl text-black">
@@ -63,7 +64,7 @@ const DetailTugas = ({ tugas, onEdit }: DetailTugasProps) => {
           />
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mt-12">
           <div className="flex flex-col space-y-2 text-gray-700">
             <span className="text-primary-500 font-medium">Deadline:</span>
             <div className="flex items-center space-x-3">
@@ -82,6 +83,31 @@ const DetailTugas = ({ tugas, onEdit }: DetailTugasProps) => {
           <div className="flex flex-col space-y-2 text-gray-700">
             <span className="text-primary-500 font-medium">Rangkaian:</span>
             <span className="w-fit">{tugas?.rangkaian?.Name}</span>
+          </div>
+
+          <div className="flex flex-col space-y-2 text-gray-700">
+            <span className="text-primary-500 font-medium">Visibilitas:</span>
+            <div className="flex items-center space-x-2">
+              {tugas?.is_visible ? (
+                <>
+                  <Eye className="w-4 h-4 text-green-600" />
+                  <span className="text-green-600">Terlihat</span>
+                </>
+              ) : (
+                <>
+                  <EyeOff className="w-4 h-4 text-red-600" />
+                  <span className="text-red-600">Tersembunyi</span>
+                </>
+              )}
+            </div>
+          </div>
+
+          <div className="flex flex-col space-y-2 text-gray-700">
+            <span className="text-primary-500 font-medium">Target:</span>
+            <div className="flex items-center space-x-2">
+              <Target className="w-4 h-4" />
+              <span>{tugas?.target || "Tidak ada target"}</span>
+            </div>
           </div>
         </div>
 
