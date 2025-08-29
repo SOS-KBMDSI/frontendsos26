@@ -33,6 +33,7 @@ const PresensiMahasiswaForm = ({
   const statusOptions: Option[] = [
     { value: "hadir", label: "Hadir" },
     { value: "tidak-hadir", label: "Tidak Hadir" },
+    { value: "izin", label: "izin" },
   ];
 
   const { showToast } = useToast();
@@ -56,10 +57,13 @@ const PresensiMahasiswaForm = ({
     },
   });
 
-  const formatStatus = (inputStatus: string): "hadir" | "tidak-hadir" => {
+  const formatStatus = (
+    inputStatus: string,
+  ): "hadir" | "tidak-hadir" | "izin" => {
     const lowercasedStatus = inputStatus.toLowerCase();
-
-    if (lowercasedStatus === "hadir") {
+    if (lowercasedStatus === "izin") {
+      return "izin";
+    } else if (lowercasedStatus === "hadir") {
       return "hadir";
     } else if (lowercasedStatus === "tidak hadir") {
       return "tidak-hadir";
