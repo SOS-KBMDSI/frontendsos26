@@ -5,7 +5,7 @@ import Image from "next/image";
 const Guidebook = () => {
   return (
     <div className="content-container flex flex-col md:flex-row md:justify-center items-center">
-      <div className="md:max-w-[45rem] h-fit rounded-xl shadow-lg overflow-hidden ">
+      <div className="md:max-w-3/5 w-full h-fit rounded-xl shadow-lg overflow-hidden ">
         <div className="w-full bg-white h-3/4 space-y-2 md:px-10 px-4 py-4 md:py-7">
           <p className="text-center text-black mx-auto text-base lg:text-3xl md:w-4/5 font-bold">
             Biar Nggak Bingung, Yuk Unduh Buku Panduannya

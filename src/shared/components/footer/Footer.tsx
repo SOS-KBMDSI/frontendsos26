@@ -13,36 +13,36 @@ export const Footer = () => {
       <Image
         src={CaturPattern}
         alt="Footer Pattern"
-        className="w-full h-18 object-cover md:h-auto"
+        className="w-full h-[50px] object-cover md:h-auto"
         aria-hidden="true"
       />
 
-      <div className="mycontainer py-32 md:py-20">
-        <div className="flex flex-col items-center md:flex-row md:justify-around gap-12 md:gap-8">
-          <div className="flex flex-col md:flex-row items-center gap-8 text-center md:text-left">
+      <div className="mycontainer py-[89px] md:py-[56px]">
+        <div className="flex flex-col items-center md:flex-row md:justify-around gap-[34px] md:gap-[22px]">
+          <div className="flex flex-col md:flex-row items-center gap-[22px] text-center md:text-left">
             <Image
               src={LogoSoS}
               alt="Logo Synergy Of Symphony"
-              className="w-28 md:w-40"
+              className="w-[78px] md:w-[112px]"
             />
-            <div className="flex flex-col gap-2">
-              <h4 className="font-bold text-2xl text-default-dark">
+            <div className="flex flex-col gap-[6px]">
+              <h4 className="font-bold text-[17px] text-default-dark">
                 Synergy Of Symphony & <br className="hidden md:block" /> Shaping
                 The Future
               </h4>
-              <p className="text-sm md:text-lg text-black">
+              <p className="text-[10px] md:text-[13px] text-black">
                 Embark on the Journey, Unite in Symphony
               </p>
             </div>
           </div>
 
-          <div className="flex flex-col-reverse items-center md:flex-row md:items-start gap-6 md:gap-24 lg:gap-40">
+          <div className="flex flex-col-reverse items-center md:flex-row md:items-start gap-[17px] md:gap-[67px] lg:gap-[112px]">
             <FooterLinks />
-            <div className="flex flex-col items-center md:items-start gap-6">
-              <h3 className="hidden md:block font-semibold text-xl text-default-dark">
+            <div className="flex flex-col items-center md:items-start gap-[17px]">
+              <h3 className="hidden md:block font-semibold text-[14px] text-default-dark">
                 Sosial Media
               </h3>
-              <div className="flex justify-center md:justify-start gap-4">
+              <div className="flex justify-center md:justify-start gap-[11px]">
                 {iconSosmedData.map((sosmed) => (
                   <Link
                     key={sosmed.name}
@@ -55,8 +55,8 @@ export const Footer = () => {
                     <Image
                       src={sosmed.iconSrc}
                       alt={`${sosmed.name} icon`}
-                      height={sosmed.height}
-                      width={sosmed.width}
+                      height={Math.round(sosmed.height * 0.7)}
+                      width={Math.round(sosmed.width * 0.7)}
                     />
                   </Link>
                 ))}
@@ -66,7 +66,7 @@ export const Footer = () => {
         </div>
       </div>
 
-      <div className="border-t border-default-dark/50 text-center py-4 text-default-dark text-sm">
+      <div className="border-t border-default-dark/50 text-center py-[11px] text-default-dark text-[10px]">
         <p>Made with ❤️ by PIT SOS 2025</p>
       </div>
     </footer>

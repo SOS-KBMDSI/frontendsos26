@@ -3,7 +3,7 @@ import { ProdiItem } from "../../data/prodi";
 import Texture from "@/assets/user/card-texture.png";
 const ProdiCard = ({ prodi }: { prodi: ProdiItem }) => {
   return (
-    <div className="w-full relative rounded-xl md:min-h-[20rem] p-5 bg-secondary-500 flex flex-col items-center justify-center">
+    <div className="w-full relative rounded-xl aspect-[3/4] p-5 bg-secondary-500 flex flex-col items-center justify-center">
       <Image
         className="w-32 z-20 lg:w-44 mb-6"
         width={100}

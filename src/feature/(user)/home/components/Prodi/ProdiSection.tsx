@@ -4,7 +4,7 @@ import ProdiCard from "./ProdiCard";
 const ProdiSection = () => {
   return (
     <section className="md:h-screen relative">
-      <h4 className="text-center rounded-xl border-2 border-[#B9B2A8] absolute left-1/2 -top-4 md:-top-10 -translate-x-1/2 bg-white text-black w-fit z-20 font-semibold md:text-4xl px-4 py-2 md:px-12 md:py-5">
+      <h4 className="text-center rounded-xl border-2 border-[#B9B2A8] absolute left-1/2 -top-4 md:-top-10 -translate-x-1/2 bg-white text-black w-fit z-20 font-semibold text-xl md:text-4xl px-4 py-2 md:px-12 md:py-5">
         Program Studi
       </h4>
       <div className="w-full content-container h-full relative  bg-red-800 overflow-hidden">

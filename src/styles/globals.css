@@ -269,6 +269,7 @@
 .hero-bg {
   background: url("../assets/home/hero.webp");
   background-repeat: no-repeat;
+  background-position: center right 40%;
   background-size: cover;
 }
 @layer base {
@@ -277,5 +278,23 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+@layer base {
+  :root {
+    /* Font sizes dengan nama yang benar untuk Tailwind 4 */
+    --text-xs: 0.71rem; /* 0.75rem - 5% */
+    --text-sm: 0.83rem; /* 0.875rem - 5% */
+    --text-base: 0.95rem; /* 1rem - 5% */
+    --text-lg: 1.07rem; /* 1.125rem - 5% */
+    --text-xl: 1.19rem; /* 1.25rem - 5% */
+    --text-2xl: 1.43rem; /* 1.5rem - 5% */
+    --text-3xl: 1.78rem; /* 1.875rem - 5% */
+    --text-4xl: 2.14rem; /* 2.25rem - 5% */
+    --text-5xl: 2.85rem; /* 3rem - 5% */
+    --text-6xl: 3.56rem; /* 3.75rem - 5% */
+    --text-7xl: 4.56rem; /* 4.8rem - 5% */
+    --text-8xl: 5.7rem; /* 6rem - 5% */
+    --text-9xl: 7.6rem; /* 8rem - 5% */
   }
 }
