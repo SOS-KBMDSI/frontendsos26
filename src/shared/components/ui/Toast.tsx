@@ -83,7 +83,7 @@ export const Toast: React.FC<ToastProps> = ({
   return (
     <div
       className={`
-        fixed top-4 right-4 z-50 max-w-sm w-full
+        fixed top-4 mx-auto px-4 lg:px-0 right-0 md:right-4 z-50 max-w-sm w-full
         transform transition-all duration-300 ease-in-out
         ${
           isLeaving ? "translate-x-full opacity-0" : "translate-x-0 opacity-100"

@@ -14,7 +14,7 @@ export const QuizResultView = ({ quiz }: { quiz: Quiz }) => {
           Skor: {quiz?.score}/100
         </p>
         <p className="text-base text-black">
-          Jumlah Jawaban Benar: {quiz?.jawaban_benar} / {quiz?.total_pertanyaan}
+          Jumlah Jawaban Benar: {quiz?.jawaban_benar} / {quiz?.total_soal}
         </p>
       </div>
       <p className="mt-4">
