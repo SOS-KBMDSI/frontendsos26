@@ -58,6 +58,9 @@ const NavbarDropdown: React.FC<NavbarDropdownProps> = ({ user, onLogout }) => {
         aria-expanded={isOpen}
         aria-controls={dropdownId}
       >
+        <div className="flex items-center justify-center w-8 h-8 bg-white/20 rounded-lg">
+          <User className="w-4 h-4" />
+        </div>
         <span className="block max-w-32 truncate">
           {user.nama || "Pengguna"}
         </span>
@@ -82,6 +85,9 @@ const NavbarDropdown: React.FC<NavbarDropdownProps> = ({ user, onLogout }) => {
             {/* Header Section */}
             <div className="px-4 py-3 mb-2 bg-gradient-to-r from-secondary-100 to-secondary-200 rounded-t-2xl">
               <div className="flex items-center gap-3">
+                <div className="flex items-center justify-center w-10 h-10 bg-white/50 rounded-lg">
+                  <User className="w-5 h-5 text-default-dark/70" />
+                </div>
                 <div>
                   <p className="font-bold text-default-dark truncate">
                     {user.nama || "Pengguna"}
