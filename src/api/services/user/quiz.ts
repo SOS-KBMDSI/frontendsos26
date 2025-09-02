@@ -30,6 +30,7 @@ export interface Quiz {
   score?: number;
   jawaban_benar?: number;
   total_pertanyaan?: number;
+  total_soal?: number;
 }
 
 export interface Pilihan {
