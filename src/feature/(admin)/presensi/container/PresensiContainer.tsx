@@ -24,9 +24,7 @@ const PresensiContainer = () => {
   if (isLoading) {
     return <div>loading</div>;
   }
-  if (!allPresensi) {
-    return <div>Tugas Masih Kosong Jir</div>;
-  }
+
   if (error) {
     return (
       <div>
@@ -49,9 +47,13 @@ const PresensiContainer = () => {
         <Button onClick={handleModal}>Tambah Presensi</Button>
       </div>
       <div className="mt-10 flex flex-col gap-y-5">
-        {allPresensi.map((presensi) => (
-          <PresensiCard key={presensi.kode_id} presensi={presensi} />
-        ))}
+        {allPresensi && allPresensi.length > 0 ? (
+          allPresensi.map((presensi) => (
+            <PresensiCard key={presensi.kode_id} presensi={presensi} />
+          ))
+        ) : (
+          <p className="text-center text-gray-500">Tidak ada data presensi</p>
+        )}
       </div>
       <Modal
         isOpen={isModalOpen}
