@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { User, LogOut, ChevronDown } from "lucide-react";
+import { User, LogOut, ChevronDown, Settings } from "lucide-react";
 
 interface NavbarDropdownProps {
   user: {
@@ -81,18 +81,20 @@ const NavbarDropdown: React.FC<NavbarDropdownProps> = ({ user, onLogout }) => {
         }`}
       >
         {isOpen && (
-          <div className="py-2">
+          <div className="py-2 ">
             {/* Header Section */}
             <div className="px-4 py-3 mb-2 bg-gradient-to-r from-secondary-100 to-secondary-200 rounded-t-2xl">
               <div className="flex items-center gap-3">
-                <div className="flex items-center justify-center w-10 h-10 bg-white/50 rounded-lg">
+                <div className="flex items-center justify-center w-10 h-10 bg-white/50 rounded-lg shrink-0">
                   <User className="w-5 h-5 text-default-dark/70" />
                 </div>
-                <div>
+                <div className="min-w-0">
                   <p className="font-bold text-default-dark truncate">
                     {user.nama || "Pengguna"}
                   </p>
-                  <p className="text-sm text-default-dark/50">Online</p>
+                  <p className="text-sm text-default-dark/50 truncate">
+                    Online
+                  </p>
                 </div>
               </div>
             </div>
@@ -103,10 +105,10 @@ const NavbarDropdown: React.FC<NavbarDropdownProps> = ({ user, onLogout }) => {
                   onClick={handleLinkClick}
                   className="flex items-center gap-3 w-full px-3 py-2.5 text-sm text-default-dark hover:bg-secondary-200 hover:text-primary-600 rounded-xl transition-all duration-150 cursor-pointer group font-medium"
                 >
-                  <div className="flex items-center justify-center w-8 h-8 bg-primary-100 text-primary-600 rounded-lg transition-colors duration-150">
-                    <User className="w-4 h-4" />
+                  <div className="flex items-center justify-center w-8 h-8 bg-primary-100 text-primary-600 rounded-lg transition-colors duration-150 shrink-0">
+                    <Settings className="w-4 h-4" />
                   </div>
-                  <span>Lihat Profil</span>
+                  <span className="truncate">Lihat Profil</span>
                 </span>
               </Link>
             </div>
@@ -120,10 +122,10 @@ const NavbarDropdown: React.FC<NavbarDropdownProps> = ({ user, onLogout }) => {
                 onClick={handleLogoutClick}
                 className="flex items-center gap-3 w-full px-3 py-2.5 text-sm text-red-600 hover:bg-red-50 hover:text-red-700 rounded-xl transition-all duration-150 group font-medium"
               >
-                <div className="flex items-center justify-center w-8 h-8 bg-red-100 group-hover:bg-red-200 rounded-lg transition-colors duration-150">
+                <div className="flex items-center justify-center w-8 h-8 bg-red-100 group-hover:bg-red-200 rounded-lg transition-colors duration-150 shrink-0">
                   <LogOut className="w-4 h-4 text-red-600" />
                 </div>
-                <span>Logout</span>
+                <span className="truncate">Logout</span>
               </button>
             </div>
           </div>

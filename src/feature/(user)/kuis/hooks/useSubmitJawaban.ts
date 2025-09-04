@@ -3,12 +3,12 @@ import {
   kuisService,
   SubmitKuisPayload,
   QuizResult,
-} from "@/api/services/user/quiz"; // Impor QuizResult
+} from "@/api/services/user/quiz";
 
 export const useSubmitKuis = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [data, setData] = useState<QuizResult | null>(null); // <-- Gunakan tipe QuizResult
+  const [data, setData] = useState<QuizResult | null>(null);
 
   const submitJawaban = async (
     id_kuis: string,
