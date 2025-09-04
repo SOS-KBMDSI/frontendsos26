@@ -70,7 +70,7 @@ const AktivitasAfterLogin = ({ user }: AktivitasAfterLoginProps) => {
             </div>
           </div>
           <Image
-            className="md:-ml-30 md:mr-30 md:w-1/3 z-30"
+            className="md:-ml-30 md:mt-4 xl:w-1/3 md:w-1/2 z-30"
             src={Maskor2}
             alt="Maskot"
           />
