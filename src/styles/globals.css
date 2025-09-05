@@ -71,7 +71,7 @@
 }
 
 .mycontainer {
-  @apply right-0  left-0 mx-auto lg:px-8 md:px-12 px-4 xl:px-24;
+  @apply right-0  left-0 mx-auto lg:px-8 md:px-12 px-4 xl:px-22 2xl:px-24;
 }
 
 .bg-login {
@@ -171,7 +171,7 @@
   background-color: transparent;
 }
 .content-container {
-  @apply right-0 left-0 mx-auto  md:px-12 lg:px-32 px-8 xl:px-60;
+  @apply right-0 left-0 mx-auto  md:px-12 lg:px-32 px-8 xl:px-44 2xl:px-56;
 }
 
 @theme inline {
