@@ -69,6 +69,7 @@ const PolaroidCard = ({
 
         <Button
           variant={"outline"}
+          onClick={() => (window.location.href = "/peta")}
           className="mt-[2vh] w-full h-[5vh] text-[1.8vh]
                    transition-all duration-300 ease-out
                    hover:bg-primary-500 hover:text-white hover:border-primary-500
