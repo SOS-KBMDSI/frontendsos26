@@ -89,7 +89,7 @@ export const DetailTugasContainer = ({
   return (
     <div className="relative min-h-screen">
       <div className="fixed inset-0 -z-10 bg-login bg-cover bg-no-repeat" />
-      <div className="relative z-10 mycontainer py-8 md:py-12 flex flex-col items-center gap-6 md:gap-8">
+      <div className="relative z-10 content-container py-8 md:py-12 flex flex-col items-center gap-6 md:gap-8">
         <AnimatedDiv className="w-full">
           <div className="w-full">
             <Link

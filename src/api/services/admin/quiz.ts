@@ -63,6 +63,7 @@ export interface Quiz {
   data_rangkaian: Rangkaian;
   tenggat_kuis: string;
   durasi_kuis: string;
+  total_soal?: number;
 }
 export interface CreateQuizPayload {
   kuis_nama: string;

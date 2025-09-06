@@ -90,7 +90,7 @@ const MemoriSection = () => {
         </button>
 
         <div
-          className={`grid w-full gap-10 overflow-hidden ${getGridClasses()}`}
+          className={`grid w-full lg:gap-4 gap-10 2xl:gap-10 overflow-hidden ${getGridClasses()}`}
         >
           {visibleMemories.map((memori, index) => (
             <MemoriCard

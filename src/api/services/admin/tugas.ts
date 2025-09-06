@@ -76,7 +76,7 @@ interface TugasUpdateData {
   deskripsi: string;
   tenggat: string;
   file: string;
-  is_visible: boolean;
+  is_visible: string;
 }
 
 class TugasService {

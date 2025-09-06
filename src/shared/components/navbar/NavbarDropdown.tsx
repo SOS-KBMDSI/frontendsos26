@@ -49,23 +49,23 @@ const NavbarDropdown: React.FC<NavbarDropdownProps> = ({ user, onLogout }) => {
   }, []);
 
   return (
-    <div className="relative " ref={dropdownRef}>
+    <div className="relative" ref={dropdownRef}>
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-3 bg-gradient-to-r from-secondary-400 to-secondary-600 text-default-dark font-semibold cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-secondary-500 focus-visible:ring-offset-2 px-4 py-2.5 rounded-xl hover:from-secondary-500 hover:to-secondary-700 transition-all duration-200 shadow-lg hover:shadow-xl group"
+        className="flex items-center gap-2 sm:gap-3 bg-gradient-to-r from-secondary-400 to-secondary-600 text-default-dark font-semibold cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-secondary-500 focus-visible:ring-offset-2 px-2 sm:px-4 py-2 sm:py-2.5 rounded-xl hover:from-secondary-500 hover:to-secondary-700 transition-all duration-200 shadow-lg hover:shadow-xl group"
         aria-haspopup="true"
         aria-expanded={isOpen}
         aria-controls={dropdownId}
       >
-        <div className="flex items-center justify-center w-8 h-8 bg-white/20 rounded-lg">
-          <User className="w-4 h-4" />
+        <div className="flex items-center justify-center w-6 h-6 sm:w-8 sm:h-8 bg-white/20 rounded-lg">
+          <User className="w-3 h-3 sm:w-4 sm:h-4" />
         </div>
-        <span className="block max-w-32 truncate">
+        <span className="block max-w-20 sm:max-w-32 text-sm sm:text-base truncate">
           {user.nama || "Pengguna"}
         </span>
         <ChevronDown
-          className={`w-4 h-4 transition-transform duration-200 ${
+          className={`w-3 h-3 sm:w-4 sm:h-4 transition-transform duration-200 ${
             isOpen ? "rotate-180" : ""
           }`}
         />
@@ -74,25 +74,25 @@ const NavbarDropdown: React.FC<NavbarDropdownProps> = ({ user, onLogout }) => {
       {/* Dropdown Menu */}
       <div
         id={dropdownId}
-        className={`absolute right-1/2 transform translate-x-1/2 lg:right-0 lg:translate-x-0 mt-2 w-64 origin-top rounded-2xl bg-white border border-gray-200 shadow-2xl ring-1 ring-black/5 transition-all duration-200 ease-out backdrop-blur-sm ${
+        className={`absolute right-0 mt-2 w-48 sm:w-64 origin-top rounded-2xl bg-white border border-gray-200 shadow-2xl ring-1 ring-black/5 transition-all duration-200 ease-out backdrop-blur-sm ${
           isOpen
             ? "opacity-100 scale-100 translate-y-0"
             : "opacity-0 scale-95 -translate-y-1 pointer-events-none"
         }`}
       >
         {isOpen && (
-          <div className="py-2 ">
+          <div className="py-2">
             {/* Header Section */}
-            <div className="px-4 py-3 mb-2 bg-gradient-to-r from-secondary-100 to-secondary-200 rounded-t-2xl">
-              <div className="flex items-center gap-3">
-                <div className="flex items-center justify-center w-10 h-10 bg-white/50 rounded-lg shrink-0">
-                  <User className="w-5 h-5 text-default-dark/70" />
+            <div className="px-3 sm:px-4 py-2 sm:py-3 mb-2 bg-gradient-to-r from-secondary-100 to-secondary-200 rounded-t-2xl">
+              <div className="flex items-center gap-2 sm:gap-3">
+                <div className="flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 bg-white/50 rounded-lg shrink-0">
+                  <User className="w-4 h-4 sm:w-5 sm:h-5 text-default-dark/70" />
                 </div>
                 <div className="min-w-0">
-                  <p className="font-bold text-default-dark truncate">
+                  <p className="font-bold text-sm sm:text-base text-default-dark truncate">
                     {user.nama || "Pengguna"}
                   </p>
-                  <p className="text-sm text-default-dark/50 truncate">
+                  <p className="text-xs sm:text-sm text-default-dark/50 truncate">
                     Online
                   </p>
                 </div>
@@ -103,10 +103,10 @@ const NavbarDropdown: React.FC<NavbarDropdownProps> = ({ user, onLogout }) => {
               <Link href="/profile" passHref>
                 <span
                   onClick={handleLinkClick}
-                  className="flex items-center gap-3 w-full px-3 py-2.5 text-sm text-default-dark hover:bg-secondary-200 hover:text-primary-600 rounded-xl transition-all duration-150 cursor-pointer group font-medium"
+                  className="flex items-center gap-2 sm:gap-3 w-full px-2 sm:px-3 py-2 sm:py-2.5 text-xs sm:text-sm text-default-dark hover:bg-secondary-200 hover:text-primary-600 rounded-xl transition-all duration-150 cursor-pointer group font-medium"
                 >
-                  <div className="flex items-center justify-center w-8 h-8 bg-primary-100 text-primary-600 rounded-lg transition-colors duration-150 shrink-0">
-                    <Settings className="w-4 h-4" />
+                  <div className="flex items-center justify-center w-6 h-6 sm:w-8 sm:h-8 bg-primary-100 text-primary-600 rounded-lg transition-colors duration-150 shrink-0">
+                    <Settings className="w-3 h-3 sm:w-4 sm:h-4" />
                   </div>
                   <span className="truncate">Lihat Profil</span>
                 </span>
@@ -120,10 +120,10 @@ const NavbarDropdown: React.FC<NavbarDropdownProps> = ({ user, onLogout }) => {
             <div className="px-2 pb-2">
               <button
                 onClick={handleLogoutClick}
-                className="flex items-center gap-3 w-full px-3 py-2.5 text-sm text-red-600 hover:bg-red-50 hover:text-red-700 rounded-xl transition-all duration-150 group font-medium"
+                className="flex items-center gap-2 sm:gap-3 w-full px-2 sm:px-3 py-2 sm:py-2.5 text-xs sm:text-sm text-red-600 hover:bg-red-50 hover:text-red-700 rounded-xl transition-all duration-150 group font-medium"
               >
-                <div className="flex items-center justify-center w-8 h-8 bg-red-100 group-hover:bg-red-200 rounded-lg transition-colors duration-150 shrink-0">
-                  <LogOut className="w-4 h-4 text-red-600" />
+                <div className="flex items-center justify-center w-6 h-6 sm:w-8 sm:h-8 bg-red-100 group-hover:bg-red-200 rounded-lg transition-colors duration-150 shrink-0">
+                  <LogOut className="w-3 h-3 sm:w-4 sm:h-4 text-red-600" />
                 </div>
                 <span className="truncate">Logout</span>
               </button>

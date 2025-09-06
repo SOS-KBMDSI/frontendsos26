@@ -17,12 +17,17 @@ const AktivitasAfterLogin = ({ user }: AktivitasAfterLoginProps) => {
         <div className="flex  justify-between flex-col-reverse md:flex-row ">
           <div className="bg-secondary-100 h-fit w-full border rounded-2xl md:w-[1000px] xl:w-[1000px] z-20 border-secondary-700 p-6">
             <div className="bg-primary-500 p-5 rounded-2xl text-white">
-              <h4 className="lg:text-3xl xl:text-4xl">Fasilitator</h4>
-              <div className="grid grid-cols-2 lg:text-xl xl:text-2xl mt-3">
+              <h4 className="lg:text-3xl xl:text-4xl font-medium">
+                Penanggung Jawab Lapangan
+              </h4>
+              <div className="grid grid-cols-1 gap-y-4 md:grid-cols-2 lg:text-lg xl:text-xl mt-6">
                 {user.kelompok?.distrik?.list_pjl.map((pjl, idx) => (
-                  <span key={idx}>
-                    {pjl.nama} - {pjl.line}
-                  </span>
+                  <div key={idx} className="flex flex-col">
+                    <span className="text-base lg:text-xl">{pjl.nama}</span>
+                    <span className="text-sm font-bold text-green-500">
+                      Line<span className="text-white"> : {pjl.line}</span>
+                    </span>
+                  </div>
                 ))}
               </div>
             </div>
