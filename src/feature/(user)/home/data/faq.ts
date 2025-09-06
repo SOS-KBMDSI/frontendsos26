@@ -22,6 +22,6 @@ export const faqData: FAQ[] = [
     id: 3,
     question:
       "Bagaimana system komunikasi resmi dari panitia (LINE, email, grup WA)",
-    answer: "untuk komunikasi kita menggunakan line yaa",
+    answer: "Untuk komunikasi kita menggunakan line yaa",
   },
 ];
