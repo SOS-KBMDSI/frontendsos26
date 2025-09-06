@@ -19,6 +19,8 @@ const nextConfig: NextConfig = {
       fullUrl: false,
     },
   },
+  // Konfigurasi untuk production build
+  productionBrowserSourceMaps: false,
   webpack: (config, { dev }) => {
     if (!dev) {
       // eslint-disable-next-line @typescript-eslint/no-require-imports
@@ -45,6 +47,29 @@ const nextConfig: NextConfig = {
         config.optimization.minimizer.push(new TerserPlugin(terserOptions));
       }
     }
+
+    if (dev) {
+      config.plugins.push({
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        apply: (compiler: any) => {
+          compiler.hooks.done.tap("HideNetworkErrors", () => {
+            const originalError = console.error;
+            console.error = (...args) => {
+              const message = args.join(" ");
+              if (
+                message.includes("Failed to load resource") ||
+                message.includes("401") ||
+                message.includes("backend.nasafacts.my.id")
+              ) {
+                return;
+              }
+              originalError.apply(console, args);
+            };
+          });
+        },
+      });
+    }
+
     return config;
   },
 };
