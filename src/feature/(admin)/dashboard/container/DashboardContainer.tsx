@@ -7,6 +7,7 @@ import {
   Archive,
   Check,
   Clock,
+  Download,
   FileWarning,
   Loader2,
   Star,
@@ -29,13 +30,26 @@ import { useDashboardData } from "../hooks/useDashboardData";
 import { dataTugascolumn } from "../type/dataTugasColumn";
 import { dataKuisColumn } from "../type/dataQuixColumn";
 import { dataPresensiColumn } from "../type/dataPresensiColumn";
+import { useDashboardExcel } from "../hooks/downloadExcel";
 
 const DashboardContainer = () => {
-  // --- HOOKS ---
   const { data, isLoading, error, refresh } = useDashboardData();
-  console.log(data);
-
-  // State for Tugas Table (Independent)
+  const {
+    isDownloading,
+    error: downloadError,
+    downloadExcel,
+    clearError,
+  } = useDashboardExcel();
+  const handleExcelDownload = async () => {
+    try {
+      if (downloadError) {
+        clearError();
+      }
+      await downloadExcel();
+    } catch (error) {
+      console.error("Failed to download Excel file:", error);
+    }
+  };
   const [tugasSorting, setTugasSorting] = useState<SortingState>([]);
   const [tugasPagination, setTugasPagination] = useState<PaginationState>({
     pageIndex: 0,
@@ -76,7 +90,6 @@ const DashboardContainer = () => {
     getPaginationRowModel: getPaginationRowModel(),
   });
 
-  // Table instance for Kuis
   const kuisTable = useReactTable({
     data: data?.data_kuis ?? [],
     columns: dataKuisColumn,
@@ -148,8 +161,23 @@ const DashboardContainer = () => {
       </section>
 
       <div className="mt-10">
-        <Button variant={"outline"} className="font-semibold">
-          Export Ke Excel
+        <Button
+          variant={"outline"}
+          className="font-semibold"
+          onClick={handleExcelDownload}
+          disabled={isDownloading}
+        >
+          {isDownloading ? (
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              Downloading...
+            </>
+          ) : (
+            <>
+              <Download className="mr-2 h-4 w-4" />
+              Export Ke Excel
+            </>
+          )}
         </Button>
       </div>
 
