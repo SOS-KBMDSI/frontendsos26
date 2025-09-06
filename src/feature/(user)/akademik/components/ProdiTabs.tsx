@@ -37,7 +37,7 @@ export const ProdiTabs = ({ activeProdiId, onSelectProdi }: ProdiTabsProps) => {
                 className="w-30"
               />
             )}
-            <span className="text-sm font-medium">{prodi.nama}</span>
+            <span className="text-lg font-semibold">{prodi.nama}</span>
           </div>
           <div className="md:hidden flex justify-center items-center">
             <span className="text-base font-medium">{prodi.shortName}</span>

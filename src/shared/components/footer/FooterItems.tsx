@@ -12,7 +12,7 @@ export const FooterLinks = () => {
           <li key={item.title} className="flex items-center">
             <Link
               href={item.href}
-              className="text-[10px] md:text-[14px] font-normal text-primary-700 hover:text-primary-500 transition-colors"
+              className="text-[10px] hover:border-b-2 border-primary-500 transition-all md:text-[14px] font-normal text-primary-700 hover:text-primary-500 hover:font-medium"
             >
               {item.title}
             </Link>
