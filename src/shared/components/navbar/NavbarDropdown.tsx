@@ -61,7 +61,7 @@ const NavbarDropdown: React.FC<NavbarDropdownProps> = ({ user, onLogout }) => {
         <div className="flex items-center justify-center w-6 h-6 sm:w-8 sm:h-8 bg-white/20 rounded-lg">
           <User className="w-3 h-3 sm:w-4 sm:h-4" />
         </div>
-        <span className="block max-w-20 sm:max-w-32 text-sm sm:text-base truncate">
+        <span className="block max-w-20 sm:max-w-24 text-sm sm:text-base truncate">
           {user.nama || "Pengguna"}
         </span>
         <ChevronDown
