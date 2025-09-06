@@ -36,7 +36,7 @@ const EditStfContainer = ({ id_caketang }: { id_caketang: string }) => {
         </div>
         <div className="flex flex-col gap-3 text-center">
           <h1 className="text-3xl font-semibold text-default-dark">
-            Tambah Calon
+            Edit Calon Ketua Angkatan
           </h1>
           <p className="text-default-dark/50 text-lg">
             Isi form di bawah ini untuk edit data calon ketua angkatan

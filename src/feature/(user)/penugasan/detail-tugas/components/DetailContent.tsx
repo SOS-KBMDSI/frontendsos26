@@ -43,7 +43,7 @@ export const DetailContent = ({
           <div className="flex flex-col items-center gap-8 h-full">
             <div className="w-full flex-grow">
               <div
-                className="prose max-w-none text-default-dark text-left text-lg"
+                className="prose max-w-none text-default-dark text-left text-base"
                 dangerouslySetInnerHTML={{ __html: tugas.deskripsi }}
               />
               <div className="mt-6 flex justify-center md:justify-start">

@@ -1,14 +1,7 @@
 "use client";
 
 import { QuizSubmission } from "@/api/services/admin/quiz"; // 1. Ganti tipe data ke QuizSubmission
-import { createColumnHelper, RowData } from "@tanstack/react-table";
-
-// Deklarasi module tetap sama untuk meta
-declare module "@tanstack/react-table" {
-  interface TableMeta<TData extends RowData> {
-    openEditModal: (submission: TData) => void;
-  }
-}
+import { createColumnHelper } from "@tanstack/react-table";
 
 // 2. Buat column helper dengan tipe data QuizSubmission
 const quizStatusColumnHelper = createColumnHelper<QuizSubmission>();

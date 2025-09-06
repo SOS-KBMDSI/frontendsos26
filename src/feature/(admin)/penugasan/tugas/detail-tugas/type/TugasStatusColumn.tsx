@@ -1,14 +1,9 @@
 "use client";
 
 import { TugasStatus } from "@/api/services/admin/tugas";
-import { createColumnHelper, RowData } from "@tanstack/react-table";
+import { createColumnHelper } from "@tanstack/react-table";
 import { Edit3Icon } from "lucide-react";
 import Link from "next/link";
-declare module "@tanstack/react-table" {
-  interface TableMeta<TData extends RowData> {
-    openEditModal: (submission: TData) => void;
-  }
-}
 
 const tugasStatusColumnHelper = createColumnHelper<TugasStatus>();
 
@@ -78,7 +73,7 @@ export const tugasStatusColumns = [
     cell: ({ row, table }) => (
       <button
         type="button"
-        onClick={() => table.options.meta?.openEditModal(row.original)}
+        onClick={() => table.options.meta?.openEditModal?.(row.original)}
         className="p-2 rounded-full hover:bg-orange-100 focus:outline-none focus:ring-2 focus:ring-orange-200 focus:ring-offset-2 transition-colors"
         aria-label="Edit Data"
         title="Edit Data"
