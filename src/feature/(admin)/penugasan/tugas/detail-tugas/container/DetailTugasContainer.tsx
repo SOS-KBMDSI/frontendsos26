@@ -96,12 +96,12 @@ const DetailTugasContainer: React.FC<DetailTugasContainerProps> = ({
         <ChevronLeft size={24} />
         <span className="text-xl">Kembali</span>
       </Link>
-      {isSqc && (
-        <DetailTugas
-          tugas={detailTugas}
-          onEdit={() => setEditingTugas(detailTugas)}
-        />
-      )}
+
+      <DetailTugas
+        isSQC={isSqc}
+        tugas={detailTugas}
+        onEdit={() => setEditingTugas(detailTugas)}
+      />
 
       <SubmissionTable
         table={table}
