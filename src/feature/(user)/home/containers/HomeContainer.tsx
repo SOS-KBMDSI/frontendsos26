@@ -8,7 +8,7 @@ import FaqSection from "../components/FAQ/FaqSection";
 
 const HomeContainer = () => {
   return (
-    <main className="overflow-hidden min-h-screen">
+    <main className="overflow-hidden">
       <Hero />
       <Image
         src={CaturPattern}
