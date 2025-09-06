@@ -17,10 +17,7 @@ export const QuizResultView = ({ quiz }: { quiz: Quiz }) => {
           Jumlah Jawaban Benar: {quiz?.jawaban_benar} / {quiz?.total_soal}
         </p>
       </div>
-      <p className="mt-4">
-        Setiap percobaan adalah kesempatan untuk belajar. Ingin mencoba ulang
-        kuis yang diberikan?
-      </p>
+      <p className="mt-4">Setiap percobaan adalah kesempatan untuk belajar.</p>
     </div>
   );
 };
