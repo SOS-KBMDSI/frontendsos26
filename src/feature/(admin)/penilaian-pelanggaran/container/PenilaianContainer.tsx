@@ -28,7 +28,6 @@ const PenilaianContainer = () => {
     handleCloseModal,
     refetchData,
   } = usePenilaianPage();
-
   const handleSuccess = () => {
     refetchData();
     handleCloseModal();
@@ -74,7 +73,6 @@ const PenilaianContainer = () => {
           <PenilaianTable table={table} refresh={() => {}} />
         )}
       </div>
-
       <EditPenilaianModal
         isOpen={isModalOpen}
         onSuccess={handleSuccess}

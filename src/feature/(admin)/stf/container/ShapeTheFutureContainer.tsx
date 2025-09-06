@@ -33,28 +33,6 @@ const StfContainer = () => {
   const router = useRouter();
   const { data, isLoading, error, refresh } = useStf();
 
-  const handleDeleteClick = () => {
-    const selectedRowIndex = Object.keys(rowSelection)[0];
-    if (!selectedRowIndex) return;
-    const selectedCaketang = table.getRow(selectedRowIndex).original;
-    deleteCaketang(selectedCaketang.id_caketang, selectedCaketang.nama);
-  };
-
-  const handleDeleteSuccess = () => {
-    refresh();
-    setRowSelection({});
-  };
-
-  const { isDeleting, deleteCaketang } = useDeleteStf(handleDeleteSuccess);
-
-  const handleEditClick = () => {
-    const selectedRowIndex = Object.keys(rowSelection)[0];
-    if (!selectedRowIndex) return;
-
-    const selectedCaketang = table.getRow(selectedRowIndex).original;
-    router.push(`/admin/stf/edit/${selectedCaketang.id_caketang}`);
-  };
-
   const [sorting, setSorting] = useState<SortingState>([
     {
       id: "jumlah_vote",
@@ -66,9 +44,15 @@ const StfContainer = () => {
     pageIndex: 0,
     pageSize: 10,
   });
-
   const [prodiFilter, setProdiFilter] = useState("");
   const [globalFilter, setGlobalFilter] = useState("");
+
+  const handleDeleteSuccess = () => {
+    refresh();
+    setRowSelection({});
+  };
+
+  const { isDeleting, deleteCaketang } = useDeleteStf(handleDeleteSuccess);
 
   const filteredData = useMemo(() => {
     if (!data) return [];
@@ -92,6 +76,21 @@ const StfContainer = () => {
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
   });
+
+  const handleDeleteClick = () => {
+    const selectedRowIndex = Object.keys(rowSelection)[0];
+    if (!selectedRowIndex) return;
+    const selectedCaketang = table.getRow(selectedRowIndex).original;
+    deleteCaketang(selectedCaketang.id_caketang, selectedCaketang.nama);
+  };
+
+  const handleEditClick = () => {
+    const selectedRowIndex = Object.keys(rowSelection)[0];
+    if (!selectedRowIndex) return;
+
+    const selectedCaketang = table.getRow(selectedRowIndex).original;
+    router.push(`/admin/stf/edit/${selectedCaketang.id_caketang}`);
+  };
 
   const isRowSelected = Object.keys(rowSelection).length > 0;
 

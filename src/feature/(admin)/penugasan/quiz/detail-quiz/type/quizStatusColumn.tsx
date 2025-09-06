@@ -2,7 +2,6 @@
 
 import { QuizSubmission } from "@/api/services/admin/quiz"; // 1. Ganti tipe data ke QuizSubmission
 import { createColumnHelper, RowData } from "@tanstack/react-table";
-import { Edit3Icon } from "lucide-react";
 
 // Deklarasi module tetap sama untuk meta
 declare module "@tanstack/react-table" {
@@ -61,22 +60,5 @@ export const quizStatusColumns = [
       });
     },
     size: 200,
-  }),
-
-  quizStatusColumnHelper.display({
-    id: "aksi",
-    header: "Action",
-    cell: ({ row, table }) => (
-      <button
-        type="button"
-        onClick={() => table.options.meta?.openEditModal(row.original)}
-        className="p-2 rounded-full hover:bg-orange-100 focus:outline-none focus:ring-2 focus:ring-orange-200 focus:ring-offset-2 transition-colors"
-        aria-label="Edit Data"
-        title="Edit Data"
-      >
-        <Edit3Icon className="text-orange-500 h-5 w-5" />
-      </button>
-    ),
-    size: 120,
   }),
 ];

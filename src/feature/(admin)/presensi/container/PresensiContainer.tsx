@@ -8,10 +8,12 @@ import PresensiCard from "../components/PresensiCard";
 import { Modal } from "@/shared/components/ui/Modal";
 import { useGetAllPresensi } from "../hooks/useGetAllPresensi";
 import PresensiForm from "../components/PresensiForm";
+import { useRole } from "@/shared/hooks/useRole";
 const PresensiContainer = () => {
   const router = useRouter();
   const { data: allPresensi, isLoading, error, refresh } = useGetAllPresensi();
   const [isModalOpen, setIsModalOpen] = React.useState(false);
+  const { isSqc } = useRole();
 
   const handleCreateSuccess = () => {
     setIsModalOpen(false);
@@ -44,7 +46,7 @@ const PresensiContainer = () => {
       </button>
       <div className="flex items-center justify-between">
         <h4 className="text-4xl font-semibold text-black">Kode Presensi</h4>
-        <Button onClick={handleModal}>Tambah Presensi</Button>
+        {isSqc && <Button onClick={handleModal}>Tambah Presensi</Button>}
       </div>
       <div className="mt-10 flex flex-col gap-y-5">
         {allPresensi && allPresensi.length > 0 ? (

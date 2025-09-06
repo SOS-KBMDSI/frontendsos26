@@ -27,7 +27,7 @@ export const AuthErrorContext = createContext<AuthErrorContextType | undefined>(
 
 interface AuthErrorProviderProps {
   children: ReactNode;
-  protectedRoutes?: string[]; // Optional protected routes
+  protectedRoutes?: string[];
 }
 
 export const AuthErrorProvider = ({
@@ -35,8 +35,18 @@ export const AuthErrorProvider = ({
   protectedRoutes,
 }: AuthErrorProviderProps) => {
   const { showToast } = useToast();
-  const hasShownToastRef = useRef(false);
+
+  // Anti-spam references
+  const hasShownAuthToastRef = useRef(false);
+  const hasShownNetworkToastRef = useRef(false);
+  const lastAuthErrorTimeRef = useRef(0);
+  const lastNetworkErrorTimeRef = useRef(0);
+  const isRedirectingRef = useRef(false);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Debounce intervals (in milliseconds)
+  const AUTH_ERROR_DEBOUNCE = 5000; // 5 seconds
+  const NETWORK_ERROR_DEBOUNCE = 3000; // 3 seconds
 
   const isAuthError = (
     error: AuthError | AxiosError | ApiResponse<unknown>,
@@ -59,12 +69,17 @@ export const AuthErrorProvider = ({
     }
 
     try {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const response = await fetch("https://www.google.com/favicon.ico", {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 5000);
+
+      await fetch("https://www.google.com/favicon.ico", {
         method: "HEAD",
         cache: "no-cache",
         mode: "no-cors",
+        signal: controller.signal,
       });
+
+      clearTimeout(timeoutId);
       return true;
     } catch {
       return false;
@@ -72,6 +87,19 @@ export const AuthErrorProvider = ({
   };
 
   const handleNetworkError = async (): Promise<void> => {
+    const now = Date.now();
+
+    // Prevent spam - only show network error toast if enough time has passed
+    if (
+      hasShownNetworkToastRef.current &&
+      now - lastNetworkErrorTimeRef.current < NETWORK_ERROR_DEBOUNCE
+    ) {
+      return;
+    }
+
+    hasShownNetworkToastRef.current = true;
+    lastNetworkErrorTimeRef.current = now;
+
     const hasInternet = await checkInternetConnection();
 
     if (!hasInternet) {
@@ -91,23 +119,49 @@ export const AuthErrorProvider = ({
         duration: 8000,
       });
     }
+
+    // Reset network error flag after debounce period
+    setTimeout(() => {
+      hasShownNetworkToastRef.current = false;
+    }, NETWORK_ERROR_DEBOUNCE);
   };
 
   const showSessionExpiredToast = (): void => {
-    if (hasShownToastRef.current) return;
+    const now = Date.now();
 
-    hasShownToastRef.current = true;
+    // Prevent spam - only show auth error toast if enough time has passed
+    if (
+      hasShownAuthToastRef.current &&
+      now - lastAuthErrorTimeRef.current < AUTH_ERROR_DEBOUNCE
+    ) {
+      return;
+    }
+
+    // Prevent multiple redirects
+    if (isRedirectingRef.current) {
+      return;
+    }
+
+    hasShownAuthToastRef.current = true;
+    lastAuthErrorTimeRef.current = now;
+    isRedirectingRef.current = true;
 
     showToast({
       type: "error",
       title: "Sesi Berakhir",
       message: "Sesi anda telah berakhir",
+      duration: 4000,
     });
 
     // Clear auth cookie
     if (typeof window !== "undefined") {
       document.cookie =
         "auth_session=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    }
+
+    // Clear any existing timeout
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
     }
 
     timeoutRef.current = setTimeout(() => {
@@ -120,11 +174,13 @@ export const AuthErrorProvider = ({
   ): Promise<void> => {
     console.log("Auth error handled:", error);
 
+    // Handle network errors
     if (error.code === "ERR_NETWORK") {
       await handleNetworkError();
       return;
     }
 
+    // Handle auth errors
     if (isAuthError(error)) {
       showSessionExpiredToast();
     }
@@ -149,50 +205,71 @@ export const AuthErrorProvider = ({
       apiClient.disableRouteProtection();
     }
 
-    const resetFlag = () => {
-      hasShownToastRef.current = false;
-    };
-
-    const handleVisibilityChange = () => {
-      if (document.visibilityState === "visible") {
-        resetFlag();
+    const resetFlags = () => {
+      // Only reset if not currently redirecting
+      if (!isRedirectingRef.current) {
+        hasShownAuthToastRef.current = false;
+        hasShownNetworkToastRef.current = false;
+        lastAuthErrorTimeRef.current = 0;
+        lastNetworkErrorTimeRef.current = 0;
       }
     };
 
-    // Listen to online/offline events for better network detection
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "visible" && !isRedirectingRef.current) {
+        resetFlags();
+      }
+    };
+
     const handleOnline = () => {
-      showToast({
-        type: "success",
-        title: "Koneksi Pulih",
-        message: "Koneksi internet telah pulih",
-        duration: 3000,
-      });
+      // Reset network error flag when back online
+      hasShownNetworkToastRef.current = false;
+
+      // Only show success toast if we're not redirecting
+      if (!isRedirectingRef.current) {
+        showToast({
+          type: "success",
+          title: "Koneksi Pulih",
+          message: "Koneksi internet telah pulih",
+          duration: 3000,
+        });
+      }
     };
 
     const handleOffline = () => {
-      showToast({
-        type: "error",
-        title: "Koneksi Terputus",
-        message: "Koneksi internet terputus",
-        duration: 5000,
-      });
+      // Don't show offline toast if we're redirecting
+      if (!isRedirectingRef.current) {
+        showToast({
+          type: "error",
+          title: "Koneksi Terputus",
+          message: "Koneksi internet terputus",
+          duration: 5000,
+        });
+      }
+    };
+
+    // Add page unload handler to prevent spam on refresh
+    const handleBeforeUnload = () => {
+      hasShownAuthToastRef.current = true;
+      hasShownNetworkToastRef.current = true;
     };
 
     document.addEventListener("visibilitychange", handleVisibilityChange);
-    window.addEventListener("beforeunload", resetFlag);
+    window.addEventListener("beforeunload", handleBeforeUnload);
     window.addEventListener("online", handleOnline);
     window.addEventListener("offline", handleOffline);
 
     return () => {
       document.removeEventListener("visibilitychange", handleVisibilityChange);
-      window.removeEventListener("beforeunload", resetFlag);
+      window.removeEventListener("beforeunload", handleBeforeUnload);
       window.removeEventListener("online", handleOnline);
       window.removeEventListener("offline", handleOffline);
+
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
       }
     };
-  }, []);
+  }, [protectedRoutes, showToast]);
 
   const contextValue: AuthErrorContextType = {
     handleAuthError,
