@@ -8,13 +8,13 @@ const QuizStatusSection = ({ Quiz }: { Quiz: Quiz | null }) => {
   const getStatusStyle = (status: string | undefined) => {
     switch (status?.toLowerCase()) {
       case "selesai":
-        return "bg-green-100 text-green-800 px-3 py-2 rounded-full";
+        return "border-transparent bg-badgeSuccess text-white px-3 py-2 rounded-full";
       case "belum mulai":
-        return "bg-yellow-100 text-yellow-800 px-3 py-2 rounded-full";
+        return "border-transparent bg-default-dark/20 text-white px-3 py-2 rounded-full";
       case "terlewat":
-        return "bg-gray-400 text-white px-3 py-2 rounded-2xl";
+        return "border-transparent bg-badgeOverdue text-white px-3 py-2 rounded-full";
       default:
-        return "bg-gray-100 text-gray-800 px-3 py-2 rounded-full";
+        return "border-transparent bg-default-dark/20 text-white px-3 py-2 rounded-full";
     }
   };
   return (

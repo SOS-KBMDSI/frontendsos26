@@ -55,7 +55,7 @@ const RangakainList = () => {
         </div>
       ) : (
         <div className="relative z-10  flex flex-col justify-center items-center min-h-[100vh] ">
-          <div className="relative w-full max-w-md mb-8 overflow-hidden">
+          <div className="relative w-full max-w-xl mb-8 overflow-hidden">
             <div
               className="flex transition-transform duration-300 ease-in-out"
               style={{ transform: `translateX(-${currentIndex * 100}%)` }}
