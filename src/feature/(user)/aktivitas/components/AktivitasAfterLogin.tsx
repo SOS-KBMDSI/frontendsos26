@@ -1,6 +1,5 @@
 import { AuthProfile } from "@/api/services/auth";
 import React from "react";
-import AktivitasBackground from "./AktivitasBackground";
 import Maskor2 from "@/assets/user/masket-sos-2.svg";
 import Image from "next/image";
 import AktivitasListSection from "./AktivitasListSection";
@@ -84,7 +83,6 @@ const AktivitasAfterLogin = ({ user }: AktivitasAfterLoginProps) => {
           />
         </div>
       </div>
-      <AktivitasBackground />
       <Image
         src={PatternImg}
         alt=" Pattern"

@@ -20,7 +20,9 @@ const convertDurationToMinutes = (duration: string | undefined): number => {
 
 const QuizBefore = ({ quiz }: { quiz: Quiz | null }) => {
   const totalMinutes = convertDurationToMinutes(quiz?.durasi_kuis);
-
+  const isdeadline = quiz?.tenggat_kuis
+    ? new Date(quiz.tenggat_kuis).getTime() < Date.now()
+    : false;
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleStartQuiz = () => {
@@ -42,8 +44,9 @@ const QuizBefore = ({ quiz }: { quiz: Quiz | null }) => {
         <Button
           onClick={() => setIsModalOpen(true)}
           className="mx-auto cursor-pointer text-sm mt-10"
+          disabled={isdeadline}
         >
-          Mulai Kuis Sekarang
+          {isdeadline ? "Kuis Sudah Berakhir" : "Mulai Kuis Sekarang"}
         </Button>
       </div>
 
