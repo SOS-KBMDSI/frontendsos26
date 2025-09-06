@@ -112,17 +112,21 @@ class ApiCore {
     this.client.interceptors.response.use(
       (response: AxiosResponse) => response,
       (error: AxiosError) => {
+        // Handle network errors
         if (error.code === "ERR_NETWORK") {
           console.log("Network Error detected");
           if (this.authErrorHandler) {
             this.authErrorHandler(error);
           }
         }
+
+        // Handle 401 errors silently for protected routes
         if (error.response?.status === 401 && this.isCurrentRouteProtected()) {
-          console.log(
-            "401 Unauthorized detected in protected route:",
-            window.location.pathname,
-          );
+          // Remove or comment out this console.log to hide 401 logs
+          // console.log(
+          //   "401 Unauthorized detected in protected route:",
+          //   window.location.pathname,
+          // );
 
           if (this.authErrorHandler) {
             this.authErrorHandler(error);
@@ -153,7 +157,18 @@ class ApiCore {
     url: string,
     config?: AxiosRequestConfig,
   ): Promise<ApiResponse<T>> {
-    return this.client.get<ApiResponse<T>>(url, config).then((res) => res.data);
+    try {
+      return this.client
+        .get<ApiResponse<T>>(url, config)
+        .then((res) => res.data);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      if (error.response?.status === 401) {
+        // Handle 401 silently
+        throw new Error("Authentication required");
+      }
+      throw error;
+    }
   }
 
   public async post<T, D = unknown>(
