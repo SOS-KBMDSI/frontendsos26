@@ -35,7 +35,7 @@ export const useGetCountdown = (): UseCountdownHook => {
         setData(response.data);
         setEventName(response.data.nama);
       } else {
-        setEventName("No Upcoming Events");
+        setEventName("Tidak ada rangkaian aktif saat ini");
         setData(null);
       }
     } catch (err: unknown) {
