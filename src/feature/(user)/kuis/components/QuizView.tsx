@@ -72,9 +72,9 @@ export const QuizView = ({
   return (
     <main className="mycontainer py-10 ">
       <div className="max-w-4xl bg-white space-y-6 px-8 sm:px-16 py-12 rounded-2xl mx-auto">
-        <div className="flex flex-col lg:flex-row justify-center lg:justify-between items-center">
+        <div className="flex flex-col lg:flex-row justify-center gap-4 lg:justify-between items-center">
           <div className="space-y-2">
-            <h1 className="text-xl  sm:text-2xl text-primary-500 font-bold">
+            <h1 className="text-xl  sm:text-xl text-primary-500 font-bold">
               {kuisData.nama_kuis}
             </h1>
             <p className="text-black text-center lg:text-left">

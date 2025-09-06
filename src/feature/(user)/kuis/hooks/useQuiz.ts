@@ -33,9 +33,14 @@ const parseDurationToSeconds = (duration: string): number => {
 interface UseQuizProps {
   id_kuis: string;
   onQuizComplete?: (result: QuizResult) => void;
+  onStatusChange?: () => void;
 }
 
-export const useQuiz = ({ id_kuis, onQuizComplete }: UseQuizProps) => {
+export const useQuiz = ({
+  id_kuis,
+  onQuizComplete,
+  onStatusChange,
+}: UseQuizProps) => {
   const router = useRouter();
   const { data: kuisData, isLoading, error } = useGetSoalKuis(id_kuis);
   const { submitJawaban, isLoading: isSubmitting } = useSubmitKuis();
@@ -45,6 +50,7 @@ export const useQuiz = ({ id_kuis, onQuizComplete }: UseQuizProps) => {
   const [timeLeft, setTimeLeft] = useState(0);
   const [isFinished, setIsFinished] = useState(false);
   const [modalContent, setModalContent] = useState<ModalContent | null>(null);
+  const [isSubmissionInProgress, setIsSubmissionInProgress] = useState(false);
 
   const totalDuration = useMemo(() => {
     return kuisData ? parseDurationToSeconds(kuisData.durasi_kuis) : 0;
@@ -125,7 +131,9 @@ export const useQuiz = ({ id_kuis, onQuizComplete }: UseQuizProps) => {
   }, [id_kuis]);
 
   const executeSubmit = useCallback(async () => {
-    if (!kuisData || isFinished) return;
+    if (!kuisData || isFinished || isSubmissionInProgress) return;
+
+    setIsSubmissionInProgress(true);
     closeModal();
 
     const payloadList = Object.entries(answers).map(([id, jawaban]) => ({
@@ -139,16 +147,29 @@ export const useQuiz = ({ id_kuis, onQuizComplete }: UseQuizProps) => {
       });
 
       setIsFinished(true);
-      cleanupLocalStorage(); // Bersihkan data temporary setelah submit
+      cleanupLocalStorage();
 
       // Panggil callback untuk update status quiz di parent component
       if (onQuizComplete && result) {
-        onQuizComplete(result);
+        await onQuizComplete(result);
       }
 
-      router.push(`/aktivitas/kuis/${id_kuis}`);
+      // Trigger status refresh in parent component dengan delay
+      if (onStatusChange) {
+        // Berikan sedikit delay untuk memastikan backend sudah update
+        setTimeout(() => {
+          onStatusChange();
+        }, 500);
+      }
+
+      // Navigate dengan force refresh untuk memastikan data terbaru
+      setTimeout(() => {
+        // Force refresh halaman untuk memastikan data terbaru
+        window.location.href = `/aktivitas/kuis/${id_kuis}`;
+      }, 1000);
     } catch (submitError) {
       console.error("Submit error:", submitError);
+      setIsSubmissionInProgress(false);
       setModalContent({
         isOpen: true,
         title: "Gagal Mengumpulkan",
@@ -165,12 +186,14 @@ export const useQuiz = ({ id_kuis, onQuizComplete }: UseQuizProps) => {
     submitJawaban,
     router,
     isFinished,
+    isSubmissionInProgress,
     cleanupLocalStorage,
     onQuizComplete,
+    onStatusChange,
   ]);
 
   const handleSubmit = useCallback(() => {
-    if (!kuisData || isFinished) return;
+    if (!kuisData || isFinished || isSubmissionInProgress) return;
     const totalSoal = kuisData.list_pertanyaan.length;
     const soalDijawab = Object.keys(answers).length;
 
@@ -186,14 +209,21 @@ export const useQuiz = ({ id_kuis, onQuizComplete }: UseQuizProps) => {
     } else {
       executeSubmit();
     }
-  }, [kuisData, isFinished, answers, timeLeft, executeSubmit]);
+  }, [
+    kuisData,
+    isFinished,
+    isSubmissionInProgress,
+    answers,
+    timeLeft,
+    executeSubmit,
+  ]);
 
   useEffect(() => {
-    if (isFinished || timeLeft <= 0) return;
+    if (isFinished || timeLeft <= 0 || isSubmissionInProgress) return;
     if (timeLeft === 1) handleSubmit();
     const timerId = setInterval(() => setTimeLeft((prev) => prev - 1), 1000);
     return () => clearInterval(timerId);
-  }, [timeLeft, isFinished, handleSubmit]);
+  }, [timeLeft, isFinished, isSubmissionInProgress, handleSubmit]);
 
   useEffect(() => {
     if (isFinished) return;
@@ -208,13 +238,21 @@ export const useQuiz = ({ id_kuis, onQuizComplete }: UseQuizProps) => {
 
   const handleSelectAnswer = useCallback(
     (questionId: string, answerLabel: string) => {
-      setAnswers((prev) => ({ ...prev, [questionId]: answerLabel }));
+      if (!isFinished && !isSubmissionInProgress) {
+        setAnswers((prev) => ({ ...prev, [questionId]: answerLabel }));
+      }
     },
-    [],
+    [isFinished, isSubmissionInProgress],
   );
 
   const handleJumpToQuestion = (index: number) => {
-    if (kuisData && index >= 0 && index < kuisData.list_pertanyaan.length) {
+    if (
+      kuisData &&
+      index >= 0 &&
+      index < kuisData.list_pertanyaan.length &&
+      !isFinished &&
+      !isSubmissionInProgress
+    ) {
       setCurrentQuestionIndex(index);
     }
   };
@@ -222,14 +260,16 @@ export const useQuiz = ({ id_kuis, onQuizComplete }: UseQuizProps) => {
   const handleNext = () => {
     if (
       kuisData &&
-      currentQuestionIndex < kuisData.list_pertanyaan.length - 1
+      currentQuestionIndex < kuisData.list_pertanyaan.length - 1 &&
+      !isFinished &&
+      !isSubmissionInProgress
     ) {
       setCurrentQuestionIndex((prev) => prev + 1);
     }
   };
 
   const handlePrev = () => {
-    if (currentQuestionIndex > 0) {
+    if (currentQuestionIndex > 0 && !isFinished && !isSubmissionInProgress) {
       setCurrentQuestionIndex((prev) => prev - 1);
     }
   };
@@ -241,7 +281,7 @@ export const useQuiz = ({ id_kuis, onQuizComplete }: UseQuizProps) => {
 
   return {
     isLoading,
-    isSubmitting,
+    isSubmitting: isSubmitting || isSubmissionInProgress,
     error,
     kuisData,
     currentQuestion,
@@ -249,6 +289,7 @@ export const useQuiz = ({ id_kuis, onQuizComplete }: UseQuizProps) => {
     answers,
     timeLeft: formatTime(timeLeft),
     isLastQuestion,
+    isFinished,
     modalContent,
     closeModal,
     onSelectAnswer: handleSelectAnswer,
