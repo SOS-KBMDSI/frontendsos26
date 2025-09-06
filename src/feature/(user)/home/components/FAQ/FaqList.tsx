@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
-import { Button } from "@/shared/components/ui/Button";
 import { FAQ } from "../../data/faq";
+import { ChevronDownIcon, ChevronUpIcon } from "lucide-react";
 
 const FaqList = ({ faq }: { faq: FAQ }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -11,26 +11,44 @@ const FaqList = ({ faq }: { faq: FAQ }) => {
   };
 
   return (
-    <div className="w-full border-1 rounded-xl border-white">
+    <div
+      className={`w-full border-1 rounded-xl transition-all hover:bg-white group border-white ${
+        isOpen ? "bg-white" : ""
+      }`}
+    >
       <div
         className="flex items-center justify-between px-3 py-3 md:px-4 md:py-4 cursor-pointer"
         onClick={toggleFaq}
       >
-        <h4 className="text-white text-sm md:text-base">{faq.question}</h4>
-        <Button
-          arrow={isOpen ? "top" : "bottom"}
-          variant={"transparent"}
-          className="text-primary-500 bg-white w-6 h-6 md:w-10 md:h-10 aspect-square rounded-full transition-transform duration-200"
-        />
+        <h4
+          className={` font-semibold group-hover:text-primary-500  text-sm md:text-base ${
+            isOpen ? "text-primary-500" : "text-white"
+          }`}
+        >
+          {faq.question}
+        </h4>
+        <button className="text-primary-500 group-hover:bg-primary-200 relative bg-white w-6 h-6 md:w-10 md:h-10 aspect-square rounded-full transition-transform duration-200 flex items-center justify-center">
+          {isOpen ? (
+            <ChevronUpIcon className="w-4 h-4 md:w-6 md:h-6 text-primary-500" />
+          ) : (
+            <ChevronDownIcon className="w-4 h-4 md:w-6 md:h-6 text-primary-500" />
+          )}
+        </button>
       </div>
 
       <div
         className={`overflow-hidden transition-all  duration-100  ease-in-out ${
-          isOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
+          isOpen
+            ? "max-h-96 bg-white rounded-b-xl opacity-100 text-primary-500"
+            : "max-h-0 opacity-0"
         }`}
       >
-        <div className="px-3 md:px-4 pb-3 md:pb-4 border-t border-white/20">
-          <p className="text-white/80 mt-2 md:mt-3 text-sm md:text-base leading-relaxed">
+        <div className="px-3 md:px-4 pb-3 md:pb-4 border-t-3 border-black/20">
+          <p
+            className={`mt-2 md:mt-3 text-sm md:text-base leading-relaxed ${
+              isOpen ? "text-black font-medium" : ""
+            }`}
+          >
             {faq.answer}
           </p>
         </div>
