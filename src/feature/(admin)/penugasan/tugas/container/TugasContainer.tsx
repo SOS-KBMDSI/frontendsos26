@@ -6,10 +6,13 @@ import { Modal } from "@/shared/components/ui/Modal";
 import Link from "next/link";
 import TugasForm from "../components/TugasForm";
 import { Plus } from "lucide-react";
+import { useRole } from "@/shared/hooks/useRole";
 
 const TugasContainer = () => {
   const { data: tugas, isLoading, error, refresh } = useGetAllTugas();
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const { isSqc } = useRole();
   const handleCreateSuccess = () => {
     setIsModalOpen(false);
     refresh();
@@ -30,10 +33,12 @@ const TugasContainer = () => {
   return (
     <section className="">
       <div className="flex justify-end">
-        <Button variant={"outline"} onClick={() => setIsModalOpen(true)}>
-          <Plus size={16} className="mr-2" />
-          Tambah Penugasan
-        </Button>
+        {isSqc && (
+          <Button variant={"outline"} onClick={() => setIsModalOpen(true)}>
+            <Plus size={16} className="mr-2" />
+            Tambah Penugasan
+          </Button>
+        )}
       </div>
       <div className="mt-8 flex gap-9 flex-col">
         {tugas.map((tugas, idx) => (

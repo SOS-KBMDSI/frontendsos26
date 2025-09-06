@@ -11,6 +11,7 @@ import { QuizForm } from "../components/QuizForm";
 import { Button } from "@/shared/components/ui/Button";
 import { Modal } from "@/shared/components/ui/Modal";
 import { Plus } from "lucide-react";
+import { useRole } from "@/shared/hooks/useRole";
 
 const QuizContainer = () => {
   const {
@@ -58,6 +59,7 @@ const QuizContainer = () => {
   };
 
   const sortedQuizList = quizList ? [...quizList].reverse() : [];
+  const { isSqc } = useRole();
 
   if (isLoading) {
     return <div>Memuat data kuis...</div>;
@@ -66,10 +68,12 @@ const QuizContainer = () => {
   return (
     <section className="">
       <div className="flex justify-end">
-        <Button variant={"outline"} onClick={() => setIsModalOpen(true)}>
-          <Plus size={16} className="mr-2" />
-          Tambah Kuis
-        </Button>
+        {isSqc && (
+          <Button variant={"outline"} onClick={() => setIsModalOpen(true)}>
+            <Plus size={16} className="mr-2" />
+            Tambah Kuis
+          </Button>
+        )}
       </div>
 
       {!sortedQuizList || sortedQuizList.length === 0 ? (

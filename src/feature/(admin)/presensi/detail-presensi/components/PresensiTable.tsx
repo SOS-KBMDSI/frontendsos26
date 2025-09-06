@@ -30,7 +30,7 @@ interface PresensiTableProps {
   distrikOptions: DistrikOption[];
   selectedDistrik: string | null;
   onDistrikChange: (value: string | null) => void;
-  onRowSelect: (rowData: PresensiMahasiswaSummary) => void;
+  onRowSelect?: (rowData: PresensiMahasiswaSummary) => void;
 }
 
 const PresensiTable = ({
@@ -86,7 +86,7 @@ const PresensiTable = ({
             nim: rowData.nim,
             status: rowData.status as "hadir" | "tidak-hadir",
           };
-          onRowSelect(summary);
+          onRowSelect?.(summary);
         }}
       />
     </div>

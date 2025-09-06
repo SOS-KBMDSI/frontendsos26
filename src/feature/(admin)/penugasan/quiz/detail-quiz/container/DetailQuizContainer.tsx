@@ -24,6 +24,7 @@ import { useToast } from "@/shared/hooks/useToast";
 import { ConfirmDeleteModal } from "../components/DeleteConfirmation";
 import { useDeleteQuiz } from "../hooks/useDeleteQuiz";
 import Link from "next/link";
+import { useRole } from "@/shared/hooks/useRole";
 
 interface DetailQuizContainerProps {
   id_quiz: string;
@@ -34,6 +35,7 @@ const DetailQuizContainer: React.FC<DetailQuizContainerProps> = ({
 }) => {
   const { showToast } = useToast();
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const { isSqc } = useRole();
 
   const [isEditing, setIsEditing] = useState(false);
   const [selectedKelompok, setSelectedKelompok] = useState<string | null>(null);
@@ -148,11 +150,13 @@ const DetailQuizContainer: React.FC<DetailQuizContainerProps> = ({
         />
       ) : (
         <>
-          <DetailQuiz
-            quiz={detailQuiz}
-            onDelete={() => setIsDeleteModalOpen(true)}
-            onEdit={() => setIsEditing(true)}
-          />
+          {isSqc && (
+            <DetailQuiz
+              quiz={detailQuiz}
+              onDelete={() => setIsDeleteModalOpen(true)}
+              onEdit={() => setIsEditing(true)}
+            />
+          )}
           <QuizSubmissionTable
             table={table}
             isSubmissionLoading={isSubmissionLoading}

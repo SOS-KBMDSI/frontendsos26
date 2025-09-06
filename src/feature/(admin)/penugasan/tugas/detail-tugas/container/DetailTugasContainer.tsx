@@ -23,6 +23,7 @@ import { tugasStatusColumns } from "../type/TugasStatusColumn";
 import FormEditNilai from "../components/FormEditNilai";
 import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
+import { useRole } from "@/shared/hooks/useRole";
 
 interface DetailTugasContainerProps {
   id_penugasan: string;
@@ -85,7 +86,7 @@ const DetailTugasContainer: React.FC<DetailTugasContainerProps> = ({
         setEditingSubmission(submission),
     },
   });
-
+  const { isSqc } = useRole();
   return (
     <section>
       <Link
@@ -95,10 +96,12 @@ const DetailTugasContainer: React.FC<DetailTugasContainerProps> = ({
         <ChevronLeft size={24} />
         <span className="text-xl">Kembali</span>
       </Link>
-      <DetailTugas
-        tugas={detailTugas}
-        onEdit={() => setEditingTugas(detailTugas)}
-      />
+      {isSqc && (
+        <DetailTugas
+          tugas={detailTugas}
+          onEdit={() => setEditingTugas(detailTugas)}
+        />
+      )}
 
       <SubmissionTable
         table={table}
