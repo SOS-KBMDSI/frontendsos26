@@ -6,7 +6,7 @@ import { useGetDetailQuiz } from "../hooks/useGetQuiz";
 import { useRouter } from "next/navigation";
 
 const QuizStartContainer = ({ id_kuis }: { id_kuis: string }) => {
-  const { modalContent, closeModal, ...quizProps } = useQuiz(id_kuis);
+  const { modalContent, closeModal, ...quizProps } = useQuiz({ id_kuis });
   const { data: dataQuiz } = useGetDetailQuiz(id_kuis);
   const router = useRouter();
 

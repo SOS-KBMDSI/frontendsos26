@@ -8,6 +8,7 @@ import {
 } from "@/shared/components/ui/Select";
 import { Button } from "@/shared/components/ui/Button";
 import { Rangkaian, Distrik, Kelompok } from "../types";
+import { SearchableSelect } from "@/shared/components/filter/SearchFilter";
 
 interface PenilaianHeaderProps {
   rangkaianOptions: Rangkaian[];
@@ -38,33 +39,21 @@ export const PenilaianHeader = ({
   isEditButtonDisabled,
   onEditClick,
   isRangkaianLoading,
-  isDistrikLoading,
 }: PenilaianHeaderProps) => {
   return (
     <div className="mt-6 flex flex-col gap-6">
       <div className="flex gap-4">
-        <Select
+        <SearchableSelect
+          options={distrikOptions.map((distrik) => ({
+            value: distrik.id_distrik,
+            label: distrik.nama_distrik,
+          }))}
           value={selectedDistrik}
-          onValueChange={onDistrikChange}
-          disabled={isDistrikLoading}
-        >
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Pilih Distrik" />
-          </SelectTrigger>
-          <SelectContent>
-            {isDistrikLoading ? (
-              <SelectItem value="loading" disabled>
-                Memuat...
-              </SelectItem>
-            ) : (
-              distrikOptions.map((distrik) => (
-                <SelectItem key={distrik.id_distrik} value={distrik.id_distrik}>
-                  {distrik.nama_distrik}
-                </SelectItem>
-              ))
-            )}
-          </SelectContent>
-        </Select>
+          onValueChange={(value) => onDistrikChange(value ?? "")}
+          placeholder="Filter Distrik"
+          searchPlaceholder="Cari distrik..."
+          allLabel="Semua Distrik"
+        />
 
         <Select
           value={selectedKelompok}
@@ -110,6 +99,7 @@ export const PenilaianHeader = ({
         </Select>
       </div>
 
+      {}
       <div>
         <Button onClick={onEditClick} disabled={isEditButtonDisabled}>
           Edit Penilaian dan Pelanggaran

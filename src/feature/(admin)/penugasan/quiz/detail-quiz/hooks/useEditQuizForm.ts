@@ -12,15 +12,12 @@ interface ValidationErrors {
 // Helper: Mengubah "HH:MM" atau "HH:MM:SS" dari API menjadi total menit
 const parseTimeToMenit = (duration: string): number => {
   if (typeof duration !== "string" || !duration.includes(":")) return 0;
-  // Memisahkan jam, menit, (dan detik jika ada)
   const parts = duration.split(":").map(Number);
-  // Cek apakah minimal ada jam dan menit, dan keduanya adalah angka
   if (parts.length < 2 || parts.slice(0, 2).some(isNaN)) return 0;
-  // Rumus: (jam * 60) + menit
   return parts[0] * 60 + parts[1];
 };
 
-// DIUBAH: Helper ini sekarang memformat ke "HH:MM" sesuai permintaan API
+// Helper: Mengonversi total menit menjadi format "HH:MM" untuk API
 const formatMenitToHHMM = (totalMenit: number): string => {
   if (isNaN(totalMenit) || totalMenit < 0) return "00:00";
   const jam = Math.floor(totalMenit / 60);
@@ -28,7 +25,7 @@ const formatMenitToHHMM = (totalMenit: number): string => {
   return `${String(jam).padStart(2, "0")}:${String(menit).padStart(2, "0")}`;
 };
 
-// State awal menyimpan durasi dalam TOTAL MENIT
+// State awal untuk form
 const createDefaultState = (): UpdateQuizPayload => ({
   kuis_nama: "",
   kuis_deskripsi: "",
@@ -38,6 +35,36 @@ const createDefaultState = (): UpdateQuizPayload => ({
   durasi_kuis: "60", // Default: 60 menit
   pertanyaan_list: [],
 });
+
+// Format untuk payload EDIT: Mengembalikan ISO String penuh (UTC)
+const formatDateForEdit = (date: Date): string => {
+  return date.toISOString();
+};
+
+// --- FUNGSI BARU: Mengonversi tanggal UTC ke format input datetime-local ---
+/**
+ * Mengonversi string tanggal ISO (UTC) menjadi format YYYY-MM-DDTHH:mm
+ * yang sesuai dengan zona waktu lokal browser.
+ * @param {string | undefined} isoString Tanggal dalam format ISO dari API.
+ * @returns {string} Tanggal yang diformat untuk input datetime-local.
+ */
+const formatDateToLocalInput = (isoString: string | undefined): string => {
+  if (!isoString) return "";
+  const date = new Date(isoString);
+  if (isNaN(date.getTime())) return ""; // Handle invalid date string
+
+  const pad = (num: number) => num.toString().padStart(2, "0");
+
+  const year = date.getFullYear();
+  const month = pad(date.getMonth() + 1); // getMonth() is 0-indexed
+  const day = pad(date.getDate());
+  const hours = pad(date.getHours());
+  const minutes = pad(date.getMinutes());
+
+  // Formatnya harus "YYYY-MM-DDTHH:mm"
+  return `${year}-${month}-${day}T${hours}:${minutes}`;
+};
+// --------------------------------------------------------------------
 
 export const useEditQuizForm = (initialData: DetailQuiz | null) => {
   const [formData, setFormData] =
@@ -49,9 +76,9 @@ export const useEditQuizForm = (initialData: DetailQuiz | null) => {
       setFormData({
         kuis_nama: initialData.nama_kuis || "",
         kuis_deskripsi: initialData.deskripsi_kuis || "",
-        tenggat: initialData.tenggat_kuis
-          ? new Date(initialData.tenggat_kuis).toISOString().slice(0, 16)
-          : "",
+        // --- DIUBAH: Gunakan helper baru untuk konversi timezone ---
+        tenggat: formatDateToLocalInput(initialData.tenggat_kuis),
+        // ---------------------------------------------------------
         kesempatan: initialData.kesempatan || 1,
         id_rangkaian: initialData.data_rangkaian?.ID || "",
         durasi_kuis: String(
@@ -66,7 +93,6 @@ export const useEditQuizForm = (initialData: DetailQuiz | null) => {
     setErrors((prev) => {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { [fieldName]: _, ...rest } = prev;
-
       return prev[fieldName] ? rest : prev;
     });
   };
@@ -74,6 +100,7 @@ export const useEditQuizForm = (initialData: DetailQuiz | null) => {
   const validateForm = (): { isValid: boolean; errors: ValidationErrors } => {
     const newErrors: ValidationErrors = {};
     let isValid = true;
+    // ... (validasi lainnya tetap sama)
     if (!formData.kuis_nama?.trim()) {
       newErrors.kuis_nama = "Nama kuis tidak boleh kosong";
       isValid = false;
@@ -222,13 +249,21 @@ export const useEditQuizForm = (initialData: DetailQuiz | null) => {
   };
 
   const getSubmitPayload = () => {
+    // Buat objek Date dari state form (ini akan diinterpretasikan sebagai waktu lokal)
+    const date = new Date(formData.tenggat);
+
+    if (isNaN(date.getTime())) {
+      throw new Error("Format tanggal 'tenggat' tidak valid");
+    }
+    // Konversi kembali ke ISO string (UTC) untuk dikirim ke server
+    const formattedTenggat = formatDateForEdit(date);
+
     const payload = {
       kuis_nama: formData.kuis_nama || "",
       kuis_deskripsi: formData.kuis_deskripsi || "",
-      tenggat: `${formData.tenggat}:00Z`,
+      tenggat: formattedTenggat,
       kesempatan: formData.kesempatan || 1,
       id_rangkaian: formData.id_rangkaian || "",
-      // DIUBAH: Mengonversi total menit dari form menjadi "HH:MM" untuk API
       durasi_kuis: formatMenitToHHMM(Number(formData.durasi_kuis) || 60),
       pertanyaan_list: (formData.pertanyaan_list || []).map((q) => ({
         id_pertanyaan: q.id_pertanyaan?.startsWith("new_")

@@ -13,6 +13,9 @@ export const useTugasForm = ({ initialData, onSuccess }: UseTugasFormProps) => {
   const [deskripsi, setDeskripsi] = useState<string>(
     initialData?.deskripsi || "",
   );
+  const [is_visible, setIs_visible] = useState<boolean>(
+    initialData ? Boolean(initialData.is_visible) : false,
+  );
   const [tenggat, setTenggat] = useState<string>(initialData?.tenggat || "");
   const [fileLink, setFileLink] = useState<string>(
     initialData?.file_link || "",
@@ -21,6 +24,7 @@ export const useTugasForm = ({ initialData, onSuccess }: UseTugasFormProps) => {
     initialData?.id_rangkaian || "",
   );
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [target, setTarget] = useState<string>(initialData?.target || "");
 
   useEffect(() => {
     if (initialData) {
@@ -29,6 +33,7 @@ export const useTugasForm = ({ initialData, onSuccess }: UseTugasFormProps) => {
       setTenggat(initialData.tenggat);
       setFileLink(initialData.file_link || "");
       setIdRangkaian(initialData.id_rangkaian);
+      setIs_visible(Boolean(initialData.is_visible));
     }
   }, [initialData]);
 
@@ -86,7 +91,7 @@ export const useTugasForm = ({ initialData, onSuccess }: UseTugasFormProps) => {
           deskripsi,
           tenggat: formattedTenggat,
           file: fileLink,
-          is_visible: true,
+          is_visible: String(is_visible),
         };
 
         await tugasService.updateTugas(initialData.id_penugasan, updateData);
@@ -96,8 +101,8 @@ export const useTugasForm = ({ initialData, onSuccess }: UseTugasFormProps) => {
         formData.append("deskripsi", deskripsi);
         formData.append("tenggat", formattedTenggat);
         formData.append("file", fileLink);
-        formData.append("is_visible", "true");
-
+        formData.append("target", target);
+        formData.append("is_visible", String(is_visible));
         await tugasService.createTugas(idRangkaian, formData);
       }
       onSuccess();
@@ -113,6 +118,8 @@ export const useTugasForm = ({ initialData, onSuccess }: UseTugasFormProps) => {
   };
 
   return {
+    is_visible,
+    setIs_visible,
     judul,
     setJudul,
     deskripsi,
@@ -127,5 +134,7 @@ export const useTugasForm = ({ initialData, onSuccess }: UseTugasFormProps) => {
     isFormValid,
     isEditMode,
     handleSubmit,
+    target,
+    setTarget,
   };
 };

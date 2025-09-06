@@ -32,6 +32,7 @@
   --color-default-dark: #383838;
   --color-default-dark-50: rgba(56, 56, 56, 0.5);
   --color-default-light: #f9f9f9;
+  --color-default-white: #fafafa;
 
   --color-bg-primary: #a61b37;
   --color-bg-secondary: #ece5db;
@@ -70,7 +71,7 @@
 }
 
 .mycontainer {
-  @apply right-0  left-0 mx-auto lg:px-8 md:px-12 px-4 xl:px-24;
+  @apply right-0  left-0 mx-auto lg:px-8 md:px-12 px-4 xl:px-22 2xl:px-24;
 }
 
 .bg-login {
@@ -122,22 +123,55 @@
 
 /* Custom scrollbar */
 
+/* Enhanced scrollbar styling */
 .overflow-y-auto::-webkit-scrollbar {
-  width: 23px;
+  width: 10px;
+  height: 10px;
 }
 
 .overflow-y-auto::-webkit-scrollbar-track {
   background-color: #f5e6e9;
   border-radius: 10px;
+  border: 2px solid transparent;
+  background-clip: content-box;
 }
 
 .overflow-y-auto::-webkit-scrollbar-thumb {
   background-color: #9c0221;
   border-radius: 10px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+  transition: background-color 0.2s ease;
+}
+.bg-radial-kiri {
+  border-radius: 1446.37px;
+  background: radial-gradient(
+    45.21% 45.15% at 42.87% 63.48%,
+    #8c021e 0%,
+    rgba(234, 91, 67, 0.32) 100%
+  );
+  filter: blur(60px);
 }
 
+.bg-radial-kanan {
+  border-radius: 1448.931px;
+  background: radial-gradient(
+    44.88% 44.88% at 50.29% 57.43%,
+    #7d021a 0%,
+    rgba(125, 2, 26, 0.34) 100%
+  );
+  filter: blur(60px);
+}
+
+.overflow-y-auto::-webkit-scrollbar-thumb:hover {
+  background-color: #7d021a;
+}
+
+.overflow-y-auto::-webkit-scrollbar-corner {
+  background-color: transparent;
+}
 .content-container {
-  @apply right-0 left-0 mx-auto  md:px-12 px-4 xl:px-60;
+  @apply right-0 left-0 mx-auto  md:px-12 lg:px-32 px-8 xl:px-44 2xl:px-56;
 }
 
 @theme inline {
@@ -246,12 +280,51 @@
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
 }
-
+.hero-bg {
+  background: url("../assets/home/hero.webp");
+  background-repeat: no-repeat;
+  background-position: center right 40%;
+  background-size: cover;
+}
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+@layer base {
+  :root {
+    --text-xs: 0.71rem;
+    --text-sm: 0.83rem;
+    --text-base: 0.95rem;
+    --text-lg: 1.07rem;
+    --text-xl: 1.19rem;
+    --text-2xl: 1.43rem;
+    --text-3xl: 1.78rem;
+    --text-4xl: 2.14rem;
+    --text-5xl: 2.85rem;
+    --text-6xl: 3.56rem;
+    --text-7xl: 4.56rem;
+    --text-8xl: 5.7rem;
+    --text-9xl: 7.6rem;
+  }
+}
+.toast-container {
+  position: fixed;
+  z-index: 9999;
+}
+@media screen and (max-width: 768px) {
+  .toast-container {
+    position: fixed;
+    z-index: 9999;
+    top: 5rem;
+    right: 1rem;
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 0.5rem;
+    width: calc(100% - 40px);
+    max-width: 320px; /* Reduced from 420px to 320px for smaller width */
   }
 }

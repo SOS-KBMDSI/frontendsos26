@@ -33,11 +33,7 @@ const ProfileForm: React.FC<ProfileFormProps> = ({
   const handleGolonganDarahChange = (newValue: string) => {
     onFormChange("GolonganDarah", newValue);
   };
-  const isShow = () => {
-    const currentDate = new Date();
-    const targetDate = new Date("2024-09-21");
-    return currentDate < targetDate;
-  };
+
   return (
     <>
       <div className="bg-white rounded-lg shadow-lg md:px-20 md:py-16 px-6 py-8 mt-8 transition-all duration-300 ease-in-out hover:shadow-xl">
@@ -122,14 +118,22 @@ const ProfileForm: React.FC<ProfileFormProps> = ({
               Agama
             </label>
             {isEditing ? (
-              <Input
-                type="text"
-                name="Agama"
-                value={formData.Agama}
-                onChange={handleInputChange}
-                placeholder="Masukkan agama"
-                className="transition-all duration-300 ease-in-out focus:ring-2 focus:ring-primary-500 text-sm md:text-base"
-              />
+              <Select
+                value={formData.Agama || ""}
+                onValueChange={(value) => onFormChange("Agama", value)}
+              >
+                <SelectTrigger className="w-full h-10 transition-all duration-300 ease-in-out hover:border-primary-500 text-sm md:text-base">
+                  <SelectValue placeholder="Pilih Agama" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Islam">Islam</SelectItem>
+                  <SelectItem value="Kristen">Kristen</SelectItem>
+                  <SelectItem value="Katolik">Katolik</SelectItem>
+                  <SelectItem value="Hindu">Hindu</SelectItem>
+                  <SelectItem value="Budha">Budha</SelectItem>
+                  <SelectItem value="Konghucu">Konghucu</SelectItem>
+                </SelectContent>
+              </Select>
             ) : (
               <p className="px-3 py-2 bg-gray-50 rounded-lg text-gray-700 text-sm md:text-base">
                 {user?.agama || "-"}
@@ -233,31 +237,27 @@ const ProfileForm: React.FC<ProfileFormProps> = ({
             Detail Kelompok
           </h2>
         </div>
-        {isShow() ? (
-          <>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-              <div className="flex flex-col transition-transform duration-300 ease-in-out hover:scale-[1.02]">
-                <label className="text-primary-500 text-base md:text-lg mb-1 font-semibold">
-                  Nama Distrik
-                </label>
-                <p className="px-3 py-2 bg-gray-100 rounded-lg text-gray-500 cursor-not-allowed text-sm md:text-base">
-                  {/* Asumsi: nama distrik ada di user.kelompok.distrik.nama_distrik */}
-                  {user?.kelompok?.distrik?.nama_distrik || "-"}
-                </p>
-              </div>
-              <div className="flex flex-col transition-transform duration-300 ease-in-out hover:scale-[1.02]">
-                <label className="text-primary-500 text-base md:text-lg mb-1 font-semibold">
-                  Nama Kelompok
-                </label>
-                <p className="px-3 py-2 bg-gray-100 rounded-lg text-gray-500 cursor-not-allowed text-sm md:text-base">
-                  {user?.kelompok?.nama_kelompok || "-"}
-                </p>
-              </div>
+        <>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+            <div className="flex flex-col transition-transform duration-300 ease-in-out hover:scale-[1.02]">
+              <label className="text-primary-500 text-base md:text-lg mb-1 font-semibold">
+                Nama Distrik
+              </label>
+              <p className="px-3 py-2 bg-gray-100 rounded-lg text-gray-500 cursor-not-allowed text-sm md:text-base">
+                {/* Asumsi: nama distrik ada di user.kelompok.distrik.nama_distrik */}
+                {user?.kelompok?.distrik?.nama_distrik || "-"}
+              </p>
             </div>
-          </>
-        ) : (
-          <div>IHH KEPO DEH AMA KELOMPOK NYA</div>
-        )}
+            <div className="flex flex-col transition-transform duration-300 ease-in-out hover:scale-[1.02]">
+              <label className="text-primary-500 text-base md:text-lg mb-1 font-semibold">
+                Nama Kelompok
+              </label>
+              <p className="px-3 py-2 bg-gray-100 rounded-lg text-gray-500 cursor-not-allowed text-sm md:text-base">
+                {user?.kelompok?.nama_kelompok || "-"}
+              </p>
+            </div>
+          </div>
+        </>
       </div>
     </>
   );

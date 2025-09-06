@@ -20,7 +20,9 @@ const convertDurationToMinutes = (duration: string | undefined): number => {
 
 const QuizBefore = ({ quiz }: { quiz: Quiz | null }) => {
   const totalMinutes = convertDurationToMinutes(quiz?.durasi_kuis);
-
+  const isdeadline = quiz?.tenggat_kuis
+    ? new Date(quiz.tenggat_kuis).getTime() < Date.now()
+    : false;
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleStartQuiz = () => {
@@ -33,7 +35,7 @@ const QuizBefore = ({ quiz }: { quiz: Quiz | null }) => {
       <div className="w-full space-y-4 px-8 py-6 rounded-2xl mt-20 min-h-[15rem] bg-[#F5E6E9]">
         <h4 className="font-bold text-black">Siap Taklukan Quiz?</h4>
         <p className="text-justify">
-          Ini adalah kesempatanmu untuk menunjukkan pemahamanmu pada Kuis:
+          <span>{quiz?.deskripsi_kuis}</span>
           <span className="font-semibold mx-2">{quiz?.nama_kuis}</span>. Kamu
           punya <span className="font-semibold">{totalMinutes} Menit</span>{" "}
           penuh untuk fokus. Ingat, timer akan terus berjalan. Percayalah pada
@@ -42,8 +44,9 @@ const QuizBefore = ({ quiz }: { quiz: Quiz | null }) => {
         <Button
           onClick={() => setIsModalOpen(true)}
           className="mx-auto cursor-pointer text-sm mt-10"
+          disabled={isdeadline}
         >
-          Mulai Kuis Sekarang
+          {isdeadline ? "Kuis Sudah Berakhir" : "Mulai Kuis Sekarang"}
         </Button>
       </div>
 

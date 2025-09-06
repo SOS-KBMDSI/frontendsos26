@@ -19,7 +19,7 @@ export default function UserLayout({
           <ToastProvider>
             <AuthErrorProvider protectedRoutes={protectedRoutes}>
               <Navbar />
-              <main className="pt-20 xl:pt-16 2xl:pt-18">{children}</main>
+              <main className="pt-16 xl:pt-10 2xl:pt-14">{children}</main>
             </AuthErrorProvider>
             <Footer />
           </ToastProvider>

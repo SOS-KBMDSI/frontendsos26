@@ -19,9 +19,9 @@ import {
   PlusCircle,
   Trash2,
   Loader2,
-  ArrowLeft,
   Save,
   FileText,
+  Cross,
 } from "lucide-react";
 
 interface SelectOption {
@@ -107,8 +107,8 @@ const EditQuizForm: React.FC<EditQuizFormProps> = ({
           className="space-x-2"
           disabled={isSubmitting}
         >
-          <ArrowLeft size={16} />
-          <span>Kembali</span>
+          <Cross className="rotate-45" size={16} />
+          <span>Cancel Edit</span>
         </Button>
       </div>
 

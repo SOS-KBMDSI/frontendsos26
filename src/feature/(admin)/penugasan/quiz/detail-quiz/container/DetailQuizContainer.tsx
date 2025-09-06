@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Loader2 } from "lucide-react";
+import { ChevronLeft, Loader2 } from "lucide-react";
 import { useGetDetailQuiz } from "../hooks/useGetDetailQuiz";
 import { useGetQuizSubmissions } from "../hooks/useGetQuizSubmission";
 import { useEditQuizForm } from "../hooks/useEditQuizForm";
@@ -23,6 +23,8 @@ import EditQuizForm from "../components/EditQuiz";
 import { useToast } from "@/shared/hooks/useToast";
 import { ConfirmDeleteModal } from "../components/DeleteConfirmation";
 import { useDeleteQuiz } from "../hooks/useDeleteQuiz";
+import Link from "next/link";
+import { useRole } from "@/shared/hooks/useRole";
 
 interface DetailQuizContainerProps {
   id_quiz: string;
@@ -33,6 +35,7 @@ const DetailQuizContainer: React.FC<DetailQuizContainerProps> = ({
 }) => {
   const { showToast } = useToast();
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const { isSqc } = useRole();
 
   const [isEditing, setIsEditing] = useState(false);
   const [selectedKelompok, setSelectedKelompok] = useState<string | null>(null);
@@ -129,6 +132,13 @@ const DetailQuizContainer: React.FC<DetailQuizContainerProps> = ({
 
   return (
     <section>
+      <Link
+        href="/admin/penugasan"
+        className="flex items-center mb-6 gap-1/2 text-primary-500 hover:text-primary-600 transition-colors w-fit"
+      >
+        <ChevronLeft size={24} />
+        <span className="text-xl">Kembali</span>
+      </Link>
       {isEditing ? (
         <EditQuizForm
           onBack={() => setIsEditing(false)}
@@ -141,10 +151,12 @@ const DetailQuizContainer: React.FC<DetailQuizContainerProps> = ({
       ) : (
         <>
           <DetailQuiz
+            isSQC={isSqc}
             quiz={detailQuiz}
             onDelete={() => setIsDeleteModalOpen(true)}
             onEdit={() => setIsEditing(true)}
           />
+
           <QuizSubmissionTable
             table={table}
             isSubmissionLoading={isSubmissionLoading}

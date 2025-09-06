@@ -1,4 +1,4 @@
-import { apiClient, ApiResponse } from "@/api/core/AxiosInstance";
+import { apiClient, ApiResponse, BlobResponse } from "@/api/core/AxiosInstance";
 
 export interface DataTugas {
   nama_penugasan: string;
@@ -79,6 +79,117 @@ class DashboardService {
       throw new Error(
         "An unknown error occurred while fetching dashboard data.",
       );
+    }
+  }
+
+  async downloadDashboardExcel(): Promise<BlobResponse> {
+    try {
+      const response = await apiClient.getBlob("/api/dashboard/excel");
+
+      if (!(response.data instanceof Blob)) {
+        console.error(
+          "Invalid response format: Expected a Blob but received",
+          typeof response.data,
+        );
+        throw new Error("The server response was not a valid file.");
+      }
+
+      return response;
+    } catch (err: unknown) {
+      console.error("Download dashboard excel error:", err);
+      if (err instanceof Error) {
+        throw new Error(`Download failed: ${err.message}`);
+      }
+      throw new Error("An unknown error occurred while downloading the file.");
+    }
+  }
+
+  async downloadDashboardExcelFallback(): Promise<Blob> {
+    try {
+      const response = await apiClient.get<Blob>("/api/dashboard/excel", {
+        responseType: "blob",
+        headers: {
+          Accept:
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        },
+      });
+
+      if (!(response.data instanceof Blob)) {
+        console.error(
+          "Invalid response format: Expected a Blob but received",
+          typeof response.data,
+        );
+        throw new Error("The server response was not a valid file.");
+      }
+
+      if (response.data.size === 0) {
+        throw new Error("Empty file received from server");
+      }
+
+      return response.data;
+    } catch (error) {
+      console.error("Download dashboard excel error:", error);
+      if (error instanceof Error) {
+        throw new Error(`Failed to download dashboard Excel: ${error.message}`);
+      }
+      throw new Error(
+        "An unknown error occurred while downloading dashboard Excel.",
+      );
+    }
+  }
+
+  downloadExcelFile(blob: Blob, filename = "dashboard_data.xlsx"): void {
+    try {
+      if (!(blob instanceof Blob)) {
+        throw new Error("Invalid blob data received");
+      }
+
+      if (blob.size === 0) {
+        throw new Error("Empty file received from server");
+      }
+
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = filename;
+
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      setTimeout(() => {
+        window.URL.revokeObjectURL(url);
+      }, 100);
+    } catch (error) {
+      console.error("Error downloading file:", error);
+      throw new Error(
+        `Failed to download file: ${
+          error instanceof Error ? error.message : "Unknown error"
+        }`,
+      );
+    }
+  }
+
+  async downloadAndSaveDashboardExcel(
+    filename = "dashboard_data.xlsx",
+  ): Promise<void> {
+    try {
+      try {
+        const blobResponse = await this.downloadDashboardExcel();
+        this.downloadExcelFile(blobResponse.data, filename);
+        return;
+      } catch (primaryError) {
+        console.warn(
+          "Primary download method failed, trying fallback:",
+          primaryError,
+        );
+
+        const blob = await this.downloadDashboardExcelFallback();
+        this.downloadExcelFile(blob, filename);
+      }
+    } catch (error) {
+      console.error("All download methods failed:", error);
+      throw error;
     }
   }
 }

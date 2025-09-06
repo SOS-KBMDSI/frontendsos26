@@ -8,17 +8,19 @@ import {
   LucideIcon,
   LayoutDashboard,
 } from "lucide-react";
+import { useRole } from "../hooks/useRole";
 
 export interface SidebarMenuItem {
   id: number;
   label: string;
   icon: LucideIcon;
   path: string;
+  requiresRole?: string;
 }
 
 const basePath = "/admin";
 
-const baseSidebarItems = [
+const baseSidebarItems: SidebarMenuItem[] = [
   {
     id: 0,
     label: "Dashboard",
@@ -60,13 +62,28 @@ const baseSidebarItems = [
     label: "STF",
     icon: Crown,
     path: "stf",
+    requiresRole: "sqc",
   },
 ];
 
-export const sidebarMenuItems: SidebarMenuItem[] = baseSidebarItems.map(
-  (item) => ({
-    ...item,
+export const useSidebarMenuItems = (): SidebarMenuItem[] => {
+  const { isSqc } = useRole();
 
-    path: `${basePath}/${item.path.replace(/^\//, "")}`,
-  }),
-);
+  return baseSidebarItems
+    .filter((item) => {
+      if (!item.requiresRole) return true;
+
+      if (item.requiresRole === "sqc") return isSqc;
+
+      return false;
+    })
+    .map((item) => ({
+      ...item,
+      path: `${basePath}/${item.path.replace(/^\//, "")}`,
+    }));
+};
+
+export const allSidebarMenuItems = baseSidebarItems.map((item) => ({
+  ...item,
+  path: `${basePath}/${item.path.replace(/^\//, "")}`,
+}));

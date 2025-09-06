@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { useGetAllKuis } from "../hooks/useGetAllQuiz";
-import { useQuizForm } from "../hooks/useQuizForm"; // <-- Impor hook form
+import { useQuizForm } from "../hooks/useQuizForm";
 import { useSelectOptions } from "@/shared/hooks/useSelectOptions";
 import { useToast } from "@/shared/hooks/useToast";
 import { QuizCard } from "../components/QuizCard";
@@ -11,6 +11,7 @@ import { QuizForm } from "../components/QuizForm";
 import { Button } from "@/shared/components/ui/Button";
 import { Modal } from "@/shared/components/ui/Modal";
 import { Plus } from "lucide-react";
+import { useRole } from "@/shared/hooks/useRole";
 
 const QuizContainer = () => {
   const {
@@ -32,7 +33,6 @@ const QuizContainer = () => {
       title: "Berhasil!",
       message: "Kuis baru berhasil dibuat",
     });
-    // Reset form dipanggil setelah sukses
     form.resetForm();
   };
 
@@ -58,6 +58,9 @@ const QuizContainer = () => {
     form.resetForm();
   };
 
+  const sortedQuizList = quizList ? [...quizList].reverse() : [];
+  const { isSqc } = useRole();
+
   if (isLoading) {
     return <div>Memuat data kuis...</div>;
   }
@@ -65,19 +68,21 @@ const QuizContainer = () => {
   return (
     <section className="">
       <div className="flex justify-end">
-        <Button variant={"outline"} onClick={() => setIsModalOpen(true)}>
-          <Plus size={16} className="mr-2" />
-          Tambah Kuis
-        </Button>
+        {isSqc && (
+          <Button variant={"outline"} onClick={() => setIsModalOpen(true)}>
+            <Plus size={16} className="mr-2" />
+            Tambah Kuis
+          </Button>
+        )}
       </div>
 
-      {!quizList || quizList.length === 0 ? (
+      {!sortedQuizList || sortedQuizList.length === 0 ? (
         <div className="text-center mt-10 text-gray-500">
           Belum ada kuis yang dibuat.
         </div>
       ) : (
         <div className="mt-8 flex gap-9 flex-col">
-          {quizList.map((quiz, idx) => (
+          {sortedQuizList.map((quiz, idx) => (
             <Link
               href={`/admin/penugasan/kuis/${quiz.id_kuis}`}
               key={quiz.id_kuis}

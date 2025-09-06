@@ -8,10 +8,12 @@ import PresensiCard from "../components/PresensiCard";
 import { Modal } from "@/shared/components/ui/Modal";
 import { useGetAllPresensi } from "../hooks/useGetAllPresensi";
 import PresensiForm from "../components/PresensiForm";
+import { useRole } from "@/shared/hooks/useRole";
 const PresensiContainer = () => {
   const router = useRouter();
   const { data: allPresensi, isLoading, error, refresh } = useGetAllPresensi();
   const [isModalOpen, setIsModalOpen] = React.useState(false);
+  const { isSqc } = useRole();
 
   const handleCreateSuccess = () => {
     setIsModalOpen(false);
@@ -24,9 +26,7 @@ const PresensiContainer = () => {
   if (isLoading) {
     return <div>loading</div>;
   }
-  if (!allPresensi) {
-    return <div>Tugas Masih Kosong Jir</div>;
-  }
+
   if (error) {
     return (
       <div>
@@ -46,12 +46,16 @@ const PresensiContainer = () => {
       </button>
       <div className="flex items-center justify-between">
         <h4 className="text-4xl font-semibold text-black">Kode Presensi</h4>
-        <Button onClick={handleModal}>Tambah Presensi</Button>
+        {isSqc && <Button onClick={handleModal}>Tambah Presensi</Button>}
       </div>
       <div className="mt-10 flex flex-col gap-y-5">
-        {allPresensi.map((presensi) => (
-          <PresensiCard key={presensi.kode_id} presensi={presensi} />
-        ))}
+        {allPresensi && allPresensi.length > 0 ? (
+          allPresensi.map((presensi) => (
+            <PresensiCard key={presensi.kode_id} presensi={presensi} />
+          ))
+        ) : (
+          <p className="text-center text-gray-500">Tidak ada data presensi</p>
+        )}
       </div>
       <Modal
         isOpen={isModalOpen}

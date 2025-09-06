@@ -26,6 +26,7 @@ import PresensiTable from "../components/PresensiTable";
 import { Modal } from "@/shared/components/ui/Modal";
 import PresensiForm from "../../components/PresensiForm";
 import PresensiMahasiswaForm from "../components/PresensiMahasiswaForm";
+import { useRole } from "@/shared/hooks/useRole";
 
 interface DetailPresensiContainerProps {
   id: string;
@@ -35,6 +36,7 @@ const DetailPresensiContainer: React.FC<DetailPresensiContainerProps> = ({
   id,
 }) => {
   const router = useRouter();
+  const { isSqc } = useRole();
 
   const [selectedDistrik, setSelectedDistrik] = useState<string | null>(null);
   const [selectedKelompok, setSelectedKelompok] = useState<string | null>(null);
@@ -288,9 +290,11 @@ const DetailPresensiContainer: React.FC<DetailPresensiContainerProps> = ({
               </div>
             </div>
           </div>
-          <Button onClick={handleModal} className="w-fit">
-            Edit Presensi
-          </Button>
+          {isSqc && (
+            <Button onClick={handleModal} className="w-fit">
+              Edit Presensi
+            </Button>
+          )}
         </div>
       </div>
       <div className="w-full h-[1px] bg-surface-divider"></div>
@@ -305,7 +309,7 @@ const DetailPresensiContainer: React.FC<DetailPresensiContainerProps> = ({
         onKelompokChange={setSelectedKelompok}
         distrikOptions={distrikOptions}
         kelompokOptions={kelompokOptions}
-        onRowSelect={handleSelectedMahasiswa}
+        onRowSelect={isSqc ? handleSelectedMahasiswa : undefined}
       />
       <Modal
         isOpen={isModalOpen}

@@ -7,13 +7,15 @@ import { usePathname } from "next/navigation";
 import { Menu, X, LogOut } from "lucide-react";
 import * as Tooltip from "@radix-ui/react-tooltip";
 
-import { sidebarMenuItems } from "@/shared/data/SidebarData";
 import { authService } from "@/api/services/auth";
 import LogoSoS from "@/assets/logo-sos.svg";
+import { useSidebarMenuItems } from "@/shared/data/SidebarData";
 
 export const Sidebar = () => {
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
   const pathname = usePathname();
+
+  const sidebarMenuItems = useSidebarMenuItems();
 
   const handleLogout = async () => {
     try {

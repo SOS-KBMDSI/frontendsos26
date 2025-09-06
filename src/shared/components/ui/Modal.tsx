@@ -40,13 +40,15 @@ const Modal = ({
               )}
             >
               {title && (
-                <Dialog.Title className="text-xl text-center font-bold leading-6 text-gray-900 lg:text-2xl">
+                <Dialog.Title className="md:text-xl text-lg text-center font-bold leading-6 text-gray-900 lg:text-2xl">
                   {title}
                 </Dialog.Title>
               )}
 
               {desc && (
-                <p className="mt-2 text-sm text-gray-500 text-center">{desc}</p>
+                <p className="mt-2 text-xs md:text-sm text-gray-500 text-center">
+                  {desc}
+                </p>
               )}
 
               {!title && !desc && (

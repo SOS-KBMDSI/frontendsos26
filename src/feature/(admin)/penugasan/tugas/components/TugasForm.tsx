@@ -41,6 +41,10 @@ export const TugasForm: React.FC<TugasFormProps> = ({
   };
 
   const {
+    target,
+    setTarget,
+    is_visible,
+    setIs_visible,
     judul,
     setJudul,
     deskripsi,
@@ -121,7 +125,6 @@ export const TugasForm: React.FC<TugasFormProps> = ({
             </Select>
           </div>
         )}
-
         <div className="space-y-1">
           <label htmlFor="judul" className={labelClasses}>
             Judul Tugas <span className="text-red-500">*</span>
@@ -136,7 +139,6 @@ export const TugasForm: React.FC<TugasFormProps> = ({
             className="text-sm"
           />
         </div>
-
         <div className="space-y-1">
           <label htmlFor="deskripsi" className={labelClasses}>
             Deskripsi <span className="text-red-500">*</span>
@@ -151,7 +153,6 @@ export const TugasForm: React.FC<TugasFormProps> = ({
             required
           />
         </div>
-
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="space-y-1">
             <label htmlFor="tenggat" className={labelClasses}>
@@ -179,7 +180,47 @@ export const TugasForm: React.FC<TugasFormProps> = ({
             />
           </div>
         </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="space-y-1">
+            <label htmlFor="target" className={labelClasses}>
+              Target Peserta <span className="text-red-500">*</span>
+            </label>
+            <Select
+              onValueChange={setTarget}
+              value={target}
+              disabled={isSubmitting || isEditMode}
+            >
+              <SelectTrigger id="target" className="col-span-1">
+                <SelectValue placeholder="Pilih Status" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="maba">Mahasiswa Baru</SelectItem>
+                <SelectItem value="pemutihan">Pemutihan</SelectItem>
+                <SelectItem value="izin">Izin</SelectItem>
+                <SelectItem value="semua">Semua</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
 
+          <div className="space-y-1">
+            <label htmlFor="visibility" className={labelClasses}>
+              Visibilitas <span className="text-red-500">*</span>
+            </label>
+            <Select
+              onValueChange={(value) => setIs_visible(value === "true")}
+              value={is_visible.toString()}
+              disabled={isSubmitting}
+            >
+              <SelectTrigger id="visibility" className="col-span-1">
+                <SelectValue placeholder="Tampilkan Penugasan" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="true">Tampilkan</SelectItem>
+                <SelectItem value="false">Sembunyikan</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
         <div className="w-full mt-10">
           <Button
             type="submit"

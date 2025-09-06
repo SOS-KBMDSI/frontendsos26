@@ -87,9 +87,9 @@ const FormEditNilai: React.FC<FormEditTugasProps> = ({
           className="mt-2"
           id="nilai"
           type="number"
-          min={0}
+          min={1}
           max={100}
-          value={nilai}
+          value={nilai || ""}
           onChange={(e) => {
             const value = Number(e.target.value);
             if (value >= 0 && value <= 100) {
@@ -97,6 +97,9 @@ const FormEditNilai: React.FC<FormEditTugasProps> = ({
             }
           }}
           disabled={isSubmitting}
+          placeholder="Masukkan nilai 0-100"
+          // Disable spinner arrows on number input
+          style={{ WebkitAppearance: "none", MozAppearance: "textfield" }}
         />
       </div>
       <div className="flex justify-center">

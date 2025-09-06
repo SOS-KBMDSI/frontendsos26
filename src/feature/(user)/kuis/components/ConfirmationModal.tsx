@@ -34,13 +34,23 @@ export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} title={title} desc={message}>
-      <div className="flex justify-center gap-4 mt-6">
+      <div className="flex justify-center  gap-4 mt-6">
         {!hideCancelButton && (
-          <Button variant="outline" onClick={onClose} disabled={isLoading}>
+          <Button
+            variant="outline"
+            className="text-xs md:text-lg"
+            onClick={onClose}
+            disabled={isLoading}
+          >
             {cancelText}
           </Button>
         )}
-        <Button variant="primary" onClick={onConfirm} disabled={isLoading}>
+        <Button
+          variant="primary"
+          className="text-xs md:text-lg"
+          onClick={onConfirm}
+          disabled={isLoading}
+        >
           {isLoading ? (
             <Loader2 className="animate-spin mr-2" size={16} />
           ) : (
