@@ -14,6 +14,10 @@ type ModalContent = {
   hideCancelButton?: boolean;
 };
 
+interface QuizResult {
+  score?: number;
+}
+
 const formatTime = (seconds: number): string => {
   const h = Math.floor(seconds / 3600);
   const m = Math.floor((seconds % 3600) / 60);
@@ -26,7 +30,12 @@ const parseDurationToSeconds = (duration: string): number => {
   return (parts[0] || 0) * 3600 + (parts[1] || 0) * 60 + (parts[2] || 0);
 };
 
-export const useQuiz = (id_kuis: string) => {
+interface UseQuizProps {
+  id_kuis: string;
+  onQuizComplete?: (result: QuizResult) => void;
+}
+
+export const useQuiz = ({ id_kuis, onQuizComplete }: UseQuizProps) => {
   const router = useRouter();
   const { data: kuisData, isLoading, error } = useGetSoalKuis(id_kuis);
   const { submitJawaban, isLoading: isSubmitting } = useSubmitKuis();
@@ -41,11 +50,79 @@ export const useQuiz = (id_kuis: string) => {
     return kuisData ? parseDurationToSeconds(kuisData.durasi_kuis) : 0;
   }, [kuisData]);
 
+  // Initialize timer dengan memperhitungkan waktu yang sudah berlalu
   useEffect(() => {
-    if (totalDuration > 0) setTimeLeft(totalDuration);
-  }, [totalDuration]);
+    if (totalDuration > 0) {
+      const startTimeKey = `quizStartTime-${id_kuis}`;
+      const savedAnswersKey = `quizAnswers-${id_kuis}`;
+      const savedIndexKey = `quizCurrentIndex-${id_kuis}`;
+
+      // Restore jawaban dan index yang tersimpan
+      const savedAnswers = localStorage.getItem(savedAnswersKey);
+      const savedIndex = localStorage.getItem(savedIndexKey);
+
+      if (savedAnswers) {
+        try {
+          setAnswers(JSON.parse(savedAnswers));
+        } catch (e) {
+          console.error("Error parsing saved answers:", e);
+        }
+      }
+
+      if (savedIndex) {
+        const index = parseInt(savedIndex, 10);
+        if (!isNaN(index)) {
+          setCurrentQuestionIndex(index);
+        }
+      }
+
+      // Cek apakah quiz sudah dimulai sebelumnya
+      const savedStartTime = localStorage.getItem(startTimeKey);
+      const now = Date.now();
+
+      if (savedStartTime) {
+        // Hitung waktu yang sudah berlalu
+        const startTime = parseInt(savedStartTime, 10);
+        const elapsedSeconds = Math.floor((now - startTime) / 1000);
+        const remainingTime = Math.max(0, totalDuration - elapsedSeconds);
+
+        setTimeLeft(remainingTime);
+
+        // Jika waktu sudah habis, auto submit
+        if (remainingTime <= 0) {
+          setIsFinished(true);
+        }
+      } else {
+        // Pertama kali memulai quiz
+        localStorage.setItem(startTimeKey, now.toString());
+        setTimeLeft(totalDuration);
+      }
+    }
+  }, [totalDuration, id_kuis]);
+
+  // Save jawaban dan index ke localStorage setiap kali berubah
+  useEffect(() => {
+    if (!isFinished && Object.keys(answers).length > 0) {
+      localStorage.setItem(`quizAnswers-${id_kuis}`, JSON.stringify(answers));
+    }
+  }, [answers, id_kuis, isFinished]);
+
+  useEffect(() => {
+    if (!isFinished) {
+      localStorage.setItem(
+        `quizCurrentIndex-${id_kuis}`,
+        currentQuestionIndex.toString(),
+      );
+    }
+  }, [currentQuestionIndex, id_kuis, isFinished]);
 
   const closeModal = () => setModalContent(null);
+
+  const cleanupLocalStorage = useCallback(() => {
+    localStorage.removeItem(`quizStartTime-${id_kuis}`);
+    localStorage.removeItem(`quizAnswers-${id_kuis}`);
+    localStorage.removeItem(`quizCurrentIndex-${id_kuis}`);
+  }, [id_kuis]);
 
   const executeSubmit = useCallback(async () => {
     if (!kuisData || isFinished) return;
@@ -60,12 +137,18 @@ export const useQuiz = (id_kuis: string) => {
       const result = await submitJawaban(id_kuis, {
         pertanyaan_list: payloadList,
       });
-      if (result) {
-        localStorage.setItem(`quizResult-${id_kuis}`, JSON.stringify(result));
-      }
+
       setIsFinished(true);
+      cleanupLocalStorage(); // Bersihkan data temporary setelah submit
+
+      // Panggil callback untuk update status quiz di parent component
+      if (onQuizComplete && result) {
+        onQuizComplete(result);
+      }
+
       router.push(`/aktivitas/kuis/${id_kuis}`);
-    } catch {
+    } catch (submitError) {
+      console.error("Submit error:", submitError);
       setModalContent({
         isOpen: true,
         title: "Gagal Mengumpulkan",
@@ -75,7 +158,16 @@ export const useQuiz = (id_kuis: string) => {
         hideCancelButton: true,
       });
     }
-  }, [answers, kuisData, id_kuis, submitJawaban, router, isFinished]);
+  }, [
+    answers,
+    kuisData,
+    id_kuis,
+    submitJawaban,
+    router,
+    isFinished,
+    cleanupLocalStorage,
+    onQuizComplete,
+  ]);
 
   const handleSubmit = useCallback(() => {
     if (!kuisData || isFinished) return;
@@ -108,7 +200,7 @@ export const useQuiz = (id_kuis: string) => {
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
       e.preventDefault();
       e.returnValue =
-        "Anda yakin ingin meninggalkan halaman? Progres kuis Anda akan hilang.";
+        "Anda yakin ingin meninggalkan halaman? Quiz akan tetap berjalan di background.";
     };
     window.addEventListener("beforeunload", handleBeforeUnload);
     return () => window.removeEventListener("beforeunload", handleBeforeUnload);

@@ -88,7 +88,7 @@ const DetailTugas = ({ tugas, onEdit }: DetailTugasProps) => {
           <div className="flex flex-col space-y-2 text-gray-700">
             <span className="text-primary-500 font-medium">Visibilitas:</span>
             <div className="flex items-center space-x-2">
-              {tugas?.is_visible ? (
+              {tugas?.is_visible !== "false" ? (
                 <>
                   <Eye className="w-4 h-4 text-green-600" />
                   <span className="text-green-600">Terlihat</span>

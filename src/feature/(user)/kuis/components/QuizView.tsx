@@ -35,14 +35,35 @@ export const QuizView = ({
   onPrev,
   onJumpToQuestion,
 }: QuizViewProps) => {
-  if (isLoading)
-    return <div className="text-center text-white">Memuat soal...</div>;
-  if (error)
-    return <div className="text-center text-red-500">Error: {error}</div>;
-  if (!kuisData || !currentQuestion)
+  if (isLoading) {
     return (
-      <div className="text-center text-white">Data kuis tidak ditemukan.</div>
+      <div className="flex flex-col items-center justify-center h-screen space-y-4">
+        <div className="w-12 h-12 border-4 border-primary-500 border-t-transparent rounded-full animate-spin" />
+        <p className="text-white font-medium">Loading quiz...</p>
+      </div>
     );
+  }
+
+  if (error) {
+    return (
+      <div className="flex items-center justify-center min-h-[200px] p-4">
+        <div className="bg-red-100 text-red-700 px-6 py-4 rounded-lg max-w-md text-center">
+          <p className="font-medium">Error occurred</p>
+          <p className="text-sm mt-1">{error}</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!kuisData || !currentQuestion) {
+    return (
+      <div className="flex items-center justify-center min-h-[200px]">
+        <div className="bg-yellow-100 text-yellow-700 px-6 py-4 rounded-lg">
+          <p className="font-medium">Quiz data not found</p>
+        </div>
+      </div>
+    );
+  }
 
   const sortedPilihan = [...currentQuestion.pilihan].sort((a, b) =>
     a.label.localeCompare(b.label),

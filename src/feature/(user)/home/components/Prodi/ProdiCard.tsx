@@ -10,7 +10,7 @@ const ProdiCard = ({ prodi }: { prodi: ProdiItem }) => {
         src={prodi.image}
         alt={prodi.title}
       />
-      <h5 className="font-medium z-20  text-black min-h-16 text-xl lg:text-2xl text-center">
+      <h5 className="font-medium z-20  text-black min-h-16 text-xl lg:text-lg xl:text-2xl text-center">
         {prodi.title}
       </h5>
       <Image

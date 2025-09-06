@@ -1,8 +1,17 @@
+"use client";
 import { Button } from "@/shared/components/ui/Button";
 import { FileDownIcon } from "lucide-react";
 import MaskotSOS from "@/assets/user/maskot-sos-basic.svg";
 import Image from "next/image";
+
 const Guidebook = () => {
+  const handleDownload = () => {
+    window.open(
+      "https://drive.google.com/file/d/1vF5k8M55smWeJOnxvEvOMov13dKLiz93/view?usp=drive_link",
+      "_blank",
+    );
+  };
+
   return (
     <div className="content-container flex flex-col md:flex-row md:justify-center items-center">
       <div className="md:max-w-3/5 w-full h-fit rounded-xl shadow-lg overflow-hidden ">
@@ -18,7 +27,10 @@ const Guidebook = () => {
           </p>
         </div>
         <div className="w-full md:px-10 px-4 py-5  flex items-center justify-start h-[5rem] bg-gradient-to-b from-primary-500 rounded-xl to-primary-700">
-          <Button className="md:px-10 mx-auto md:mx-0 text-sm cursor-pointer flex font-medium text-primary-500 hover:text-white items-center justify-center space-x-2 rounded-lg h-full w-full md:w-fit bg-white focus:text-white hover:border-none focus:border-none hover:bg-primary-500 transition-colors duration-300">
+          <Button
+            onClick={handleDownload}
+            className="md:px-10 mx-auto md:mx-0 text-sm cursor-pointer flex font-medium text-primary-500 hover:text-white items-center justify-center space-x-2 rounded-lg h-full w-full md:w-fit bg-white focus:text-white hover:border-none focus:border-none hover:bg-primary-500 transition-colors duration-300"
+          >
             <FileDownIcon className="w-4 h-4" />
             <span className="text-base">Unduh Sekarang</span>
           </Button>
