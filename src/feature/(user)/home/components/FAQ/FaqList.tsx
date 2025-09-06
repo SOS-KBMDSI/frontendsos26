@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { FAQ } from "../../data/faq";
 import { ChevronDownIcon, ChevronUpIcon } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
 const FaqList = ({ faq }: { faq: FAQ }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -12,7 +13,7 @@ const FaqList = ({ faq }: { faq: FAQ }) => {
 
   return (
     <div
-      className={`w-full border-1 rounded-xl transition-all hover:bg-white group border-white ${
+      className={`w-full border-1 rounded-xl hover:bg-white group border-white ${
         isOpen ? "bg-white" : ""
       }`}
     >
@@ -21,7 +22,7 @@ const FaqList = ({ faq }: { faq: FAQ }) => {
         onClick={toggleFaq}
       >
         <h4
-          className={` font-semibold group-hover:text-primary-500  text-sm md:text-base ${
+          className={`font-semibold group-hover:text-primary-500 text-sm md:text-base ${
             isOpen ? "text-primary-500" : "text-white"
           }`}
         >
@@ -36,23 +37,24 @@ const FaqList = ({ faq }: { faq: FAQ }) => {
         </button>
       </div>
 
-      <div
-        className={`overflow-hidden transition-all  duration-100  ease-in-out ${
-          isOpen
-            ? "max-h-96 bg-white rounded-b-xl opacity-100 text-primary-500"
-            : "max-h-0 opacity-0"
-        }`}
-      >
-        <div className="px-3 md:px-4 pb-3 md:pb-4 border-t-3 border-black/20">
-          <p
-            className={`mt-2 md:mt-3 text-sm md:text-base leading-relaxed ${
-              isOpen ? "text-black font-medium" : ""
-            }`}
+      <AnimatePresence initial={false}>
+        {isOpen && (
+          <motion.div
+            key="content"
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+            className="overflow-hidden"
           >
-            {faq.answer}
-          </p>
-        </div>
-      </div>
+            <div className="px-3 md:px-4 pb-3 md:pb-4 border-t-3 border-black/20">
+              <p className="mt-2 md:mt-3 text-sm md:text-base leading-relaxed text-black font-medium">
+                {faq.answer}
+              </p>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
