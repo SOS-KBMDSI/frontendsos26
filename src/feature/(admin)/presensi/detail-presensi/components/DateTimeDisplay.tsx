@@ -3,7 +3,7 @@ import React from "react";
 
 interface DateTimeDisplayProps {
   variant: "date" | "clock";
-  value: string; // "18-09-2025" or "23 : 59"
+  value: string;
 }
 
 const DateTimeDisplay: React.FC<DateTimeDisplayProps> = ({

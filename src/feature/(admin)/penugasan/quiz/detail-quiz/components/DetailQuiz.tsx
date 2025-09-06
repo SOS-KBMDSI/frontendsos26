@@ -9,9 +9,10 @@ interface DetailQuizProps {
   quiz: DetailQuiz | null;
   onEdit: () => void;
   onDelete: () => void;
+  isSQC: boolean;
 }
 
-const DetailQuiz = ({ quiz, onEdit, onDelete }: DetailQuizProps) => {
+const DetailQuiz = ({ quiz, onEdit, onDelete, isSQC }: DetailQuizProps) => {
   const formatTenggat = (tenggat: string | undefined) => {
     if (!tenggat) {
       return { date: "N/A", time: "N/A" };
@@ -72,16 +73,17 @@ const DetailQuiz = ({ quiz, onEdit, onDelete }: DetailQuizProps) => {
             <span className="w-fit">{quiz?.data_rangkaian.Name}</span>
           </div>
         </div>
-
-        <div className="mt-12 flex  gap-10">
-          <Button className="w-60" onClick={onEdit} variant={"primary"}>
-            Edit Quiz
-          </Button>
-          <Button className="w-60" onClick={onDelete} variant={"outline"}>
-            <Trash2 size={16} className="mr-2" />
-            Hapus Quiz
-          </Button>
-        </div>
+        {isSQC && (
+          <div className="mt-12 flex  gap-10">
+            <Button className="w-60" onClick={onEdit} variant={"primary"}>
+              Edit Quiz
+            </Button>
+            <Button className="w-60" onClick={onDelete} variant={"outline"}>
+              <Trash2 size={16} className="mr-2" />
+              Hapus Quiz
+            </Button>
+          </div>
+        )}
       </div>
     </div>
   );

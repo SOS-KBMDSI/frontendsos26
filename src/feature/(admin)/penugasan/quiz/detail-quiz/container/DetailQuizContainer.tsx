@@ -150,13 +150,13 @@ const DetailQuizContainer: React.FC<DetailQuizContainerProps> = ({
         />
       ) : (
         <>
-          {isSqc && (
-            <DetailQuiz
-              quiz={detailQuiz}
-              onDelete={() => setIsDeleteModalOpen(true)}
-              onEdit={() => setIsEditing(true)}
-            />
-          )}
+          <DetailQuiz
+            isSQC={isSqc}
+            quiz={detailQuiz}
+            onDelete={() => setIsDeleteModalOpen(true)}
+            onEdit={() => setIsEditing(true)}
+          />
+
           <QuizSubmissionTable
             table={table}
             isSubmissionLoading={isSubmissionLoading}
