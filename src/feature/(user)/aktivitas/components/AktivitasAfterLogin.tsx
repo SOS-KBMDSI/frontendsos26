@@ -24,8 +24,11 @@ const AktivitasAfterLogin = ({ user }: AktivitasAfterLoginProps) => {
                 {user.kelompok?.distrik?.list_pjl.map((pjl, idx) => (
                   <div key={idx} className="flex flex-col">
                     <span className="text-base lg:text-xl">{pjl.nama}</span>
-                    <span className="text-sm font-bold text-green-500">
-                      Line<span className="text-white"> : {pjl.line}</span>
+                    <span className="text-sm font-bold text-white">
+                      Line
+                      <span className="text-white font-medium">
+                        : {pjl.line}
+                      </span>
                     </span>
                   </div>
                 ))}
