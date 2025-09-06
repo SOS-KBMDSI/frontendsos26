@@ -53,6 +53,46 @@ export const AuthErrorProvider = ({
     );
   };
 
+  const checkInternetConnection = async (): Promise<boolean> => {
+    if (!navigator.onLine) {
+      return false;
+    }
+
+    try {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const response = await fetch("https://www.google.com/favicon.ico", {
+        method: "HEAD",
+        cache: "no-cache",
+        mode: "no-cors",
+      });
+      return true;
+    } catch {
+      return false;
+    }
+  };
+
+  const handleNetworkError = async (): Promise<void> => {
+    const hasInternet = await checkInternetConnection();
+
+    if (!hasInternet) {
+      showToast({
+        type: "error",
+        title: "Koneksi Internet Gagal",
+        message:
+          "Anda tidak terhubung ke internet. Mohon periksa koneksi Anda.",
+        duration: 10000,
+      });
+    } else {
+      showToast({
+        type: "error",
+        title: "Server Bermasalah",
+        message:
+          "Server sedang mengalami gangguan. Mohon coba beberapa saat lagi.",
+        duration: 8000,
+      });
+    }
+  };
+
   const showSessionExpiredToast = (): void => {
     if (hasShownToastRef.current) return;
 
@@ -75,17 +115,16 @@ export const AuthErrorProvider = ({
     }, 2000);
   };
 
-  const handleAuthError = (error: AuthError | AxiosError): void => {
+  const handleAuthError = async (
+    error: AuthError | AxiosError,
+  ): Promise<void> => {
     console.log("Auth error handled:", error);
+
     if (error.code === "ERR_NETWORK") {
-      showToast({
-        type: "error",
-        title: "Koneksi Gagal",
-        message:
-          "Anda tidak terhubung ke internet. Mohon periksa koneksi Anda.",
-        duration: 10000,
-      });
+      await handleNetworkError();
+      return;
     }
+
     if (isAuthError(error)) {
       showSessionExpiredToast();
     }
@@ -120,12 +159,35 @@ export const AuthErrorProvider = ({
       }
     };
 
+    // Listen to online/offline events for better network detection
+    const handleOnline = () => {
+      showToast({
+        type: "success",
+        title: "Koneksi Pulih",
+        message: "Koneksi internet telah pulih",
+        duration: 3000,
+      });
+    };
+
+    const handleOffline = () => {
+      showToast({
+        type: "error",
+        title: "Koneksi Terputus",
+        message: "Koneksi internet terputus",
+        duration: 5000,
+      });
+    };
+
     document.addEventListener("visibilitychange", handleVisibilityChange);
     window.addEventListener("beforeunload", resetFlag);
+    window.addEventListener("online", handleOnline);
+    window.addEventListener("offline", handleOffline);
 
     return () => {
       document.removeEventListener("visibilitychange", handleVisibilityChange);
       window.removeEventListener("beforeunload", resetFlag);
+      window.removeEventListener("online", handleOnline);
+      window.removeEventListener("offline", handleOffline);
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
       }

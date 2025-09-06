@@ -21,6 +21,7 @@ import { useSelectOptions } from "@/shared/hooks/useSelectOptions";
 import { TugasStatus, TugasSummary } from "@/api/services/admin/tugas";
 import { tugasStatusColumns } from "../type/TugasStatusColumn";
 import FormEditNilai from "../components/FormEditNilai";
+import { ChevronLeft, Link } from "lucide-react";
 
 interface DetailTugasContainerProps {
   id_penugasan: string;
@@ -86,6 +87,13 @@ const DetailTugasContainer: React.FC<DetailTugasContainerProps> = ({
 
   return (
     <section>
+      <Link
+        href="/admin/penugasan"
+        className="flex items-center gap-1/2 text-primary-500 hover:text-primary-600 transition-colors w-fit"
+      >
+        <ChevronLeft size={24} />
+        <span className="text-xl">Kembali</span>
+      </Link>
       <DetailTugas
         tugas={detailTugas}
         onEdit={() => setEditingTugas(detailTugas)}

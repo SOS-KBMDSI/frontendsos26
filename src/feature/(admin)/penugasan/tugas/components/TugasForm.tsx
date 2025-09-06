@@ -188,7 +188,7 @@ export const TugasForm: React.FC<TugasFormProps> = ({
             <Select
               onValueChange={setTarget}
               value={target}
-              disabled={isSubmitting}
+              disabled={isSubmitting || isEditMode}
             >
               <SelectTrigger id="target" className="col-span-1">
                 <SelectValue placeholder="Pilih Status" />
