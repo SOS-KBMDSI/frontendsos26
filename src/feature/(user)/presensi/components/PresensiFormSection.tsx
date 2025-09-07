@@ -66,7 +66,7 @@ const PresensiFormSection = ({ refreshPresensi }: PresensiFormSectionProps) => {
             </SectionTitle>
           </div>
         </div>
-        <div className="hidden md:block w-2/3 mx-auto">
+        <div className="hidden md:block md:w-[44rem] lg:w-[52rem] mx-auto">
           <div className="w-full">
             <div
               className="text-default-dark drop-shadow flex justify-center items-center flex-col h-[40rem] lg:h-[48rem]"

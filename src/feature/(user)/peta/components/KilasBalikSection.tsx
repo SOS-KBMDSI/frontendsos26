@@ -12,6 +12,7 @@ import Rangkaian22 from "@/assets/peta/rangkaian2-2.png";
 import PrevArrow from "@/assets/peta/prev.svg";
 import NextArrow from "@/assets/peta/next.svg";
 import { Title } from "./Title";
+import GradientBackground from "@/shared/components/background/GradientBackground";
 
 const KilasBalikSection = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -75,43 +76,17 @@ const KilasBalikSection = () => {
   };
 
   return (
-    <div className="bg-primary-500 relative overflow-hidden py-12 sm:py-16 md:py-20 lg:py-24">
-      {/* Top gradient - responsive sizing */}
-      <div
-        className="absolute top-0 right-0 w-[943px] sm:w-[1200px] md:w-[1500px] lg:w-[1886px] 
-                   h-[943px] sm:h-[1200px] md:h-[1500px] lg:h-[1886px] 
-                   opacity-30 pointer-events-none"
-        style={{
-          background: `radial-gradient(circle, #7D021A 0%, #7D021A 34%, transparent 70%)`,
-          transform: "translate(25%, -25%)",
-        }}
-      />
-
-      {/* Bottom gradient - responsive sizing */}
-      <div
-        className="absolute bottom-0 left-0 w-[943px] sm:w-[1200px] md:w-[1500px] lg:w-[1886px] 
-                   h-[943px] sm:h-[1200px] md:h-[1500px] lg:h-[1886px] 
-                   opacity-30 pointer-events-none"
-        style={{
-          background: `radial-gradient(circle, #8C021E 0%, #EA5B43 32%, transparent 70%)`,
-          transform: "translate(-25%, 25%)",
-        }}
-      />
-
-      {/* Title section - responsive padding */}
+    <GradientBackground>
       <div className="relative z-10 pt-8 sm:pt-12 md:pt-14 lg:pt-16 pb-4 sm:pb-6 lg:pb-8 flex justify-center px-4">
         <Title>Kilas Balik SOS 2024</Title>
       </div>
 
-      {/* Main content area - responsive height */}
       <div
         className="min-h-[50vh] sm:min-h-[60vh] md:min-h-[65vh] lg:min-h-[70vh] 
                       flex justify-center items-center relative overflow-hidden px-4"
       >
         <div className="relative flex justify-center items-center">
-          {/* Background frames container - responsive sizing */}
           <div className="absolute inset-0 flex justify-center items-center">
-            {/* First frame */}
             <motion.div
               animate={{
                 scale: animateFrames ? [1, 1.02, 1] : 1,
@@ -132,7 +107,6 @@ const KilasBalikSection = () => {
               />
             </motion.div>
 
-            {/* Second frame */}
             <motion.div
               animate={{
                 scale: animateFrames ? [1, 1.02, 1] : 1,
@@ -155,7 +129,6 @@ const KilasBalikSection = () => {
             </motion.div>
           </div>
 
-          {/* Main image container - responsive sizing */}
           <div
             className="relative z-30 w-[240px] sm:w-[350px] md:w-[450px] lg:w-[527px] 
                           h-[240px] sm:h-[350px] md:h-[450px] lg:h-[527px] 
@@ -190,7 +163,6 @@ const KilasBalikSection = () => {
           </div>
         </div>
 
-        {/* Previous button - responsive positioning and sizing */}
         <motion.button
           variants={arrowVariants}
           initial="idle"
@@ -211,7 +183,6 @@ const KilasBalikSection = () => {
           />
         </motion.button>
 
-        {/* Next button - responsive positioning and sizing */}
         <motion.button
           variants={arrowVariants}
           initial="idle"
@@ -232,7 +203,7 @@ const KilasBalikSection = () => {
           />
         </motion.button>
       </div>
-    </div>
+    </GradientBackground>
   );
 };
 

@@ -1,5 +1,5 @@
 import Image, { StaticImageData } from "next/image";
-import PhotoFrame from "@/assets/peta/photo-bg.svg";
+import PhotoFrame from "@/assets/peta/photo-frame.svg";
 import React from "react";
 
 const PhotoWithFrame = ({
@@ -19,7 +19,7 @@ const PhotoWithFrame = ({
         className="absolute inset-0 pointer-events-none"
         style={{
           borderStyle: "solid",
-          borderWidth: "42px",
+          borderWidth: "24px",
           borderImageSource: `url(${PhotoFrame.src})`,
           borderImageSlice: "45 fill",
           borderImageRepeat: "stretch",

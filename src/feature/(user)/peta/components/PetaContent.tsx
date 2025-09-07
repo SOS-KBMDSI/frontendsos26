@@ -5,7 +5,7 @@ import Rangkaian22 from "@/assets/peta/rangkaian2-2.png";
 import PhotoWithFrame from "./PhotoWithFrame";
 import Compass from "@/assets/peta/compass.svg";
 import Star from "@/assets/peta/star.svg";
-import Map from "@/assets/peta/map.svg";
+import Map from "@/assets/peta/map.png";
 import Ship from "@/assets/peta/ship.svg";
 import Image from "next/image";
 
