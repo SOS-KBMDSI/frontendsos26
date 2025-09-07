@@ -3,7 +3,7 @@ import React from "react";
 const HeroSection = () => {
   return (
     <section className="bg-no-repeat bg-cover bg-login">
-      <div className="mycontainer text-center py-24 md:py-32 text-default-dark flex flex-col justify-center items-center gap-9 min-h-screen">
+      <div className="mycontainer text-center py-24 md:py-32 text-default-dark flex flex-col justify-center items-center gap-9 min-h-[80vh] md:min-h-screen">
         <h2 className="w-7/8 text-4xl font-semibold text-center leading-10 md:leading-16 md:text-[3.75rem] md:w-3/4 ">
           Halo, Kenalan Yuk Sama Calon Ketua Angkatan!
         </h2>

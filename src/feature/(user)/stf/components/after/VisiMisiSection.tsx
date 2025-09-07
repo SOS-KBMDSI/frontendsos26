@@ -71,7 +71,7 @@ const VisiMisiSection = ({
                       className="w-full h-96 object-cover rounded-xl"
                     />
                   </div>
-                  <div className="w-8/12 min-h-24 bg-default-white rounded-2xl flex justify-center items-center absolute bottom-6 right-6">
+                  <div className="w-8/12 px-2 min-h-24 bg-default-white rounded-2xl flex justify-center items-center absolute bottom-6 right-6">
                     <p className="text-primary-500 font-bold text-2xl">
                       {activeCaketang.nama}
                     </p>
