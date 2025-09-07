@@ -33,7 +33,7 @@ const CaketangCard = ({ data, isActive, onClick }: CaketangCardProps) => {
         <div
           className={`bg-default-white flex justify-center items-center py-6 px-10 rounded-b-md`}
         >
-          <p className={`text-primary-600 text-2xl font-semibold`}>
+          <p className={`text-primary-500 text-2xl font-semibold`}>
             {data.nama}
           </p>
         </div>

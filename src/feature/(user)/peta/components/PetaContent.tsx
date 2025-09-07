@@ -31,11 +31,6 @@ const PetaContent = () => {
                 <Image src={Compass} alt="Compass" width={300} height={300} />
               </div>
             </div>
-            <div className="absolute top-0 right-0">
-              <div className="w-10 mx-auto">
-                <Image src={Star} alt="Star" width={300} height={300} />
-              </div>
-            </div>
           </div>
           <div className="w-full flex flex-col gap-2">
             <h4 className="text-2xl text-primary-500 font-semibold">
@@ -110,11 +105,6 @@ const PetaContent = () => {
                     </div>
                   </div>
                 </div>
-                {/* <div className="absolute -bottom-4 left-2/12">
-                <div className="w-20 mx-auto">
-                  <Image src={Compass} alt="Compass" width={300} height={300} />
-                </div>
-              </div> */}
               </div>
               <div className="absolute top-0 left-0">
                 <div className="w-10 mx-auto">
