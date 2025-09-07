@@ -113,35 +113,35 @@ const DetailPresensiContainer: React.FC<DetailPresensiContainerProps> = ({
     selectedKelompok,
   );
 
-  const columns: ColumnDef<PresensiMahasiswaDetail>[] = useMemo(
-    () => [
+  const columns: ColumnDef<PresensiMahasiswaDetail>[] = useMemo(() => {
+    const baseColumns: ColumnDef<PresensiMahasiswaDetail>[] = [
       {
         accessorKey: "index",
         header: "No.",
-        cell: (info) => info.row.index + 1 + (mahasiswaPagination?.from || 0),
+        cell: ({ row }) => row.index + 1 + (mahasiswaPagination?.from || 0),
         enableSorting: false,
         enableColumnFilter: false,
       },
       {
         accessorKey: "nim",
         header: "NIM",
-        cell: (info) => info.getValue(),
+        cell: ({ getValue }) => getValue(),
       },
       {
         accessorKey: "nama",
         header: "Nama",
-        cell: (info) => info.getValue(),
+        cell: ({ getValue }) => getValue(),
       },
       {
         accessorKey: "status",
         header: "Status",
-        cell: (info) => info.getValue(),
+        cell: ({ getValue }) => getValue(),
       },
       {
         accessorKey: "presensi_at",
         header: "Waktu Presensi",
-        cell: (info) => {
-          const timestamp = info.getValue() as string;
+        cell: ({ getValue }) => {
+          const timestamp = getValue() as string;
           return timestamp && timestamp !== "0001-01-01T00:00:00Z"
             ? new Date(timestamp).toLocaleString("id-ID", {
                 day: "2-digit",
@@ -154,37 +154,38 @@ const DetailPresensiContainer: React.FC<DetailPresensiContainerProps> = ({
             : "-";
         },
       },
-      {
+    ];
+
+    if (isSqc) {
+      const actionColumn: ColumnDef<PresensiMahasiswaDetail> = {
         id: "actions",
         header: "Action",
-        cell: ({ row }) =>
-          isSqc ? (
-            <button
-              type="button"
-              onClick={() => {
-                const summary: PresensiMahasiswaSummary = {
-                  nama: row.original.nama,
-                  nim: row.original.nim,
-                  status: row.original.status as
-                    | "hadir"
-                    | "izin"
-                    | "tidak-hadir",
-                };
-                handleSelectedMahasiswa(summary);
-              }}
-              className="p-2 rounded-full hover:bg-orange-100 focus:outline-none focus:ring-2 focus:ring-orange-200 focus:ring-offset-2 transition-colors"
-              aria-label="Edit Data"
-              title="Edit Data"
-            >
-              <Edit3Icon className="text-orange-500 h-5 w-5" />
-            </button>
-          ) : null,
+        cell: ({ row }) => (
+          <button
+            type="button"
+            onClick={() => {
+              const summary: PresensiMahasiswaSummary = {
+                nama: row.original.nama,
+                nim: row.original.nim,
+                status: row.original.status as "hadir" | "izin" | "tidak-hadir",
+              };
+              handleSelectedMahasiswa(summary);
+            }}
+            className="p-2 rounded-full hover:bg-orange-100 focus:outline-none focus:ring-2 focus:ring-orange-200 focus:ring-offset-2 transition-colors"
+            aria-label="Edit Data"
+            title="Edit Data"
+          >
+            <Edit3Icon className="text-orange-500 h-5 w-5" />
+          </button>
+        ),
         enableSorting: false,
         size: 80,
-      },
-    ],
-    [mahasiswaPagination?.from, isSqc],
-  );
+      };
+      baseColumns.push(actionColumn);
+    }
+
+    return baseColumns;
+  }, [mahasiswaPagination?.from, isSqc, handleSelectedMahasiswa]);
 
   const table = useReactTable({
     data: mahasiswaList || [],
