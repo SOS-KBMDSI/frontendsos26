@@ -27,6 +27,7 @@ import { Modal } from "@/shared/components/ui/Modal";
 import PresensiForm from "../../components/PresensiForm";
 import PresensiMahasiswaForm from "../components/PresensiMahasiswaForm";
 import { useRole } from "@/shared/hooks/useRole";
+import { Edit3Icon } from "lucide-react";
 
 interface DetailPresensiContainerProps {
   id: string;
@@ -153,8 +154,36 @@ const DetailPresensiContainer: React.FC<DetailPresensiContainerProps> = ({
             : "-";
         },
       },
+      {
+        id: "actions",
+        header: "Action",
+        cell: ({ row }) =>
+          isSqc ? (
+            <button
+              type="button"
+              onClick={() => {
+                const summary: PresensiMahasiswaSummary = {
+                  nama: row.original.nama,
+                  nim: row.original.nim,
+                  status: row.original.status as
+                    | "hadir"
+                    | "izin"
+                    | "tidak-hadir",
+                };
+                handleSelectedMahasiswa(summary);
+              }}
+              className="p-2 rounded-full hover:bg-orange-100 focus:outline-none focus:ring-2 focus:ring-orange-200 focus:ring-offset-2 transition-colors"
+              aria-label="Edit Data"
+              title="Edit Data"
+            >
+              <Edit3Icon className="text-orange-500 h-5 w-5" />
+            </button>
+          ) : null,
+        enableSorting: false,
+        size: 80,
+      },
     ],
-    [mahasiswaPagination?.from],
+    [mahasiswaPagination?.from, isSqc],
   );
 
   const table = useReactTable({
@@ -274,7 +303,7 @@ const DetailPresensiContainer: React.FC<DetailPresensiContainerProps> = ({
           </div>
           <div className="text-default-dark flex flex-col md:flex-row gap-8 md:gap-x-12 items-start md:items-center">
             <div className="flex flex-col gap-y-2">
-              <h6 className="text-lg font-semibold">Mulai</h6>
+              <h6 className="text-lg font-semibold">Mulai Rangkaian</h6>
               <div className="flex items-center gap-x-4">
                 <DateTimeDisplay variant="date" value={startDate} />
                 <div className="w-[1px] h-6 bg-default-dark hidden md:block"></div>{" "}
@@ -309,7 +338,6 @@ const DetailPresensiContainer: React.FC<DetailPresensiContainerProps> = ({
         onKelompokChange={setSelectedKelompok}
         distrikOptions={distrikOptions}
         kelompokOptions={kelompokOptions}
-        onRowSelect={isSqc ? handleSelectedMahasiswa : undefined}
       />
       <Modal
         isOpen={isModalOpen}

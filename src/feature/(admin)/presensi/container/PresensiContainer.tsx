@@ -23,17 +23,32 @@ const PresensiContainer = () => {
   const handleModal = () => {
     setIsModalOpen(!isModalOpen);
   };
-  if (isLoading) {
-    return <div>loading</div>;
-  }
 
-  if (error) {
+  const renderContent = () => {
+    if (isLoading) {
+      return (
+        <div className="w-full flex justify-center items-center">
+          <p className="text-default-dark text-xl">Wait yh loading...</p>
+        </div>
+      );
+    }
+
+    if (error) {
+      return <p className="text-red-500 text-center mt-4">Error: {error}</p>;
+    }
+
     return (
-      <div>
-        Error: {error} <button onClick={refresh}>Coba Lagi</button>
+      <div className="flex flex-col gap-y-5">
+        {allPresensi && allPresensi.length > 0 ? (
+          allPresensi.map((presensi) => (
+            <PresensiCard key={presensi.kode_id} presensi={presensi} />
+          ))
+        ) : (
+          <p className="text-center text-gray-500">Tidak ada data presensi</p>
+        )}
       </div>
     );
-  }
+  };
 
   return (
     <main className="bg-white p-20 min-h-screen h-fit rounded-xl shadow-lg">
@@ -44,19 +59,14 @@ const PresensiContainer = () => {
       >
         <ChevronLeft /> Kembali
       </button>
-      <div className="flex items-center justify-between">
+
+      <div className="flex items-center justify-between mb-10">
         <h4 className="text-4xl font-semibold text-black">Kode Presensi</h4>
         {isSqc && <Button onClick={handleModal}>Tambah Presensi</Button>}
       </div>
-      <div className="mt-10 flex flex-col gap-y-5">
-        {allPresensi && allPresensi.length > 0 ? (
-          allPresensi.map((presensi) => (
-            <PresensiCard key={presensi.kode_id} presensi={presensi} />
-          ))
-        ) : (
-          <p className="text-center text-gray-500">Tidak ada data presensi</p>
-        )}
-      </div>
+
+      {renderContent()}
+
       <Modal
         isOpen={isModalOpen}
         onClose={handleModal}

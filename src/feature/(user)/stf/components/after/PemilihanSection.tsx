@@ -48,10 +48,10 @@ const PemilihanSection = ({
     <>
       <section className="bg-no-repeat bg-cover bg-login">
         <div className="mycontainer text-center py-24 text-default-dark w-10/12 flex flex-col gap-12">
-          <h4 className="text-6xl font-semibold text-default-dark mb-8">
+          <h4 className="text-3xl md:text-5xl lg:text-6xl font-semibold text-default-dark mb-4 md:mb-6 lg:mb-8">
             Saatnya Memilih!
           </h4>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-9">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-9">
             {caketangList?.map((caketang: Caketang) => (
               <PemilihanCard
                 key={caketang.id_caketang}
