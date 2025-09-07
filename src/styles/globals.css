@@ -78,6 +78,10 @@
   background: url("../assets/login/bg-login.svg");
   @apply bg-cover bg-secondary-500;
 }
+body[data-scroll-locked] {
+  overflow: auto !important;
+  position: static !important;
+}
 
 @keyframes accordion-down {
   from {
