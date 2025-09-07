@@ -19,7 +19,7 @@ export interface PresensiSummary {
 export interface PresensiMahasiswaSummary {
   nama: string | null;
   nim: string;
-  status: "hadir" | "tidak-hadir";
+  status: "hadir" | "izin" | "tidak-hadir";
 }
 
 export interface presensiInfo {
