@@ -62,7 +62,7 @@ const NavbarDropdown: React.FC<NavbarDropdownProps> = ({ user, onLogout }) => {
           <User className="w-3 h-3 sm:w-4 sm:h-4" />
         </div>
         <span className="block max-w-20 sm:max-w-24 text-sm sm:text-base truncate">
-          {user.nama || "Pengguna"}
+          {user.nama?.split(" ")[1] || user.nama || "Pengguna"}
         </span>
         <ChevronDown
           className={`w-3 h-3 sm:w-4 sm:h-4 transition-transform duration-200 ${
