@@ -47,7 +47,10 @@ const PemilihanSection = ({
   return (
     <>
       <section className="bg-no-repeat bg-cover bg-login">
-        <div className="mycontainer text-center py-24 md:py-32 text-default-dark w-10/12 flex flex-col gap-12">
+        <div className="mycontainer text-center py-24 text-default-dark w-10/12 flex flex-col gap-12">
+          <h4 className="text-6xl font-semibold text-default-dark mb-8">
+            Saatnya Memilih!
+          </h4>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-9">
             {caketangList?.map((caketang: Caketang) => (
               <PemilihanCard

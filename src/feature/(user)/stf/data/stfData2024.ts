@@ -16,20 +16,20 @@ export const stfData2024: Prodi[] = [
     nama: "Sistem Informasi",
     image: Dummy,
     shortName: "SI",
-    ketangWaketang: "Steven & Kalingga",
+    ketangWaketang: "Afham & Pras",
   },
   {
     id: "teknologi_informasi",
     nama: "Teknologi Informasi",
     shortName: "TI",
     image: Dummy,
-    ketangWaketang: "Mark & Pricilla",
+    ketangWaketang: "Luthfi & Daffa",
   },
   {
     id: "pendidikan_teknologi_informasi",
     nama: "Pendidikan Teknologi Informasi",
     shortName: "PTI",
     image: Dummy,
-    ketangWaketang: "Jack & Cathy",
+    ketangWaketang: "Steven & Kalingga",
   },
 ];

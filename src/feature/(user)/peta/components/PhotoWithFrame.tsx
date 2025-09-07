@@ -1,5 +1,5 @@
 import Image, { StaticImageData } from "next/image";
-import PhotoFrame from "@/assets/peta/photo-frame.svg";
+import PhotoFrame from "@/assets/peta/photo-bg.svg";
 import React from "react";
 
 const PhotoWithFrame = ({
@@ -8,26 +8,34 @@ const PhotoWithFrame = ({
 }: {
   image: StaticImageData;
   alt: string;
-}) => (
-  <div className="relative">
-    <Image
-      src={PhotoFrame}
-      width={400}
-      height={400}
-      className="w-full h-auto"
-      alt="Photo Frame"
-      aria-hidden="true"
-    />
-    <div className="absolute inset-0 flex items-center justify-center px-[4.2rem] py-[3.6rem]">
+}) => {
+  return (
+    <div
+      className="relative w-full"
+      style={{ aspectRatio: `${image.width}/${image.height}` }}
+    >
+      {/* Frame overlay */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          borderStyle: "solid",
+          borderWidth: "42px",
+          borderImageSource: `url(${PhotoFrame.src})`,
+          borderImageSlice: "45 fill",
+          borderImageRepeat: "stretch",
+        }}
+      />
+
+      {/* Photo with maintained aspect ratio */}
       <Image
         src={image}
-        width={300}
-        height={300}
-        className="w-full h-full object-cover"
         alt={alt}
+        fill
+        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+        className="pt-9 px-10 pb-10 object-cover"
       />
     </div>
-  </div>
-);
+  );
+};
 
 export default PhotoWithFrame;

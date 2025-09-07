@@ -2,7 +2,7 @@ import React from "react";
 
 const HeaderPresensiCard = () => {
   return (
-    <div className="flex bg-primary-600 rounded-md px-12 text-default-light font-semibold py-4 gap-4 text-xl">
+    <div className="flex bg-primary-500 rounded-md px-12 text-default-light font-semibold py-4 gap-4 text-xl">
       <div className="w-3/12">
         <span>Rangkaian</span>
       </div>
