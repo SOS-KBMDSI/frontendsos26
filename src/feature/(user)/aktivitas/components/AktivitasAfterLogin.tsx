@@ -39,7 +39,7 @@ const AktivitasAfterLogin = ({ user }: AktivitasAfterLoginProps) => {
                   Nama Lengkap
                 </p>
                 <p className="lg:text-lg xl:text-xl text-black mt-1">
-                  Nama Lengkap
+                  {user.nama}
                 </p>
               </div>
               <div>
