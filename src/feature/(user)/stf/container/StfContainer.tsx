@@ -18,13 +18,16 @@ const StfContainer = () => {
 
   useEffect(() => {
     if (
-      stfData &&
-      stfData.pemilihan_is_active &&
-      caketangList &&
-      caketangList.length > 0 &&
+      stfData?.pemilihan_is_active &&
+      caketangList?.length > 0 &&
       !activeCardId
     ) {
-      setActiveCardId(caketangList[1].id_caketang);
+      const selectedId =
+        caketangList.length > 1
+          ? caketangList[1].id_caketang
+          : caketangList[0].id_caketang;
+
+      setActiveCardId(selectedId);
     }
   }, [stfData, caketangList, activeCardId]);
 

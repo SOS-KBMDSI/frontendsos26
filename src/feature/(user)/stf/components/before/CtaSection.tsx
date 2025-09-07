@@ -5,10 +5,10 @@ const CtaSection = () => {
   return (
     <GradientBackground>
       <div className="mx-auto lg:px-8 md:px-12 px-4 xl:px-24 text-default-white flex flex-col justify-center items-center h-screen gap-6">
-        <h2 className="w-7/8 text-4xl font-semibold text-center leading-16 md:text-[3.75rem] md:w-2/4 ">
+        <h2 className="w-7/8 text-4xl font-semibold text-center leading-16 md:text-[3.75rem] lg:w-2/4 ">
           Are you ready for shaping the future 2025?
         </h2>
-        <p className="text-base text-center md:text-2xl">
+        <p className="text-base text-center md:text-3xl lg:text-2xl">
           Yuk tunjukkan suaramu dan dukunganmu untuk menciptakan angkatan yang
           solid.
         </p>

@@ -75,30 +75,43 @@ const KilasBalikSection = () => {
   };
 
   return (
-    <div className="bg-primary-500 relative overflow-hidden py-24">
+    <div className="bg-primary-500 relative overflow-hidden py-12 sm:py-16 md:py-20 lg:py-24">
+      {/* Top gradient - responsive sizing */}
       <div
-        className="absolute top-0 right-0 w-[1886px] h-[1886px] opacity-30 pointer-events-none"
+        className="absolute top-0 right-0 w-[943px] sm:w-[1200px] md:w-[1500px] lg:w-[1886px] 
+                   h-[943px] sm:h-[1200px] md:h-[1500px] lg:h-[1886px] 
+                   opacity-30 pointer-events-none"
         style={{
           background: `radial-gradient(circle, #7D021A 0%, #7D021A 34%, transparent 70%)`,
           transform: "translate(25%, -25%)",
         }}
       />
 
+      {/* Bottom gradient - responsive sizing */}
       <div
-        className="absolute bottom-0 left-0 w-[1886px] h-[1886px] opacity-30 pointer-events-none"
+        className="absolute bottom-0 left-0 w-[943px] sm:w-[1200px] md:w-[1500px] lg:w-[1886px] 
+                   h-[943px] sm:h-[1200px] md:h-[1500px] lg:h-[1886px] 
+                   opacity-30 pointer-events-none"
         style={{
           background: `radial-gradient(circle, #8C021E 0%, #EA5B43 32%, transparent 70%)`,
           transform: "translate(-25%, 25%)",
         }}
       />
 
-      <div className="relative z-10 pt-16 pb-8 flex justify-center">
+      {/* Title section - responsive padding */}
+      <div className="relative z-10 pt-8 sm:pt-12 md:pt-14 lg:pt-16 pb-4 sm:pb-6 lg:pb-8 flex justify-center px-4">
         <Title>Kilas Balik SOS 2024</Title>
       </div>
 
-      <div className="min-h-[70vh] flex justify-center items-center relative overflow-hidden">
+      {/* Main content area - responsive height */}
+      <div
+        className="min-h-[50vh] sm:min-h-[60vh] md:min-h-[65vh] lg:min-h-[70vh] 
+                      flex justify-center items-center relative overflow-hidden px-4"
+      >
         <div className="relative flex justify-center items-center">
+          {/* Background frames container - responsive sizing */}
           <div className="absolute inset-0 flex justify-center items-center">
+            {/* First frame */}
             <motion.div
               animate={{
                 scale: animateFrames ? [1, 1.02, 1] : 1,
@@ -114,11 +127,12 @@ const KilasBalikSection = () => {
                 src={SwiperFrame}
                 width={500}
                 height={500}
-                className="w-[527px] h-auto rotate-[-5deg]"
+                className="w-[280px] sm:w-[350px] md:w-[450px] lg:w-[527px] h-auto rotate-[-5deg]"
                 alt="Swiper Frame Background 1"
               />
             </motion.div>
 
+            {/* Second frame */}
             <motion.div
               animate={{
                 scale: animateFrames ? [1, 1.02, 1] : 1,
@@ -135,13 +149,18 @@ const KilasBalikSection = () => {
                 src={SwiperFrame}
                 width={500}
                 height={500}
-                className="w-[527px] h-auto rotate-[5deg]"
+                className="w-[280px] sm:w-[350px] md:w-[450px] lg:w-[527px] h-auto rotate-[5deg]"
                 alt="Swiper Frame Background 2"
               />
             </motion.div>
           </div>
 
-          <div className="relative z-30 w-[527px] h-[527px] flex justify-center items-center">
+          {/* Main image container - responsive sizing */}
+          <div
+            className="relative z-30 w-[240px] sm:w-[350px] md:w-[450px] lg:w-[527px] 
+                          h-[240px] sm:h-[350px] md:h-[450px] lg:h-[527px] 
+                          flex justify-center items-center"
+          >
             <AnimatePresence mode="wait" custom={direction}>
               <motion.div
                 key={currentIndex}
@@ -160,7 +179,9 @@ const KilasBalikSection = () => {
                   src={images[currentIndex].src}
                   width={500}
                   height={500}
-                  className="w-[527px] h-72 object-cover border-5 border-default-light"
+                  className="w-[240px] sm:w-[350px] md:w-[450px] lg:w-[527px] 
+                            h-[140px] sm:h-[200px] md:h-[250px] lg:h-72 
+                            object-cover border-[3px] sm:border-4 lg:border-5 border-default-light"
                   alt={images[currentIndex].alt}
                   priority
                 />
@@ -169,38 +190,44 @@ const KilasBalikSection = () => {
           </div>
         </div>
 
+        {/* Previous button - responsive positioning and sizing */}
         <motion.button
           variants={arrowVariants}
           initial="idle"
           whileHover="hover"
           whileTap="tap"
           onClick={handlePrevious}
-          className="absolute left-[calc(50%-350px)] z-40 cursor-pointer transform -translate-x-1/2"
+          className="absolute left-2 sm:left-4 md:left-8 
+                     lg:left-[calc(50%-350px)] z-40 cursor-pointer 
+                     lg:transform lg:-translate-x-1/2"
           aria-label="Previous image"
         >
           <Image
             src={PrevArrow}
             width={72}
             height={72}
-            className="w-16 h-16"
+            className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 lg:w-16 lg:h-16"
             alt="Previous Arrow"
           />
         </motion.button>
 
+        {/* Next button - responsive positioning and sizing */}
         <motion.button
           variants={arrowVariants}
           initial="idle"
           whileHover="hover"
           whileTap="tap"
           onClick={handleNext}
-          className="absolute right-[calc(50%-350px)] z-40 cursor-pointer transform translate-x-1/2"
+          className="absolute right-2 sm:right-4 md:right-8 
+                     lg:right-[calc(50%-350px)] z-40 cursor-pointer 
+                     lg:transform lg:translate-x-1/2"
           aria-label="Next image"
         >
           <Image
             src={NextArrow}
             width={72}
             height={72}
-            className="w-16 h-16"
+            className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 lg:w-16 lg:h-16"
             alt="Next Arrow"
           />
         </motion.button>
