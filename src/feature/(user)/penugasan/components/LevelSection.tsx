@@ -27,7 +27,7 @@ export const LevelSection = ({ level }: LevelSectionProps) => {
   return (
     <div
       className={cn(
-        "bg-secondary-200 border border-secondary-700 backdrop-blur-sm rounded-3xl p-4 flex flex-col w-full shadow-md gap-2",
+        "bg-secondary-200 border border-secondary-700 backdrop-blur-sm rounded-3xl py-4 px-2 flex flex-col w-full shadow-md gap-2",
         "md:p-8 md:gap-3",
       )}
     >
@@ -42,7 +42,7 @@ export const LevelSection = ({ level }: LevelSectionProps) => {
           <p className="text-default-dark font-semibold text-lg md:text-2xl">
             Level {displayLevel}
           </p>
-          <p className="text-xs text-default-dark md:text-xl">
+          <p className="text-xs text-default-dark md:text-lg">
             Selamat! kamu telah mengumpulkan {completedTaskCount} penugasan
           </p>
         </div>

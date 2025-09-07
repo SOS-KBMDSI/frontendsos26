@@ -29,18 +29,14 @@ const PjlTable = ({ pjlList, distrikName }: PjlTableProps) => {
             {pjlList.map((pjl, index) => (
               <tr
                 key={pjl.nim}
-                className={index % 2 === 0 ? "bg-primary-500/10" : "bg-white-default"}
+                className={
+                  index % 2 === 0 ? "bg-primary-500/10" : "bg-white-default"
+                }
               >
-                <td className="py-5 px-6 text-default-dark">
-                  {pjl.nama}
-                </td>
-                <td className="py-5 px-6 text-default-dark">
-                  {pjl.nim}
-                </td>
-                <td className="py-5 px-6 text-default-dark">-</td>
-                <td className="py-5 px-6 text-default-dark">
-                  {pjl.line}
-                </td>
+                <td className="py-5 px-6 text-default-dark">{pjl.nama}</td>
+                <td className="py-5 px-6 text-default-dark">{pjl.nim}</td>
+                <td className="py-5 px-6 text-default-dark">{pjl.prodi}</td>
+                <td className="py-5 px-6 text-default-dark">{pjl.line}</td>
               </tr>
             ))}
           </tbody>

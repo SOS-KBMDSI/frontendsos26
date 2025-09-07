@@ -1,43 +1,63 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { mahasiswaService } from "@/api/services/user/maba";
 import { penugasanService } from "@/api/services/user/penugasan";
 import { useQuery } from "@tanstack/react-query";
+import { Tugas, Rangkaian } from "../types";
 
 export const usePenugasan = () => {
   const [activeTab, setActiveTab] = useState<"tugas" | "kuis">("tugas");
-  const { data: profile } = useQuery({
-    queryKey: ["mahasiswaProfile"],
-    queryFn: () => mahasiswaService.getMyProfile().then((res) => res.data),
-  });
 
   const { data: level } = useQuery({
     queryKey: ["mahasiswaLevel"],
     queryFn: () => mahasiswaService.getMyLevel().then((res) => res.data),
   });
 
-  const { data: kuis } = useQuery({
+  const { data: kuisList, isLoading: isKuisLoading } = useQuery({
     queryKey: ["kuisList"],
     queryFn: () => penugasanService.getAllKuis().then((res) => res.data),
   });
 
-  const { data: rangkaian, isSuccess: isRangkaianSuccess } = useQuery({
-    queryKey: ["rangkaianList"],
-    queryFn: () => penugasanService.getAllRangkaian().then((res) => res.data),
+  const { data: allTugas, isLoading: isTugasLoading } = useQuery({
+    queryKey: ["allPenugasanData"],
+    queryFn: () =>
+      penugasanService.getAllPenugasan().then((res) => res.data || []),
   });
 
-  const { data: tugas, isLoading: isTugasLoading } = useQuery({
-    queryKey: ["tugasListWithStatus", rangkaian?.[0]?.ID],
+  const filteredTugas = useMemo(() => {
+    if (!allTugas) return [];
+    const now = new Date();
+    const activeRangkaianNames: string[] = [];
+    const uniqueRangkaian: Rangkaian[] = [
+      ...new Map(
+        allTugas
+          .filter((t): t is Tugas & { rangkaian: Rangkaian } => !!t.rangkaian)
+          .map((t) => [t.rangkaian.ID, t.rangkaian]),
+      ).values(),
+    ];
+    uniqueRangkaian.forEach((rangkaian) => {
+      if (new Date(rangkaian.Start_Date) <= now) {
+        activeRangkaianNames.push(rangkaian.Name);
+      }
+    });
+    if (
+      activeRangkaianNames.length === 0 &&
+      uniqueRangkaian.some((r) => r.Name === "Pra-Rangkaian")
+    ) {
+      activeRangkaianNames.push("Pra-Rangkaian");
+    }
+    return allTugas.filter(
+      (tugas) =>
+        tugas.rangkaian && activeRangkaianNames.includes(tugas.rangkaian.Name),
+    );
+  }, [allTugas]);
+
+  const { data: tugasWithStatus, isLoading: isStatusLoading } = useQuery({
+    queryKey: ["tugasWithStatus", filteredTugas?.map((t) => t.id_penugasan)],
     queryFn: async () => {
-      if (!rangkaian || rangkaian.length === 0) return [];
-
-      const firstRangkaianId = rangkaian[0].ID;
-      const tugasRes =
-        await penugasanService.getTugasByRangkaian(firstRangkaianId);
-      const tugasList = tugasRes.data || [];
-
-      const tugasWithStatusPromises = tugasList.map(async (tugasItem) => {
+      if (!filteredTugas || filteredTugas.length === 0) return [];
+      const promises = filteredTugas.map(async (tugasItem) => {
         try {
           const detailRes = await penugasanService.getTugasDetailWithStatus(
             tugasItem.id_penugasan,
@@ -51,19 +71,40 @@ export const usePenugasan = () => {
           return { ...tugasItem, status: "Belum Selesai" };
         }
       });
-
-      return Promise.all(tugasWithStatusPromises);
+      return Promise.all(promises);
     },
-    enabled: isRangkaianSuccess && !!rangkaian && rangkaian.length > 0,
+    enabled: !!filteredTugas && filteredTugas.length > 0,
+  });
+
+  const { data: kuisWithStatus, isLoading: isKuisStatusLoading } = useQuery({
+    queryKey: ["kuisWithStatus", kuisList?.map((k) => k.id_kuis)],
+    queryFn: async () => {
+      if (!kuisList || kuisList.length === 0) return [];
+      const promises = kuisList.map(async (kuisItem) => {
+        try {
+          const detailRes = await penugasanService.getKuisDetailWithStatus(
+            kuisItem.id_kuis,
+          );
+          return { ...kuisItem, status_kuis: detailRes.data.status_kuis };
+        } catch (e) {
+          console.error(
+            `Gagal fetch status untuk kuis ${kuisItem.id_kuis}:`,
+            e,
+          );
+          return { ...kuisItem, status_kuis: "Belum Mulai" };
+        }
+      });
+      return Promise.all(promises);
+    },
+    enabled: !!kuisList && kuisList.length > 0,
   });
 
   return {
-    profile: profile || null,
     level: level || null,
-    tugas: tugas || [],
-    kuis: kuis || [],
-    rangkaian: rangkaian || [],
-    isLoading: isTugasLoading,
+    tugas: tugasWithStatus || [],
+    kuis: kuisWithStatus || [],
+    isLoading:
+      isTugasLoading || isKuisLoading || isStatusLoading || isKuisStatusLoading,
     activeTab,
     setActiveTab,
   };

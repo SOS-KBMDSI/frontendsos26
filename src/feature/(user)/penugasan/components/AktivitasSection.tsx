@@ -1,4 +1,4 @@
-import { TaskCard } from "@/shared/components/ui/TaskCard";
+import { TaskCard, TaskStatus } from "@/shared/components/ui/TaskCard";
 import { Kuis, Tugas } from "../types";
 import { cn } from "@/shared/utils/cn";
 import { Button } from "@/shared/components/ui/Button";
@@ -20,6 +20,29 @@ export const AktivitasSection = ({
   activeTab,
   onTabChange,
 }: AktivitasSectionProps) => {
+  const getTugasStatus = (tugasItem: Tugas): TaskStatus => {
+    if (tugasItem.status?.toLowerCase() === "selesai") {
+      return "completed";
+    }
+    if (new Date() > new Date(tugasItem.tenggat)) {
+      return "overdue";
+    }
+    return "default";
+  };
+
+  const getKuisStatus = (kuisItem: Kuis): TaskStatus => {
+    if (kuisItem.status_kuis?.toLowerCase() === "selesai") {
+      return "completed";
+    }
+    if (
+      kuisItem.status_kuis?.toLowerCase() === "terlewat" ||
+      new Date() > new Date(kuisItem.tenggat_kuis)
+    ) {
+      return "overdue";
+    }
+    return "default";
+  };
+
   return (
     <div className="w-full flex flex-col gap-8 md:gap-10">
       <div className="flex justify-center gap-4">
@@ -58,6 +81,8 @@ export const AktivitasSection = ({
                 minute: "2-digit",
               })} WIB`;
 
+              const status = getTugasStatus(item);
+
               return (
                 <Link
                   key={item.id_penugasan}
@@ -70,6 +95,7 @@ export const AktivitasSection = ({
                     icon={
                       <Icon className="w-12 h-12 md:w-16 md:h-16 text-default-light group-hover:text-primary-500" />
                     }
+                    status={status}
                   />
                 </Link>
               );
@@ -101,6 +127,8 @@ export const AktivitasSection = ({
                 minute: "2-digit",
               })} WIB`;
 
+              const status = getKuisStatus(item);
+
               return (
                 <Link
                   key={item.id_kuis}
@@ -113,6 +141,7 @@ export const AktivitasSection = ({
                     icon={
                       <Icon className="w-12 h-12 md:w-16 md:h-16 text-default-light group-hover:text-primary-500" />
                     }
+                    status={status}
                   />
                 </Link>
               );

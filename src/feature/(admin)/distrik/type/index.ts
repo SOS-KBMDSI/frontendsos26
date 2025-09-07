@@ -2,6 +2,7 @@ export interface Pjl {
   nim: string;
   nama: string;
   line: string;
+  prodi: string;
 }
 
 export interface Kelompok {

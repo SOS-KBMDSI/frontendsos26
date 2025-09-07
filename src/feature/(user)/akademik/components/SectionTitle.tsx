@@ -14,12 +14,12 @@ export const SectionTitle = ({
 }: SectionTitleProps) => {
   return (
     <div className="flex flex-col items-center gap-3 w-full px-3 md:px-10 mb-5 md:mb-16">
-      <h2 className="text-3xl md:text-7xl font-semibold text-center">
+      <h2 className="text-3xl md:text-6xl font-semibold text-center">
         {children}
       </h2>
       {underline && (
         <div
-          className={cn("h-2 w-full md:w-2/3 rounded-full", lineColor)}
+          className={cn("h-2 w-full md:w-[55%] rounded-full", lineColor)}
         ></div>
       )}
     </div>

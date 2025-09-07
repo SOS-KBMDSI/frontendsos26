@@ -81,7 +81,7 @@ export interface Kuis {
   id_kuis: string;
   nama_kuis: string;
   tenggat_kuis: string;
-  status_kuis?: "Terlambat" | "Terlewat" | "Selesai" | "Belum Mulai";
+  status_kuis?: "Terlambat" | "Terlewat" | "Selesai" | "Belum Mulai" | string;
 }
 
 export interface KuisDetail {
@@ -110,7 +110,6 @@ export interface Tugas {
   status?: "Selesai" | "Belum Selesai" | string;
 }
 
-// Tipe untuk payload submit tugas
 export interface SubmissionPayload {
   drive_link: string;
 }

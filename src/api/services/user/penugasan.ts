@@ -4,10 +4,10 @@ import {
   Rangkaian,
   Kuis,
   Tugas,
-  PaginatedSubmission,
   KuisDetail,
   SubmissionPayload,
 } from "@/feature/(user)/penugasan/types";
+import { Kegiatan } from "@/feature/(user)/penilaian/types";
 
 class PenugasanService {
   private static instance: PenugasanService;
@@ -17,6 +17,11 @@ class PenugasanService {
       PenugasanService.instance = new PenugasanService();
     }
     return PenugasanService.instance;
+  }
+
+  async getAllPenugasan(): Promise<BackendResponse<Tugas[]>> {
+    const response = await apiClient.get("/api/penugasan/");
+    return response as unknown as BackendResponse<Tugas[]>;
   }
 
   async getAllRangkaian(): Promise<BackendResponse<Rangkaian[]>> {
@@ -47,6 +52,11 @@ class PenugasanService {
     return newResponse;
   }
 
+  async getAllKuis(): Promise<BackendResponse<Kuis[]>> {
+    const response = await apiClient.get("/api/kuis/");
+    return response as unknown as BackendResponse<Kuis[]>;
+  }
+
   async submitTugas(
     id_penugasan: string,
     payload: SubmissionPayload,
@@ -58,26 +68,16 @@ class PenugasanService {
     return response as unknown as BackendResponse<null>;
   }
 
-  async getAllKuis(): Promise<BackendResponse<Kuis[]>> {
-    const response = await apiClient.get("/api/kuis/");
-    return response as unknown as BackendResponse<Kuis[]>;
+  async getAllKegiatan(): Promise<BackendResponse<Kegiatan[]>> {
+    const response = await apiClient.get("/api/rangkaian/kegiatan");
+    return response as unknown as BackendResponse<Kegiatan[]>;
   }
 
-  async getKuisDetail(id_kuis: string): Promise<BackendResponse<KuisDetail>> {
+  async getKuisDetailWithStatus(
+    id_kuis: string,
+  ): Promise<BackendResponse<KuisDetail>> {
     const response = await apiClient.get(`/api/kuis/${id_kuis}`);
     return response as unknown as BackendResponse<KuisDetail>;
-  }
-
-  async getAllTugas(): Promise<BackendResponse<Tugas[]>> {
-    const response = await apiClient.get("/api/penugasan/");
-    return response as unknown as BackendResponse<Tugas[]>;
-  }
-
-  async getTugasSubmission(
-    id_tugas: string,
-  ): Promise<BackendResponse<PaginatedSubmission>> {
-    const response = await apiClient.get(`/api/submission/${id_tugas}`);
-    return response as unknown as BackendResponse<PaginatedSubmission>;
   }
 }
 
