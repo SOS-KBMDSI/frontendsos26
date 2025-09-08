@@ -13,8 +13,8 @@ const AktivitasAfterLogin = ({ user }: AktivitasAfterLoginProps) => {
   return (
     <div className="w-screen   flex flex-col min-h-screen relative  pt-20 lg:pt-40">
       <div className="content-container ">
-        <div className="flex  justify-between flex-col-reverse md:flex-row ">
-          <div className="bg-secondary-100 h-fit w-full border rounded-2xl md:w-[1000px] xl:w-[1000px] z-20 border-secondary-700 p-6">
+        <div className="flex  justify-between flex-col   md:flex-row ">
+          <div className="bg-secondary-100 mb-4 h-fit w-full border rounded-2xl md:w-[1000px] xl:w-[1000px] z-20 border-secondary-700 p-6">
             <div className="bg-primary-500 p-5 rounded-2xl text-white">
               <h4 className="lg:text-3xl xl:text-4xl font-medium">
                 Penanggung Jawab Lapangan

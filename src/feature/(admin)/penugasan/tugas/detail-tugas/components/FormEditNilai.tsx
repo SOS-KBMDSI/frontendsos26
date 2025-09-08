@@ -48,7 +48,7 @@ const FormEditNilai: React.FC<FormEditTugasProps> = ({
       <div className=" space-y-2">
         <div className="space-x-6 flex">
           <p className="text-primary-600 min-w-42">Nama Mahasiswa</p>
-          <span className="">: {submissionData.nama_mahasiswa}</span>
+          <span className="">: {submissionData.student_name}</span>
         </div>
         <div className="space-x-6 flex">
           <p className="text-primary-600 min-w-42">NIM</p>
@@ -60,15 +60,13 @@ const FormEditNilai: React.FC<FormEditTugasProps> = ({
         </div>
       </div>
       <div className="mt-10">
-        {submissionData.link_pengumpulan ? (
+        {submissionData.drive_link ? (
           <Button
             type="button"
             variant={"outline"}
             size={"small"}
             className="font-semibold space-x-1"
-            onClick={() =>
-              window.open(submissionData.link_pengumpulan, "_blank")
-            }
+            onClick={() => window.open(submissionData.drive_link, "_blank")}
           >
             <Link2 className="-rotate-30" size={24} />
             <span>Lihat tugas yang dikumpulkan</span>

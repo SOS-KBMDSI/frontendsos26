@@ -132,7 +132,7 @@ const PemilihanSection = ({
             <div className="flex flex-col justify-center items-center gap-6">
               <div className="text-default-dark flex flex-col justify-center items-center gap-3">
                 <h5 className="text-xl md:text-3xl font-bold text-center">
-                  😣 Gagal Melakukan Pemilihan
+                  Gagal Melakukan Pemilihan 😣
                 </h5>
                 <p className="text-center text-sm">
                   Maaf suara kamu belum diterima, silakan coba lagi atau hubungi

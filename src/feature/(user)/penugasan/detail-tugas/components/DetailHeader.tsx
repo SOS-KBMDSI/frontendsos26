@@ -20,7 +20,7 @@ export const DetailHeader = ({
           {judul}
         </h1>
         <p className="text-default-dark text-center md:text-left">
-          Deadline: {deadline}
+          Deadline : {deadline}
         </p>
       </div>
 

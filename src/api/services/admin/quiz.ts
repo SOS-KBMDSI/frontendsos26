@@ -156,12 +156,25 @@ class KuisService {
 
   async getQuizSubmissions(
     kuisId: string,
-  ): Promise<BackendResponse<PaginatedData<QuizSubmission>>> {
-    const response = await apiClient.get(`/api/kuis/sos/admin/${kuisId}/maba`);
+    id_kelompok?: string | null,
+    id_distrik?: string | null,
+  ): Promise<BackendResponse<QuizSubmission[]>> {
+    const params = new URLSearchParams();
+    if (id_kelompok) {
+      params.append("id_kelompok", id_kelompok);
+    }
+    if (id_distrik) {
+      params.append("id_distrik", id_distrik);
+    }
 
-    return response as unknown as BackendResponse<
-      PaginatedData<QuizSubmission>
-    >;
+    const queryString = params.toString();
+    let apiUrl = `/api/kuis/sos/admin/${kuisId}/maba`;
+    if (queryString) {
+      apiUrl += `?${queryString}`;
+    }
+
+    const response = await apiClient.get(apiUrl);
+    return response as unknown as BackendResponse<QuizSubmission[]>;
   }
 }
 

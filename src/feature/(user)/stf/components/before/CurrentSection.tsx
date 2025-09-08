@@ -37,8 +37,11 @@ const CurrentSection = () => {
   return (
     <section className="bg-no-repeat bg-cover bg-login">
       <div className="mycontainer text-center py-24 md:py-32">
-        <SectionTitle underline={false}>Shaping The Future 2024</SectionTitle>
-        <div className="grid w-full grid-cols-1 md:grid-cols-3 gap-10 md:gap-4 lg:gap-12 items-start">
+        <SectionTitle underline={false}>
+          Shaping The Future 2024
+          <div className="h-2  mt-4 rounded-lg bg-primary-600 w-full"></div>
+        </SectionTitle>
+        <div className="grid w-full grid-cols-1 md:grid-cols-3 gap-10 md:gap-4 lg:gap-12  md:items-start">
           <div className="flex flex-row justify-center md:flex-col gap-4 h-full">
             <ProdiTabs
               activeProdiId={activeProdiId}
@@ -46,7 +49,7 @@ const CurrentSection = () => {
             />
           </div>
 
-          <div className="md:col-span-2">
+          <div className="md:col-span-2 ml-4 md:ml-0">
             <div className="text-default-dark md:hidden drop-shadow">
               <AnimatePresence mode="wait">
                 {activeProdiData && (
@@ -70,7 +73,7 @@ const CurrentSection = () => {
                         </div>
                         <div className="w-full text-secondary flex flex-col text-left items-start gap-y-2 py-4 pr-4">
                           <span className="text-sm font-normal">
-                            Ketua dan Wakil Ketua
+                            Ketua dan Wakil Ketua Angkatan
                           </span>
                           <h4 className="font-semibold text-2xl">
                             {activeProdiData.shortName} 2024
@@ -123,7 +126,7 @@ const CurrentSection = () => {
                           </div>
                           <div className="h-[16rem] text-secondary flex flex-col items-start text-left gap-y-2">
                             <span className="text-xl font-normal">
-                              Ketua dan Wakil Ketua
+                              Ketua dan Wakil Ketua Angkatan
                             </span>
                             <h4 className="font-semibold text-4xl">
                               {activeProdiData.shortName} 2024
@@ -177,7 +180,7 @@ const CurrentSection = () => {
                           </div>
                           <div className="h-[18rem] text-secondary flex flex-col items-start gap-y-2 text-left">
                             <span className="text-2xl font-normal">
-                              Ketua dan Wakil Ketua
+                              Ketua dan Wakil Ketua Angkatan
                             </span>
                             <h4 className="font-semibold text-6xl">
                               {activeProdiData.shortName} 2024

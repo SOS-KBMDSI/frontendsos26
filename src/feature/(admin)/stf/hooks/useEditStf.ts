@@ -11,6 +11,10 @@ export const useEditStf = (id: string) => {
   const [visi, setVisi] = useState("");
   const [misi, setMisi] = useState("");
   const [foto, setFoto] = useState<File | null>(null);
+
+  // ✅ TAMBAHKAN STATE INI untuk menyimpan URL foto yang sudah ada
+  const [fotoUrl, setFotoUrl] = useState<string | null>(null);
+
   const [initialDataLoading, setInitialDataLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -19,11 +23,15 @@ export const useEditStf = (id: string) => {
       try {
         const response = await stfService.getCaketangById(id);
         if (response && response.data) {
-          const { nama, prodi, visi, misi } = response.data;
+          // Pastikan API Anda mengembalikan URL foto, contoh: response.data.foto_url
+          const { nama, prodi, visi, misi, foto } = response.data;
           setNama(nama);
           setProdi(prodi);
           setVisi(visi);
           setMisi(misi);
+
+          // ✅ SIMPAN URL FOTO yang didapat dari API
+          setFotoUrl(foto);
         } else {
           throw new Error("Data caketang tidak ditemukan.");
         }
@@ -35,7 +43,9 @@ export const useEditStf = (id: string) => {
       }
     };
 
-    fetchInitialData();
+    if (id) {
+      fetchInitialData();
+    }
   }, [id]);
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -47,6 +57,8 @@ export const useEditStf = (id: string) => {
     formData.append("prodi", prodi);
     formData.append("visi", visi);
     formData.append("misi", misi);
+
+    // Logika ini sudah benar: hanya kirim file baru jika ada.
     if (foto) {
       formData.append("foto", foto);
     }
@@ -77,6 +89,7 @@ export const useEditStf = (id: string) => {
     misi,
     setMisi,
     setFoto,
+    fotoUrl, // ✅ KEMBALIKAN FOTO URL untuk ditampilkan di UI
     initialDataLoading,
     isSubmitting,
     handleSubmit,

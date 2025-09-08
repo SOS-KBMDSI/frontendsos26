@@ -25,14 +25,16 @@ const QuizStatusSection = ({ Quiz }: { Quiz: Quiz | null }) => {
             {Quiz?.nama_kuis}
           </h4>
           <p className="text-center lg:text-left">
-            Deadline:
-            {new Date(Quiz?.tenggat_kuis || "").toLocaleString("id-ID", {
-              year: "numeric",
-              month: "long",
-              day: "numeric",
-              hour: "2-digit",
-              minute: "2-digit",
-            })}
+            Deadline :{" "}
+            <span>
+              {new Date(Quiz?.tenggat_kuis || "").toLocaleString("id-ID", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+                hour: "2-digit",
+                minute: "2-digit",
+              })}
+            </span>
           </p>
         </div>
         <div

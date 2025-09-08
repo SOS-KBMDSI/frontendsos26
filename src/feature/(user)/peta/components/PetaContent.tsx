@@ -38,8 +38,8 @@ const PetaContent = () => {
             </h4>
             <p className="text-sm text-default-dark">
               Berisi pengenalan Departemen Sistem Informasi, prospek karier di
-              bidang IT, serta cara menyusun surat lamaran kerja yang dikemas
-              secara interaktif melalui aktivitas dan games yang seru.
+              bidang IT, serta cara menyusun CV yang dikemas secara interaktif
+              melalui aktivitas dan games yang seru.
             </p>
           </div>
         </div>
@@ -88,9 +88,8 @@ const PetaContent = () => {
                 </h4>
                 <p className="text-sm lg:text-lg text-default-dark">
                   Berisi pengenalan Departemen Sistem Informasi, prospek karier
-                  di bidang IT, serta cara menyusun surat lamaran kerja yang
-                  dikemas secara interaktif melalui aktivitas dan games yang
-                  seru.
+                  di bidang IT, serta cara menyusun CV yang dikemas secara
+                  interaktif melalui aktivitas dan games yang seru.
                 </p>
               </div>
               <div className="w-7/12 lg:w-6/12 relative">
