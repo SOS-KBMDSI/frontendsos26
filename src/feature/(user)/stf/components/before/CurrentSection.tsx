@@ -39,7 +39,7 @@ const CurrentSection = () => {
       <div className="mycontainer text-center py-24 md:py-32">
         <SectionTitle underline={false}>Shaping The Future 2024</SectionTitle>
         <div className="grid w-full grid-cols-1 md:grid-cols-3 gap-10 md:gap-4 lg:gap-12 items-start">
-          <div className="flex flex-row justify-center md:flex-col gap-4">
+          <div className="flex flex-row justify-center md:flex-col gap-4 h-full">
             <ProdiTabs
               activeProdiId={activeProdiId}
               onSelectProdi={setActiveProdiId}
@@ -110,8 +110,8 @@ const CurrentSection = () => {
                       animate="visible"
                       exit="exit"
                     >
-                      <div className="bg-transparent">
-                        <div className="w-8/9 h-fit bg-primary-500 border rounded-s-4xl rounded-e-3xl flex items-center gap-6">
+                      <div className="bg-transparent mr-12">
+                        <div className="w-full h-fit bg-primary-500 border rounded-s-4xl rounded-e-3xl flex items-center gap-6">
                           <div className="w-fit bg-white px-6 pt-6 pb-18 rounded-3xl">
                             <Image
                               src={activeProdiData.image}
@@ -164,19 +164,19 @@ const CurrentSection = () => {
                       animate="visible"
                       exit="exit"
                     >
-                      <div className="bg-transparent">
-                        <div className="w-8/9 h-fit bg-primary-500 border rounded-s-4xl rounded-e-3xl flex items-center gap-10">
+                      <div className="bg-transparent mr-16">
+                        <div className="w-full h-fit bg-primary-500 border rounded-s-4xl rounded-e-3xl flex items-center gap-10">
                           <div className="w-fit bg-white px-6 pt-6 pb-18 rounded-3xl">
                             <Image
                               src={activeProdiData.image}
                               alt="Dummy"
                               width={500}
                               height={500}
-                              className="w-[21rem] h-[23rem] object-cover"
+                              className="w-[18rem] h-[18rem] object-cover"
                             />
                           </div>
-                          <div className="h-[23rem] text-secondary flex flex-col items-start gap-y-2 text-left">
-                            <span className="text-3xl font-normal">
+                          <div className="h-[18rem] text-secondary flex flex-col items-start gap-y-2 text-left">
+                            <span className="text-2xl font-normal">
                               Ketua dan Wakil Ketua
                             </span>
                             <h4 className="font-semibold text-6xl">
@@ -185,7 +185,7 @@ const CurrentSection = () => {
                           </div>
                         </div>
                         <motion.div
-                          className="bg-secondary absolute right-5 top-1/2 bottom-50 w-[26rem] h-[10rem] rounded-2xl shadow-2xl"
+                          className="bg-secondary absolute right-5 bottom-12 w-[20rem] h-[10rem] rounded-2xl shadow-2xl p-4"
                           key={activeProdiId + "-animated"}
                           initial="hidden"
                           animate="visible"
