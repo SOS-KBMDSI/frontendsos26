@@ -79,15 +79,12 @@ const KilasBalikSection = () => {
   };
 
   return (
-    <GradientBackground className="py-8 md:py-12 lg:py-16">
-      <div className="relative z-10 pt-8 sm:pt-12 md:pt-14 lg:pt-16 pb-4 sm:pb-6 lg:pb-8 flex justify-center px-4">
-        <Title>Kilas Balik SOS 2024</Title>
+    <GradientBackground className="py-12 md:py-18 lg:py-20 min-h-[50vh] sm:min-h-[40vh] md:min-h-[40vh] lg:min-h-[45vh]">
+      <div className="relative z-10 flex justify-center px-4">
+        <Title marginBottom={false}>Kilas Balik SOS 2024</Title>
       </div>
 
-      <div
-        className="min-h-[50vh] sm:min-h-[40vh] md:min-h-[40vh] lg:min-h-[45vh] 
-                      flex justify-center items-center relative overflow-hidden px-4"
-      >
+      <div className="flex justify-center items-center relative overflow-hidden px-4">
         <div className="relative flex justify-center items-center">
           <div className="absolute inset-0 flex justify-center items-center">
             <motion.div
@@ -105,7 +102,7 @@ const KilasBalikSection = () => {
                 src={images[getNextIndex(currentIndex, 1)].src}
                 width={500}
                 height={500}
-                className="w-[280px] sm:w-[350px] md:w-[450px] lg:w-[527px] h-[140px] sm:h-[200px] md:h-[250px] lg:h-72 rotate-[-6deg] object-cover border-[3px] sm:border-4 lg:border-5 border-default-light"
+                className="w-[280px] sm:w-[350px] md:w-[450px] lg:w-[596px] h-[140px] sm:h-[200px] md:h-[250px] lg:h-80 rotate-[-6deg] object-cover border-[3px] sm:border-4 lg:border-5 border-default-light"
                 alt={`Image ${getNextIndex(currentIndex, 1)}`}
               />
             </motion.div>
@@ -126,14 +123,14 @@ const KilasBalikSection = () => {
                 src={images[getNextIndex(currentIndex, 2)].src}
                 width={500}
                 height={500}
-                className="w-[280px] sm:w-[350px] md:w-[450px] lg:w-[527px] h-[140px] sm:h-[200px] md:h-[250px] lg:h-72 rotate-[6deg] object-cover border-[3px] sm:border-4 lg:border-5 border-default-light"
+                className="w-[280px] sm:w-[350px] md:w-[450px] lg:w-[596px] h-[140px] sm:h-[200px] md:h-[250px] lg:h-80 rotate-[6deg] object-cover border-[3px] sm:border-4 lg:border-5 border-default-light"
                 alt={`Image ${getNextIndex(currentIndex, 2)}`}
               />
             </motion.div>
           </div>
 
           <div
-            className="relative z-30 w-[240px] sm:w-[350px] md:w-[450px] lg:w-[527px] 
+            className="relative z-30 w-[240px] sm:w-[350px] md:w-[450px] lg:w-[596px] 
                           h-[240px] sm:h-[350px] md:h-[450px] lg:h-[527px] 
                           flex justify-center items-center"
           >
@@ -155,8 +152,8 @@ const KilasBalikSection = () => {
                   src={images[currentIndex].src}
                   width={500}
                   height={500}
-                  className="w-[240px] sm:w-[350px] md:w-[450px] lg:w-[527px] 
-                            h-[140px] sm:h-[200px] md:h-[250px] lg:h-72 
+                  className="w-[240px] sm:w-[350px] md:w-[450px] lg:w-[596px] 
+                            h-[140px] sm:h-[200px] md:h-[250px] lg:h-80 
                             object-cover border-[3px] sm:border-4 lg:border-5 border-default-light"
                   alt={images[currentIndex].alt}
                   priority
@@ -173,7 +170,7 @@ const KilasBalikSection = () => {
           whileTap="tap"
           onClick={handlePrevious}
           className="absolute left-2 sm:left-4 md:left-8 
-                     lg:left-[calc(50%-350px)] z-40 cursor-pointer 
+                     lg:left-[calc(50%-420px)] z-40 cursor-pointer 
                      lg:transform lg:-translate-x-1/2"
           aria-label="Previous image"
         >
@@ -193,7 +190,7 @@ const KilasBalikSection = () => {
           whileTap="tap"
           onClick={handleNext}
           className="absolute right-2 sm:right-4 md:right-8 
-                     lg:right-[calc(50%-350px)] z-40 cursor-pointer 
+                     lg:right-[calc(50%-420px)] z-40 cursor-pointer 
                      lg:transform lg:translate-x-1/2"
           aria-label="Next image"
         >
