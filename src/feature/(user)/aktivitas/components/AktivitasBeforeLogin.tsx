@@ -15,7 +15,7 @@ const AktivitasBeforeLogin = () => {
         />
         <div className="lg:bg-secondary-100  lg:border z-20 flex lg:w-[35rem] flex-col items-center lg:border-secondary-700 lg:shadow-xl rounded-2xl lg:p-10 h-fit ">
           <h4 className="text-4xl text-center font-semibold text-primary-500">
-            Halo, Adik Maba!
+            Halo, Maba DSI!
           </h4>
           <span className="text-black text-base lg:text-xl text-center mt-6">
             Yuk, masuk dulu biar bisa akses semua hal seru yang udah disiapin

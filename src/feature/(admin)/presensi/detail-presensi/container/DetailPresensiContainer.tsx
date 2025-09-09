@@ -312,7 +312,7 @@ const DetailPresensiContainer: React.FC<DetailPresensiContainerProps> = ({
               </div>
             </div>
             <div className="flex flex-col gap-y-2 mt-4 md:mt-0">
-              <h6 className="text-lg font-semibold">Berakhir</h6>{" "}
+              <h6 className="text-lg font-semibold">Berakhir Rangkaian</h6>{" "}
               <div className="flex items-center gap-x-4">
                 <DateTimeDisplay variant="date" value={endDate} />
                 <div className="w-[1px] h-6 bg-default-dark hidden md:block"></div>{" "}

@@ -6,6 +6,7 @@ import { RekapPenilaianItem } from "../types";
 interface PenilaianTableProps {
   table: Table<RekapPenilaianItem>;
   refresh: () => void;
+  globalFilter: string;
 }
 
 export const PenilaianTable = ({ table, refresh }: PenilaianTableProps) => {

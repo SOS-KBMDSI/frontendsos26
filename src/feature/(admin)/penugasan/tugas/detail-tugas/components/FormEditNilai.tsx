@@ -85,12 +85,12 @@ const FormEditNilai: React.FC<FormEditTugasProps> = ({
           className="mt-2"
           id="nilai"
           type="number"
-          min={1}
+          min={0}
           max={100}
-          value={nilai || ""}
+          value={nilai ?? ""}
           onChange={(e) => {
             const value = Number(e.target.value);
-            if (value >= 0 && value <= 100) {
+            if (value <= 100) {
               setNilai(value);
             }
           }}
