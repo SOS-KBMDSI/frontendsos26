@@ -9,6 +9,7 @@ import { useGetStfData } from "../../hooks/useGetStfData";
 import Image from "next/image";
 import SuccessIcon from "@/assets/stf/success.png";
 import ErrorIcon from "@/assets/stf/error.png";
+import { useAuthContext } from "@/shared/hooks/useAuthContext";
 
 interface PemilihanSectionProps {
   caketangList: Caketang[];
@@ -27,7 +28,7 @@ const PemilihanSection = ({
 }: PemilihanSectionProps) => {
   const { vote, isVoting, voteSuccess } = useVoteForCaketang();
   const { refresh } = useGetStfData();
-
+  const { user } = useAuthContext();
   const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
   const [isResultModalOpen, setIsResultModalOpen] = useState(false);
 
@@ -62,7 +63,7 @@ const PemilihanSection = ({
             ))}
           </div>
           <Button
-            disabled={!kesempatan}
+            disabled={!kesempatan || user?.tipe_mahasiswa === "pemutihan"}
             onClick={() => setIsConfirmationModalOpen(true)}
           >
             Pilih
@@ -76,7 +77,7 @@ const PemilihanSection = ({
         title="Konfirmasi Pilihan"
         desc={`Apakah Anda yakin ingin memilih ${activeCaketang?.nama}? Pilihan tidak dapat diubah.`}
       >
-        <div className="mt-4 flex justify-end space-x-4">
+        <div className="mt-4 flex justify-center space-x-4">
           <Button
             variant="outline"
             onClick={() => setIsConfirmationModalOpen(false)}

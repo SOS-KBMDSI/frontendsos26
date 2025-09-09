@@ -37,6 +37,7 @@ export interface AuthProfile {
   alergi_obat?: string;
   alergi_makanan?: string;
   kelompok?: Kelompok;
+  tipe_mahasiswa?: string;
 }
 
 export interface EditProfileRequest {
