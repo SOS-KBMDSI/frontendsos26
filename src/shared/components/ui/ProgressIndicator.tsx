@@ -38,7 +38,7 @@ const ProgressIndicator = ({
           className={cn(
             dotVariants({
               variant: activeIndex === index ? "active" : "inactive",
-            })
+            }),
           )}
           aria-label={`Go to slide ${index + 1}`}
         />

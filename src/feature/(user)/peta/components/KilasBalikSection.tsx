@@ -3,11 +3,16 @@
 import Image from "next/image";
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence, Variants } from "framer-motion";
-import KilasBalik from "@/assets/peta/kilas-balik.jpg";
-import Rangkaian11 from "@/assets/peta/rangkaian1-1.png";
-import Rangkaian12 from "@/assets/peta/rangkaian1-2.png";
-import Rangkaian21 from "@/assets/peta/rangkaian2-1.png";
-import Rangkaian22 from "@/assets/peta/rangkaian2-2.png";
+import KilasBalik1 from "@/assets/peta/kilas-balik/kilasbalik-1.png";
+import KilasBalik2 from "@/assets/peta/kilas-balik/kilasbalik-2.png";
+import KilasBalik3 from "@/assets/peta/kilas-balik/kilasbalik-3.png";
+import KilasBalik4 from "@/assets/peta/kilas-balik/kilasbalik-4.png";
+import KilasBalik5 from "@/assets/peta/kilas-balik/kilasbalik-5.png";
+import KilasBalik6 from "@/assets/peta/kilas-balik/kilasbalik-6.png";
+import KilasBalik7 from "@/assets/peta/kilas-balik/kilasbalik-7.png";
+import KilasBalik8 from "@/assets/peta/kilas-balik/kilasbalik-8.png";
+import KilasBalik9 from "@/assets/peta/kilas-balik/kilasbalik-9.png";
+import KilasBalik10 from "@/assets/peta/kilas-balik/kilasbalik-10.png";
 import PrevArrow from "@/assets/peta/prev.svg";
 import NextArrow from "@/assets/peta/next.svg";
 import { Title } from "./Title";
@@ -19,11 +24,16 @@ const KilasBalikSection = () => {
   const [animateFrames, setAnimateFrames] = useState(false);
 
   const images = [
-    { src: KilasBalik, alt: "Kilas Balik 1" },
-    { src: Rangkaian11, alt: "Rangkaian 1 - 1" },
-    { src: Rangkaian12, alt: "Rangkaian 1 - 2" },
-    { src: Rangkaian21, alt: "Rangkaian 2 - 1" },
-    { src: Rangkaian22, alt: "Rangkaian 2 - 2" },
+    { src: KilasBalik1, alt: "Kilas Balik 1" },
+    { src: KilasBalik2, alt: "Kilas Balik 2" },
+    { src: KilasBalik3, alt: "Kilas Balik 3" },
+    { src: KilasBalik4, alt: "Kilas Balik 4" },
+    { src: KilasBalik5, alt: "Kilas Balik 5" },
+    { src: KilasBalik6, alt: "Kilas Balik 6" },
+    { src: KilasBalik7, alt: "Kilas Balik 7" },
+    { src: KilasBalik8, alt: "Kilas Balik 8" },
+    { src: KilasBalik9, alt: "Kilas Balik 9" },
+    { src: KilasBalik10, alt: "Kilas Balik 10" },
   ];
 
   const handlePrevious = () => {
@@ -99,11 +109,11 @@ const KilasBalikSection = () => {
               className="absolute z-10"
             >
               <Image
-                src={images[getNextIndex(currentIndex, 1)].src}
+                src={images[getNextIndex(currentIndex, 2)].src}
                 width={500}
                 height={500}
                 className="w-[280px] sm:w-[350px] md:w-[450px] lg:w-[596px] h-[140px] sm:h-[200px] md:h-[250px] lg:h-80 rotate-[-6deg] object-cover border-[3px] sm:border-4 lg:border-5 border-default-light"
-                alt={`Image ${getNextIndex(currentIndex, 1)}`}
+                alt={`Image ${getNextIndex(currentIndex, 2)}`}
               />
             </motion.div>
 
@@ -120,11 +130,11 @@ const KilasBalikSection = () => {
               className="absolute z-20"
             >
               <Image
-                src={images[getNextIndex(currentIndex, 2)].src}
+                src={images[getNextIndex(currentIndex, 1)].src}
                 width={500}
                 height={500}
                 className="w-[280px] sm:w-[350px] md:w-[450px] lg:w-[596px] h-[140px] sm:h-[200px] md:h-[250px] lg:h-80 rotate-[6deg] object-cover border-[3px] sm:border-4 lg:border-5 border-default-light"
-                alt={`Image ${getNextIndex(currentIndex, 2)}`}
+                alt={`Image ${getNextIndex(currentIndex, 1)}`}
               />
             </motion.div>
           </div>

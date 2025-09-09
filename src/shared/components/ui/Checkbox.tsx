@@ -13,10 +13,10 @@ const Checkbox = forwardRef<
     className={cn(
       //dasar
       "peer h-6 w-6 shrink-0 rounded-lg border-2 transition-colors cursor-pointer",
-      
+
       //focus
       "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-default-dark focus-visible:ring-offset-2",
-      
+
       //disable
       "disabled:cursor-not-allowed disabled:opacity-50",
 
@@ -25,11 +25,11 @@ const Checkbox = forwardRef<
 
       //hover
       "hover:bg-default-dark/10",
-      
+
       //selected
       "data-[state=checked]:bg-default-dark data-[state=checked]:border-default-dark data-[state=checked]:text-white",
 
-      className
+      className,
     )}
     {...props}
   >

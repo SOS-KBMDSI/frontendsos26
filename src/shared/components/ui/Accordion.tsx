@@ -23,7 +23,7 @@ const AccordionItem = forwardRef<
       "data-[state=open]:rounded-xl data-[state=open]:border-1 data-[state=open]:border-primary-500",
       "data-[state=open]:shadow-[0_4px_12px_0_theme(colors.default-dark/10%)]",
 
-      className
+      className,
     )}
     {...props}
   />
@@ -47,7 +47,7 @@ const AccordionTrigger = forwardRef<
         "data-[state=open]:text-primary-500",
         "data-[state=open]:border-b-1 data-[state=open]:border-b-neutral-300",
 
-        className
+        className,
       )}
       {...props}
     >
@@ -57,7 +57,7 @@ const AccordionTrigger = forwardRef<
           className={cn(
             "h-8 w-8 shrink-0 transition-transform duration-200",
             "text-primary-500",
-            "group-data-[state=open]:rotate-180"
+            "group-data-[state=open]:rotate-180",
           )}
         />
       </div>
@@ -75,7 +75,7 @@ const AccordionContent = forwardRef<
     className={cn(
       "overflow-hidden text-sm transition-all",
       "data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down",
-      className
+      className,
     )}
     {...props}
   >

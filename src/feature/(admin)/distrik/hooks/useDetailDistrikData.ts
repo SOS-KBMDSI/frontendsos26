@@ -17,7 +17,10 @@ export const useDetailDistrikData = (distrikId: string) => {
     try {
       const [distrikResponse, anggotaResponse] = await Promise.all([
         distrikService.getDistrictById(distrikId),
-        distrikService.getAnggotaByDistrictId(distrikId, { page: 1, limit: 1000 }),
+        distrikService.getAnggotaByDistrictId(distrikId, {
+          page: 1,
+          limit: 1000,
+        }),
       ]);
 
       if (distrikResponse && distrikResponse.data) {
@@ -26,13 +29,18 @@ export const useDetailDistrikData = (distrikId: string) => {
         throw new Error("Gagal memuat data detail distrik.");
       }
 
-      if (anggotaResponse && anggotaResponse.data && anggotaResponse.data.records) {
+      if (
+        anggotaResponse &&
+        anggotaResponse.data &&
+        anggotaResponse.data.records
+      ) {
         setAnggota(anggotaResponse.data.records);
       } else {
         throw new Error("Gagal memuat data anggota kelompok.");
       }
     } catch (err: unknown) {
-      const errorMessage = err instanceof Error ? err.message : "Terjadi kesalahan";
+      const errorMessage =
+        err instanceof Error ? err.message : "Terjadi kesalahan";
       setError(errorMessage);
     } finally {
       setIsLoading(false);

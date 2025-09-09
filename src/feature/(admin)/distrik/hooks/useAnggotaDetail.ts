@@ -1,7 +1,10 @@
 "use client";
 
 import { useState, useCallback } from "react";
-import { MahasiswaDetail, mahasiswaService } from "@/api/services/admin/mahasiswa";
+import {
+  MahasiswaDetail,
+  mahasiswaService,
+} from "@/api/services/admin/mahasiswa";
 
 export const useAnggotaDetail = () => {
   const [data, setData] = useState<MahasiswaDetail | null>(null);
@@ -19,7 +22,8 @@ export const useAnggotaDetail = () => {
         throw new Error(response.message || "Data mahasiswa tidak ditemukan.");
       }
     } catch (e: unknown) {
-      const errorMessage = e instanceof Error ? e.message : "Gagal memuat profil.";
+      const errorMessage =
+        e instanceof Error ? e.message : "Gagal memuat profil.";
       setError(errorMessage);
       setData(null);
     } finally {
