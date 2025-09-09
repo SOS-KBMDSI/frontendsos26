@@ -102,7 +102,7 @@ export const TabelDetailPenilaian = ({
               <td className="py-3 px-3 md:px-4 text-left border-l-2 md:border-l-4 border-secondary-500">
                 Rata-rata Nilai
               </td>
-              <td className="py-3 px-3 md:px-4 text-left border-l-2 md:border-l-4 border-secondary-500 rounded-r-xl">
+              <td className="py-4 px-7 text-left border-l-4 border-secondary-500 rounded-br-xl md:rounded-br-lg">
                 {rataRata}
               </td>
             </tr>
