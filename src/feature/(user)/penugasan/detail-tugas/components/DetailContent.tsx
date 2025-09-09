@@ -29,7 +29,7 @@ export const DetailContent = ({
   handleFormSubmit,
   setActiveStep,
 }: DetailContentProps) => {
-  const detailLink = tugas.file_link || tugas.file || "#";
+  const detailLink = tugas.link_pengumpulan || tugas.file || "#";
   return (
     <div className="bg-primary-500/10 rounded-2xl py-8 px-6 md:py-12 md:px-16">
       <div className="grid grid-cols-1 grid-rows-1">

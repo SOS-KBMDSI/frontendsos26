@@ -19,6 +19,7 @@ export const useDetailTugas = (id_penugasan: string) => {
         await penugasanService.getTugasDetailWithStatus(id_penugasan);
       return response.data;
     },
+    staleTime: 0,
   });
 
   const { mutate: submitTugas, isPending: isSubmitting } = useMutation({

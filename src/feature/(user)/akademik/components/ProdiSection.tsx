@@ -22,7 +22,7 @@ export const ProdiSection = () => {
   };
 
   return (
-    <section className="relative bg-primary-600 py-24 px-2 md:px-6 text-white">
+    <section className="relative bg-red-800 py-24 px-2 md:px-6 text-white">
       <div className="mycontainer flex flex-col items-center gap-4 md:gap-20">
         <SectionTitle>Kenalin Prodi DSI</SectionTitle>
 

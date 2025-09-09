@@ -22,7 +22,7 @@ export const LevelSection = ({ level }: LevelSectionProps) => {
   }
 
   const completedTaskCount = level.level;
-  const displayLevel = completedTaskCount + 1;
+  const displayLevel = level.level;
 
   return (
     <div
@@ -43,7 +43,9 @@ export const LevelSection = ({ level }: LevelSectionProps) => {
             Level {displayLevel}
           </p>
           <p className="text-xs text-default-dark md:text-lg">
-            Selamat! kamu telah mengumpulkan {completedTaskCount} penugasan
+            {completedTaskCount === 0
+              ? "Kerjakan penugasan untuk membuka level"
+              : `Selamat! kamu telah mengumpulkan ${completedTaskCount} penugasan`}
           </p>
         </div>
       </div>

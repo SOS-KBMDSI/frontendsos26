@@ -9,9 +9,9 @@ export const MascotAnimation = () => {
   return (
     <motion.div
       className="w-[280px] md:w-[500px]"
-      initial={{ opacity: 1, scale: 1 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5, ease: "backOut", delay: 1.5 }}
+      initial={{ opacity: 0, scale: 0.8 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.6, ease: "backOut", delay: 1.5 }}
       whileInView={{
         rotate: [0, -1, 1, -1, 1, 0],
         scale: [1.25, 1.2, 1.25],

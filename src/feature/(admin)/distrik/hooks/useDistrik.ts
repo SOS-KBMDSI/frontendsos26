@@ -14,8 +14,8 @@ export const useDistrik = () => {
     setError(null);
     try {
       const response = await distrikService.getAllDistricts();
-      if (response && response.data) {
-        setData(response.data);
+      if (response) {
+        setData(response.data || []);
       } else {
         throw new Error("Format respons API tidak sesuai.");
       }
@@ -23,6 +23,7 @@ export const useDistrik = () => {
       const errorMessage =
         err instanceof Error ? err.message : "Terjadi kesalahan";
       setError(errorMessage);
+      setData([]);
     } finally {
       setIsLoading(false);
     }
