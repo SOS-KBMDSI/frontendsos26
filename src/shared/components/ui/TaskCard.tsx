@@ -6,7 +6,7 @@ import { cn } from "@/shared/utils/cn";
 import { cva, type VariantProps } from "class-variance-authority";
 
 const taskCardVariants = cva(
-  "group flex w-full flex-col items-center gap-3 py-6 px-3 text-center transition-colors duration-200 md:max-w-xs md:gap-10 md:py-10 md:px-8",
+  "group flex w-full flex-col items-center gap-3 py-6 px-3 text-center transition-colors duration-200 md:max-w-xs md:gap-10 md:py-10 md:px-8 rounded-xl",
   {
     variants: {
       status: {
@@ -107,15 +107,6 @@ const TaskCard = forwardRef<HTMLDivElement, TaskCardProps>(
           >
             <p>Deadline:</p>
             <p>{deadline}</p>
-          </div>
-
-          <div className="h-8 mt-2 flex justify-center items-center text-base font-semibold">
-            {status === "completed" && (
-              <span className="text-badgeSuccess">Selesai</span>
-            )}
-            {status === "overdue" && (
-              <span className="text-badgeOverdue">Terlewat</span>
-            )}
           </div>
         </div>
       </div>

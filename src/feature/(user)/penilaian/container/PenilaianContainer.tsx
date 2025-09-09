@@ -50,7 +50,7 @@ export const PenilaianContainer = () => {
 
         <AnimatedDiv className="w-full" delay={0.1}>
           <div className="flex flex-col items-center gap-3 w-full">
-            <h2 className="text-4xl md:text-7xl font-semibold text-center">
+            <h2 className="text-3xl md:text-5xl font-semibold text-center">
               Penilaian
             </h2>
             <div className="h-2 w-1/2 md:w-1/4 rounded-full bg-primary-500"></div>

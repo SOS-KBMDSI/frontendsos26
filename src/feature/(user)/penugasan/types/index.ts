@@ -101,7 +101,7 @@ export interface Tugas {
   judul: string;
   deskripsi: string;
   tenggat: string;
-  file_link: string;
+  link_pengumpulan: string;
   file?: string;
   is_visible?: string;
   icon?: string;

@@ -85,9 +85,7 @@ const StfContainer = () => {
   });
 
   return (
-    // Kontainer utama dengan gap yang bisa disesuaikan
     <div className="p-8 w-full flex flex-col gap-6">
-      {/* Grup 1: Header (Judul & Tombol Kembali) */}
       <div className="flex flex-col gap-7">
         <Link
           href="/admin/dashboard"
@@ -101,9 +99,7 @@ const StfContainer = () => {
         </h1>
       </div>
 
-      {/* Grup 2: Kontrol (Filter, Search, & Tombol Tambah) */}
       <div className="flex flex-col justify-between gap-4">
-        {/* Bagian Kiri: Filter & Search */}
         <div className="flex items-center gap-6">
           <Select
             value={prodiFilter}
@@ -136,7 +132,6 @@ const StfContainer = () => {
           </div>
         </div>
 
-        {/* Bagian Kanan: Tombol Tambah */}
         <div className="flex">
           <Link href="/admin/stf/create">
             <Button>Tambah Calon</Button>
@@ -144,7 +139,6 @@ const StfContainer = () => {
         </div>
       </div>
 
-      {/* Grup 3: Tabel */}
       <DataTable<StfSummary>
         table={table}
         isLoading={isLoading}

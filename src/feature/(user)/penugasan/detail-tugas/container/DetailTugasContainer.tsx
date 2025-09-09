@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { ChevronLeft, Loader2 } from "lucide-react";
 import { useDetailTugas } from "../hooks/useDetailTugas";
@@ -9,27 +9,6 @@ import { TaskStepper } from "../components/TaskStepper";
 import { DetailHeader } from "../components/DetailHeader";
 import { DetailContent } from "../components/DetailContent";
 import { AnimatedDiv } from "@/shared/components/ui/AnimatedDiv";
-
-type StatusVariant = "not_started" | "completed" | "overdue";
-
-const getStatusAndVariant = (
-  status?: string,
-): { text: string; variant: StatusVariant } => {
-  if (!status) {
-    return { text: "Belum Dikerjakan", variant: "not_started" };
-  }
-  const lowerCaseStatus = status.toLowerCase();
-  if (lowerCaseStatus.includes("selesai")) {
-    return { text: "Selesai", variant: "completed" };
-  }
-  if (
-    lowerCaseStatus.includes("terlewat") ||
-    lowerCaseStatus.includes("terlambat")
-  ) {
-    return { text: "Terlewat", variant: "overdue" };
-  }
-  return { text: "Belum Dikerjakan", variant: "not_started" };
-};
 
 export const DetailTugasContainer = ({
   id_penugasan,
@@ -40,6 +19,12 @@ export const DetailTugasContainer = ({
     useDetailTugas(id_penugasan);
   const [activeStep, setActiveStep] = useState(1);
   const [driveLink, setDriveLink] = useState("");
+
+  useEffect(() => {
+    if (tugas?.link_pengumpulan) {
+      setDriveLink(tugas.link_pengumpulan);
+    }
+  }, [tugas]);
 
   if (isLoading) {
     return (
@@ -62,11 +47,24 @@ export const DetailTugasContainer = ({
     );
   }
 
-  const { text: statusText, variant: statusVariant } = getStatusAndVariant(
-    tugas.status,
-  );
-  const isSubmitted = statusVariant === "completed";
-  const isOverdue = statusVariant === "overdue";
+  const isSubmitted = tugas.status === "Selesai";
+
+  const isDeadlinePassed = new Date() > new Date(tugas.tenggat);
+  const isOverdue = isDeadlinePassed && !isSubmitted;
+
+  let statusText: string;
+  let statusVariant: "not_started" | "completed" | "overdue";
+
+  if (isSubmitted) {
+    statusText = "Selesai";
+    statusVariant = "completed";
+  } else if (isOverdue) {
+    statusText = "Terlewat";
+    statusVariant = "overdue";
+  } else {
+    statusText = "Belum Dikerjakan";
+    statusVariant = "not_started";
+  }
 
   const deadlineDate = new Date(tugas.tenggat);
   const formattedDeadline = `${deadlineDate.toLocaleDateString("id-ID", {
