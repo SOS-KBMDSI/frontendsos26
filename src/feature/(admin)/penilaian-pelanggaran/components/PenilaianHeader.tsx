@@ -6,7 +6,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/shared/components/ui/Select";
+import { Input } from "@/shared/components/ui/Input";
 import { Button } from "@/shared/components/ui/Button";
+import { Search } from "lucide-react";
 import { Rangkaian, Distrik, Kelompok } from "../types";
 import { SearchableSelect } from "@/shared/components/filter/SearchFilter";
 
@@ -24,6 +26,8 @@ interface PenilaianHeaderProps {
   onEditClick: () => void;
   isRangkaianLoading: boolean;
   isDistrikLoading: boolean;
+  globalFilter: string;
+  onGlobalFilterChange: (value: string) => void;
 }
 
 export const PenilaianHeader = ({
@@ -39,6 +43,8 @@ export const PenilaianHeader = ({
   isEditButtonDisabled,
   onEditClick,
   isRangkaianLoading,
+  globalFilter,
+  onGlobalFilterChange,
 }: PenilaianHeaderProps) => {
   return (
     <div className="mt-6 flex flex-col gap-6">
@@ -99,11 +105,19 @@ export const PenilaianHeader = ({
         </Select>
       </div>
 
-      {}
       <div>
         <Button onClick={onEditClick} disabled={isEditButtonDisabled}>
-          Edit Penilaian dan Pelanggaran
+          Edit Rekap
         </Button>
+      </div>
+      <div className="relative w-full max-w-lg -mb-10 ">
+        <Input
+          className="pl-10"
+          placeholder="Cari data Maba"
+          value={globalFilter}
+          onChange={(e) => onGlobalFilterChange(e.target.value)}
+        />
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-secondary-700" />
       </div>
     </div>
   );

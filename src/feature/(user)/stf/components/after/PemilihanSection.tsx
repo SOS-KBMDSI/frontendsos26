@@ -9,6 +9,7 @@ import { useGetStfData } from "../../hooks/useGetStfData";
 import Image from "next/image";
 import SuccessIcon from "@/assets/stf/success.png";
 import ErrorIcon from "@/assets/stf/error.png";
+import { useAuthContext } from "@/shared/hooks/useAuthContext";
 
 interface PemilihanSectionProps {
   caketangList: Caketang[];
@@ -27,7 +28,7 @@ const PemilihanSection = ({
 }: PemilihanSectionProps) => {
   const { vote, isVoting, voteSuccess } = useVoteForCaketang();
   const { refresh } = useGetStfData();
-
+  const { user } = useAuthContext();
   const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
   const [isResultModalOpen, setIsResultModalOpen] = useState(false);
 
@@ -47,8 +48,11 @@ const PemilihanSection = ({
   return (
     <>
       <section className="bg-no-repeat bg-cover bg-login">
-        <div className="mycontainer text-center py-24 md:py-32 text-default-dark w-10/12 flex flex-col gap-12">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-9">
+        <div className="mycontainer text-center py-24 text-default-dark w-10/12 flex flex-col gap-12">
+          <h4 className="text-3xl md:text-5xl lg:text-5xl font-semibold text-default-dark mb-4 md:mb-6 lg:mb-8">
+            Saatnya Memilih!
+          </h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-9">
             {caketangList?.map((caketang: Caketang) => (
               <PemilihanCard
                 key={caketang.id_caketang}
@@ -59,7 +63,7 @@ const PemilihanSection = ({
             ))}
           </div>
           <Button
-            disabled={!kesempatan}
+            disabled={!kesempatan || user?.tipe_mahasiswa === "pemutihan"}
             onClick={() => setIsConfirmationModalOpen(true)}
           >
             Pilih
@@ -73,7 +77,7 @@ const PemilihanSection = ({
         title="Konfirmasi Pilihan"
         desc={`Apakah Anda yakin ingin memilih ${activeCaketang?.nama}? Pilihan tidak dapat diubah.`}
       >
-        <div className="mt-4 flex justify-end space-x-4">
+        <div className="mt-4 flex justify-center space-x-4">
           <Button
             variant="outline"
             onClick={() => setIsConfirmationModalOpen(false)}
@@ -129,7 +133,7 @@ const PemilihanSection = ({
             <div className="flex flex-col justify-center items-center gap-6">
               <div className="text-default-dark flex flex-col justify-center items-center gap-3">
                 <h5 className="text-xl md:text-3xl font-bold text-center">
-                  😣 Gagal Melakukan Pemilihan
+                  Gagal Melakukan Pemilihan 😣
                 </h5>
                 <p className="text-center text-sm">
                   Maaf suara kamu belum diterima, silakan coba lagi atau hubungi

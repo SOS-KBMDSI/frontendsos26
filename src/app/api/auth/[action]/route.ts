@@ -50,10 +50,9 @@ export async function POST(
       const userRole = payload.Role as string;
 
       let redirectUrl = "/home";
-      if (userRole === "admin") {
-        redirectUrl = "/admin/dashboard";
+      if (["admin", "pjl", "sqc", "superadmin"].includes(userRole)) {
+        redirectUrl = `/${userRole}/dashboard`;
       }
-
       return NextResponse.json({
         message: response.data.message || "Login berhasil",
         profile: payload,

@@ -44,7 +44,7 @@ export const PenugasanContainer = () => {
               <div className="h-2 w-3/4 md:w-1/2 rounded-full bg-primary-500"></div>
             </div>
 
-            <div className="md:w-[55%]">
+            <div className="md:w-[55%] lg:scale-90">
               <LevelSection level={level} />
             </div>
           </div>

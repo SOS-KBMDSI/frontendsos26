@@ -40,7 +40,6 @@ export const PenilaianActiveView = ({
           <>
             <TabelDetailPenilaian
               penilaian={detailNilai?.penilaian ?? []}
-              pelanggaran={detailNilai?.pelanggaran ?? []}
               keaktifan={detailNilai?.keaktifan ?? 0}
               activeRangkaianName={activeRangkaianName}
             />

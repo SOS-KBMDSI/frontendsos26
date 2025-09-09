@@ -14,6 +14,7 @@ import {
 import { Loader2, Info, X, Plus } from "lucide-react";
 import { usePenilaianModal } from "../hooks/usePenilaianModal";
 import { cn } from "@/shared/utils/cn";
+import { useRole } from "@/shared/hooks/useRole";
 
 interface EditPenilaianModalProps {
   isOpen: boolean;
@@ -41,7 +42,7 @@ export const EditPenilaianModal = ({
     setPelanggaranList,
     handleSubmit,
   } = usePenilaianModal(nim, rangkaianId, isOpen);
-
+  const { isSqc } = useRole();
   const handleAddPelanggaran = () => {
     setPelanggaranList((prev) => [
       ...prev,
@@ -170,6 +171,7 @@ export const EditPenilaianModal = ({
             </div>
             <Button
               variant="outline"
+              disabled={!isSqc}
               onClick={handleAddPelanggaran}
               className="mt-4 font-medium"
             >

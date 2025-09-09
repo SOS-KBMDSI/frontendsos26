@@ -62,7 +62,7 @@ const NavbarDropdown: React.FC<NavbarDropdownProps> = ({ user, onLogout }) => {
           <User className="w-3 h-3 sm:w-4 sm:h-4" />
         </div>
         <span className="block max-w-20 sm:max-w-24 text-sm sm:text-base truncate">
-          {user.nama || "Pengguna"}
+          {user.nama?.split(" ")[1] || user.nama || "Pengguna"}
         </span>
         <ChevronDown
           className={`w-3 h-3 sm:w-4 sm:h-4 transition-transform duration-200 ${
@@ -74,7 +74,7 @@ const NavbarDropdown: React.FC<NavbarDropdownProps> = ({ user, onLogout }) => {
       {/* Dropdown Menu */}
       <div
         id={dropdownId}
-        className={`absolute right-0 mt-2 w-48 sm:w-64 origin-top rounded-2xl bg-white border border-gray-200 shadow-2xl ring-1 ring-black/5 transition-all duration-200 ease-out backdrop-blur-sm ${
+        className={`absolute -right-10 lg:right-0 mt-2 w-48 sm:w-64 origin-top rounded-2xl bg-white border border-gray-200 shadow-2xl ring-1 ring-black/5 transition-all duration-200 ease-out backdrop-blur-sm ${
           isOpen
             ? "opacity-100 scale-100 translate-y-0"
             : "opacity-0 scale-95 -translate-y-1 pointer-events-none"

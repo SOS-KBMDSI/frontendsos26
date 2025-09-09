@@ -22,33 +22,19 @@ interface ApiSubmission {
   submission_date: string;
   score: number;
 }
-interface Pagination {
-  page: number;
-  limit: number;
-  total_record: number;
-  total_pages: number;
-  from: number;
-  to: number;
-  next: boolean;
-  previous: boolean;
-}
-interface SubmissionData {
-  pagination: Pagination;
-  submissions: ApiSubmission[];
-}
 
 export interface TugasStatus {
   id: string;
-  nama_mahasiswa: string;
+  student_name: string;
   nim: string;
   distrik: string;
   assignment_id: string;
   kelompok: string;
   status: string;
-  link_pengumpulan: string;
+  drive_link: string;
   tenggat: string;
   nilai: number;
-  file_link: string | null;
+  // file_link: string | null;
   is_visible: boolean;
 }
 
@@ -182,29 +168,33 @@ class TugasService {
     }
 
     const response = await apiClient.get(apiUrl);
-    const responseData = response as unknown as BackendResponse<SubmissionData>;
 
-    const transformedSubmissions: TugasStatus[] =
-      responseData.data.submissions.map((sub) => ({
+    const responseData = response as unknown as BackendResponse<
+      ApiSubmission[]
+    >;
+
+    const transformedSubmissions: TugasStatus[] = responseData.data.map(
+      (sub) => ({
         id: sub.id,
-        nama_mahasiswa: sub.student_name,
+        student_name: sub.student_name,
         nim: sub.nim,
         status: sub.status,
-        link_pengumpulan: sub.drive_link,
+        drive_link: sub.drive_link,
         nilai: sub.score,
         tenggat: sub.submission_date,
-        file_link: sub.drive_link,
         is_visible: false,
         distrik: sub.distrik,
         kelompok: sub.kelompok,
         assignment_id: sub.assignment_id,
-      }));
+      }),
+    );
 
     const transformedResponse: BackendResponse<TugasStatus[]> = {
       status_code: responseData.status_code,
       message: responseData.message,
       data: transformedSubmissions,
     };
+
     this.cache.set(cacheKey, {
       data: transformedResponse,
       expiry: Date.now() + this.cacheDuration,

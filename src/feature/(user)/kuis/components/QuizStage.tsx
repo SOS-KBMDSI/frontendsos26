@@ -29,7 +29,7 @@ const QuizStage = ({ status }: { status: string }) => {
             2
           </div>
           <p className="absolute text-primary-500 -bottom-10 text-sm w-24 text-center">
-            lihat hasil
+            Lihat Hasil
           </p>
         </div>
       </div>

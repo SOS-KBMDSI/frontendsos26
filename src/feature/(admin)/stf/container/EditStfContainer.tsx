@@ -20,6 +20,7 @@ const EditStfContainer = ({ id_caketang }: { id_caketang: string }) => {
     initialDataLoading,
     isSubmitting,
     handleSubmit,
+    fotoUrl,
   } = useEditStf(id_caketang);
 
   return (
@@ -50,6 +51,7 @@ const EditStfContainer = ({ id_caketang }: { id_caketang: string }) => {
         </div>
       ) : (
         <StfForm
+          fotoUrl={fotoUrl}
           mode="edit"
           nama={nama}
           setNama={setNama}

@@ -8,7 +8,7 @@ import Link from "next/link";
 const tugasStatusColumnHelper = createColumnHelper<TugasStatus>();
 
 export const tugasStatusColumns = [
-  tugasStatusColumnHelper.accessor("nama_mahasiswa", {
+  tugasStatusColumnHelper.accessor("student_name", {
     header: "Nama Mahasiswa",
     cell: (info) => info.getValue(),
     size: 250,
@@ -38,10 +38,10 @@ export const tugasStatusColumns = [
     size: 150,
   }),
 
-  tugasStatusColumnHelper.accessor("link_pengumpulan", {
+  tugasStatusColumnHelper.accessor("drive_link", {
     header: "Link Pengumpulan",
     cell: ({ row }) => {
-      const link = row.original.link_pengumpulan;
+      const link = row.original.drive_link;
 
       if (link) {
         return (

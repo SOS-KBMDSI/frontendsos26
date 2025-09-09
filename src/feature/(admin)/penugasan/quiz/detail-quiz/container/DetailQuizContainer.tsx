@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ChevronLeft, Loader2 } from "lucide-react";
 import { useGetDetailQuiz } from "../hooks/useGetDetailQuiz";
 import { useGetQuizSubmissions } from "../hooks/useGetQuizSubmission";
@@ -25,6 +25,7 @@ import { ConfirmDeleteModal } from "../components/DeleteConfirmation";
 import { useDeleteQuiz } from "../hooks/useDeleteQuiz";
 import Link from "next/link";
 import { useRole } from "@/shared/hooks/useRole";
+import { useDebounce } from "@/shared/hooks/useDebounce";
 
 interface DetailQuizContainerProps {
   id_quiz: string;
@@ -48,6 +49,8 @@ const DetailQuizContainer: React.FC<DetailQuizContainerProps> = ({
     pageIndex: 0,
     pageSize: 10,
   });
+  const debouncedKelompok = useDebounce(selectedKelompok, 1000);
+  const debouncedDistrik = useDebounce(selectedDistrik, 1000);
 
   const {
     data: detailQuiz,
@@ -59,7 +62,7 @@ const DetailQuizContainer: React.FC<DetailQuizContainerProps> = ({
     isLoading: isSubmissionLoading,
     error: submissionError,
     refresh: refreshSubmission,
-  } = useGetQuizSubmissions(id_quiz);
+  } = useGetQuizSubmissions(id_quiz, debouncedKelompok, debouncedDistrik);
   const { options: rangkaianOptions, isLoading: isLoadingRangkaian } =
     useSelectOptions("rangkaian");
   const { deleteQuiz, isLoading: isDeleting } = useDeleteQuiz({
@@ -93,7 +96,10 @@ const DetailQuizContainer: React.FC<DetailQuizContainerProps> = ({
       });
     },
   });
-
+  useEffect(() => {
+    setPagination((prev) => ({ ...prev, pageIndex: 0 }));
+  }, [debouncedKelompok, debouncedDistrik]);
+  // -----
   const formState = useEditQuizForm(detailQuiz);
 
   const handleFormSubmit = async (e: React.FormEvent) => {

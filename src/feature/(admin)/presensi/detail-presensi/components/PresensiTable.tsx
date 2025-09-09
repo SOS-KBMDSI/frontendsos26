@@ -44,7 +44,6 @@ const PresensiTable = ({
   distrikOptions,
   selectedDistrik,
   onDistrikChange,
-  onRowSelect,
 }: PresensiTableProps) => {
   return (
     <div className="flex flex-col gap-y-4">
@@ -79,15 +78,6 @@ const PresensiTable = ({
             />
           </div>
         }
-        whenOnClick={true}
-        onRowClick={(rowData) => {
-          const summary: PresensiMahasiswaSummary = {
-            nama: rowData.nama,
-            nim: rowData.nim,
-            status: rowData.status as "hadir" | "tidak-hadir",
-          };
-          onRowSelect?.(summary);
-        }}
       />
     </div>
   );

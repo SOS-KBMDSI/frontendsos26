@@ -27,6 +27,7 @@ import { Modal } from "@/shared/components/ui/Modal";
 import PresensiForm from "../../components/PresensiForm";
 import PresensiMahasiswaForm from "../components/PresensiMahasiswaForm";
 import { useRole } from "@/shared/hooks/useRole";
+import { Edit3Icon } from "lucide-react";
 
 interface DetailPresensiContainerProps {
   id: string;
@@ -112,35 +113,35 @@ const DetailPresensiContainer: React.FC<DetailPresensiContainerProps> = ({
     selectedKelompok,
   );
 
-  const columns: ColumnDef<PresensiMahasiswaDetail>[] = useMemo(
-    () => [
+  const columns: ColumnDef<PresensiMahasiswaDetail>[] = useMemo(() => {
+    const baseColumns: ColumnDef<PresensiMahasiswaDetail>[] = [
       {
         accessorKey: "index",
         header: "No.",
-        cell: (info) => info.row.index + 1 + (mahasiswaPagination?.from || 0),
+        cell: ({ row }) => row.index + 1 + (mahasiswaPagination?.from || 0),
         enableSorting: false,
         enableColumnFilter: false,
       },
       {
         accessorKey: "nim",
         header: "NIM",
-        cell: (info) => info.getValue(),
+        cell: ({ getValue }) => getValue(),
       },
       {
         accessorKey: "nama",
         header: "Nama",
-        cell: (info) => info.getValue(),
+        cell: ({ getValue }) => getValue(),
       },
       {
         accessorKey: "status",
         header: "Status",
-        cell: (info) => info.getValue(),
+        cell: ({ getValue }) => getValue(),
       },
       {
         accessorKey: "presensi_at",
         header: "Waktu Presensi",
-        cell: (info) => {
-          const timestamp = info.getValue() as string;
+        cell: ({ getValue }) => {
+          const timestamp = getValue() as string;
           return timestamp && timestamp !== "0001-01-01T00:00:00Z"
             ? new Date(timestamp).toLocaleString("id-ID", {
                 day: "2-digit",
@@ -153,9 +154,38 @@ const DetailPresensiContainer: React.FC<DetailPresensiContainerProps> = ({
             : "-";
         },
       },
-    ],
-    [mahasiswaPagination?.from],
-  );
+    ];
+
+    if (isSqc) {
+      const actionColumn: ColumnDef<PresensiMahasiswaDetail> = {
+        id: "actions",
+        header: "Action",
+        cell: ({ row }) => (
+          <button
+            type="button"
+            onClick={() => {
+              const summary: PresensiMahasiswaSummary = {
+                nama: row.original.nama,
+                nim: row.original.nim,
+                status: row.original.status as "hadir" | "izin" | "tidak-hadir",
+              };
+              handleSelectedMahasiswa(summary);
+            }}
+            className="p-2 rounded-full hover:bg-orange-100 focus:outline-none focus:ring-2 focus:ring-orange-200 focus:ring-offset-2 transition-colors"
+            aria-label="Edit Data"
+            title="Edit Data"
+          >
+            <Edit3Icon className="text-orange-500 h-5 w-5" />
+          </button>
+        ),
+        enableSorting: false,
+        size: 80,
+      };
+      baseColumns.push(actionColumn);
+    }
+
+    return baseColumns;
+  }, [mahasiswaPagination?.from, isSqc, handleSelectedMahasiswa]);
 
   const table = useReactTable({
     data: mahasiswaList || [],
@@ -274,7 +304,7 @@ const DetailPresensiContainer: React.FC<DetailPresensiContainerProps> = ({
           </div>
           <div className="text-default-dark flex flex-col md:flex-row gap-8 md:gap-x-12 items-start md:items-center">
             <div className="flex flex-col gap-y-2">
-              <h6 className="text-lg font-semibold">Mulai</h6>
+              <h6 className="text-lg font-semibold">Mulai Rangkaian</h6>
               <div className="flex items-center gap-x-4">
                 <DateTimeDisplay variant="date" value={startDate} />
                 <div className="w-[1px] h-6 bg-default-dark hidden md:block"></div>{" "}
@@ -282,7 +312,7 @@ const DetailPresensiContainer: React.FC<DetailPresensiContainerProps> = ({
               </div>
             </div>
             <div className="flex flex-col gap-y-2 mt-4 md:mt-0">
-              <h6 className="text-lg font-semibold">Berakhir</h6>{" "}
+              <h6 className="text-lg font-semibold">Berakhir Rangkaian</h6>{" "}
               <div className="flex items-center gap-x-4">
                 <DateTimeDisplay variant="date" value={endDate} />
                 <div className="w-[1px] h-6 bg-default-dark hidden md:block"></div>{" "}
@@ -309,7 +339,6 @@ const DetailPresensiContainer: React.FC<DetailPresensiContainerProps> = ({
         onKelompokChange={setSelectedKelompok}
         distrikOptions={distrikOptions}
         kelompokOptions={kelompokOptions}
-        onRowSelect={isSqc ? handleSelectedMahasiswa : undefined}
       />
       <Modal
         isOpen={isModalOpen}

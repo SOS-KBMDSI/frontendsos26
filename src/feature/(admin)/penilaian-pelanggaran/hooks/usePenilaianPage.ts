@@ -4,6 +4,7 @@ import {
   getCoreRowModel,
   getPaginationRowModel,
   getSortedRowModel,
+  getFilteredRowModel, // Add this import
   ColumnDef,
 } from "@tanstack/react-table";
 import { penilaianService } from "@/api/services/admin/penilaian";
@@ -30,6 +31,7 @@ export const usePenilaianPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedNim, setSelectedNim] = useState<string | null>(null);
+  const [globalFilter, setGlobalFilter] = useState<string>(""); // Add global filter state
 
   useEffect(() => {
     const fetchInitialData = async () => {
@@ -117,12 +119,25 @@ export const usePenilaianPage = () => {
 
   const columns = useMemo<ColumnDef<PenilaianTableRow>[]>(
     () => [
-      { accessorKey: "nama", header: "Nama" },
-      { accessorKey: "pelanggaran", header: "Pelanggaran" },
-      { accessorKey: "nilai_akhir", header: "Skor Akhir" },
+      {
+        accessorKey: "nama",
+        header: "Nama",
+        enableGlobalFilter: true, // Enable global filter for this column
+      },
+      {
+        accessorKey: "pelanggaran",
+        header: "Pelanggaran",
+        enableGlobalFilter: true, // Enable global filter for this column
+      },
+      {
+        accessorKey: "nilai_akhir",
+        header: "Skor Akhir",
+        enableGlobalFilter: true, // Enable global filter for this column
+      },
       {
         accessorKey: "status",
         header: "Status",
+        enableGlobalFilter: true, // Enable global filter for this column
         cell: ({ row }) => {
           const status = row.original.status;
           const formattedStatus = status
@@ -143,7 +158,14 @@ export const usePenilaianPage = () => {
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
+    getFilteredRowModel: getFilteredRowModel(), // Add filtered row model
     enableRowSelection: true,
+    enableGlobalFilter: true, // Enable global filtering
+    globalFilterFn: "includesString", // Set global filter function
+    state: {
+      globalFilter, // Include global filter in state
+    },
+    onGlobalFilterChange: setGlobalFilter, // Handle global filter changes
   });
 
   const isEditButtonDisabled = table.getSelectedRowModel().rows.length !== 1;
@@ -177,5 +199,7 @@ export const usePenilaianPage = () => {
     handleEditClick,
     handleCloseModal,
     refetchData,
+    globalFilter,
+    setGlobalFilter,
   };
 };

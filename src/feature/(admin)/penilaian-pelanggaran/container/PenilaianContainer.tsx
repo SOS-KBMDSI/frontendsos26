@@ -27,7 +27,10 @@ const PenilaianContainer = () => {
     handleEditClick,
     handleCloseModal,
     refetchData,
+    globalFilter, // Use from hook
+    setGlobalFilter, // Use from hook
   } = usePenilaianPage();
+
   const handleSuccess = () => {
     refetchData();
     handleCloseModal();
@@ -62,6 +65,8 @@ const PenilaianContainer = () => {
         onEditClick={handleEditClick}
         isRangkaianLoading={rangkaian.isLoading}
         isDistrikLoading={distrik.isLoading}
+        globalFilter={globalFilter}
+        onGlobalFilterChange={setGlobalFilter}
       />
 
       <div className="mt-8">
@@ -70,7 +75,11 @@ const PenilaianContainer = () => {
             <Loader2 className="h-8 w-8 animate-spin text-primary-500" />
           </div>
         ) : (
-          <PenilaianTable table={table} refresh={() => {}} />
+          <PenilaianTable
+            globalFilter={globalFilter}
+            table={table}
+            refresh={() => {}}
+          />
         )}
       </div>
       <EditPenilaianModal

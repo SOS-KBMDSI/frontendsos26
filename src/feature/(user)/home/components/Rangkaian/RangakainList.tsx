@@ -73,7 +73,7 @@ const RangakainList = () => {
   return (
     <section className="relative min-h-[100vh] overflow-hidden">
       <div className="relative  inset-0 flex justify-center items-center">
-        <div className=" lg:-mb-14 -mb-10 sm:-mb-12 xl:-mb-18 2xl:-mb-14">
+        <div className=" lg:-mb-14 -mb-10 sm:-mb-12 xl:-mb-10 2xl:-mb-14">
           <Image
             className="w-[100vw]  left-0 top-0 scale-105  max-w-none object-cover"
             src={Elips}

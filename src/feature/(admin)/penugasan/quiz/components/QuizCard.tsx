@@ -12,8 +12,10 @@ interface QuizCardProps {
 export const QuizCard: React.FC<QuizCardProps> = ({ quiz, idx }) => {
   return (
     <div className="bg-gray-200/50 hover:cursor-pointer  flex justify-between rounded-lg p-4">
-      <div className="text-xl text-black">
-        Tugas {idx} : ({quiz.nama_kuis})
+      <div className="text-2xl  items-center text-black flex gap-2">
+        <span className="font-medium">Kuis {idx}</span>
+        <span>:</span>
+        <span className="text-xl">({quiz.nama_kuis})</span>
       </div>
       <div>
         <Ellipsis className="rotate-90" />
