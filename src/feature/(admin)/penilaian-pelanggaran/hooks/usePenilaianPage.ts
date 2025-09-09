@@ -125,6 +125,11 @@ export const usePenilaianPage = () => {
         enableGlobalFilter: true, // Enable global filter for this column
       },
       {
+        accessorKey: "nim",
+        header: "NIM",
+        enableGlobalFilter: true, // Enable global filter for this column
+      },
+      {
         accessorKey: "pelanggaran",
         header: "Pelanggaran",
         enableGlobalFilter: true, // Enable global filter for this column
