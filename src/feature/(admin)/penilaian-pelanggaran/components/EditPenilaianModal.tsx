@@ -130,12 +130,14 @@ export const EditPenilaianModal = ({
                   key={p.id || `pelanggaran-${index}`}
                   className="p-4 border rounded-lg border-default-dark/50 relative"
                 >
-                  <button
-                    onClick={() => handleRemovePelanggaran(p.id)}
-                    className="absolute top-2 right-2 text-default-dark hover:text-red-500"
-                  >
-                    <X size={20} />
-                  </button>
+                  {isSqc && (
+                    <button
+                      onClick={() => handleRemovePelanggaran(p.id)}
+                      className="absolute top-2 right-2 text-default-dark hover:text-red-500"
+                    >
+                      <X size={20} />
+                    </button>
+                  )}
                   <div className="flex-grow grid grid-cols-1 md:grid-cols-2 gap-4">
                     <Input
                       label="Nama Pelanggaran"
@@ -144,6 +146,7 @@ export const EditPenilaianModal = ({
                       onChange={(e) =>
                         handlePelanggaranChange(p.id, "nama", e.target.value)
                       }
+                      disabled={!isSqc}
                     />
                     <div className="flex flex-col">
                       <label className="block text-lg font-semibold mb-2 text-primary-500">
@@ -154,6 +157,7 @@ export const EditPenilaianModal = ({
                         onValueChange={(value) =>
                           handlePelanggaranChange(p.id, "kategori", value)
                         }
+                        disabled={!isSqc}
                       >
                         <SelectTrigger>
                           <SelectValue placeholder="Pilih tingkat pelanggaran" />
