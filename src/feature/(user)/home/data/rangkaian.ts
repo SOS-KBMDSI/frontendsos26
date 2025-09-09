@@ -1,6 +1,6 @@
 import { StaticImageData } from "next/image";
 import Rangkaian1 from "@/assets/home/rangkaian-1.png";
-import Rangkaian2 from "@/assets/home/rangkaian-2.jpg";
+import Rangkaian2 from "@/assets/home/rangkaian-2.png";
 export interface Rangkaian {
   id: number;
   title: string;
