@@ -67,7 +67,10 @@ const Navbar = () => {
       <nav className="w-screen py-2 xl:py-2 2xl:py-4 bg-primary-600 fixed z-[999]">
         <div className="mycontainer w-full h-full flex items-center justify-between">
           <div className="flex-2 md:flex-1 flex justify-start ">
-            <div className="flex gap-1 text-white font-semibold items-center">
+            <Link
+              href="/home"
+              className="flex gap-1 text-white font-semibold items-center"
+            >
               <Image
                 className="w-14 h-14"
                 width={300}
@@ -80,7 +83,7 @@ const Navbar = () => {
                 <h1>Synergy Of Symphony & </h1>
                 <h2>Shaping The Futures</h2>
               </div>
-            </div>
+            </Link>
           </div>
 
           <ul className="gap-8 hidden lg:flex lg:gap-12 justify-center items-center">
