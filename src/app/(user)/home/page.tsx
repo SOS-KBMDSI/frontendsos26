@@ -1,7 +1,8 @@
+import HomeContainer from "@/feature/(user)/home/containers/HomeContainer";
 import React from "react";
 
 const page = () => {
-  return <div>Home</div>;
+  return <HomeContainer />;
 };
 
 export default page;

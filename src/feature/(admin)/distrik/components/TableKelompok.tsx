@@ -12,6 +12,7 @@ import {
 
 import { DataTable } from "@/shared/components/table/DataTable";
 import { AnggotaKelompok, columns } from "../type/anggotaKelompokColumns";
+import { getSortedRowModel } from "@tanstack/react-table";
 
 interface AnggotaKelompokTableProps {
   kelompokName: string;
@@ -32,7 +33,6 @@ const AnggotaKelompokTable = ({
     pageSize: 3,
   });
 
-
   const table = useReactTable({
     data: anggotaList ?? [],
     columns,
@@ -46,6 +46,7 @@ const AnggotaKelompokTable = ({
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
+    getSortedRowModel: getSortedRowModel(),
   });
 
   return (

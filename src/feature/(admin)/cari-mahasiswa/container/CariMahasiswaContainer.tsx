@@ -14,6 +14,8 @@ import { useMahasiswa } from "../hooks/useMahasiswa";
 import { MahasiswaDetail } from "@/api/services/admin/mahasiswa";
 import { DataTable } from "@/shared/components/table/DataTable";
 import { columns } from "../type/mahasiswaColumns";
+import Link from "next/link";
+import { ChevronLeft } from "lucide-react";
 
 const CariMahasiswaContainer = () => {
   const MahasiswaData = useMahasiswa();
@@ -44,7 +46,18 @@ const CariMahasiswaContainer = () => {
 
   return (
     <main>
-      <h4 className="text-4xl font-semibold text-black">Cari Mahasiswa</h4>
+      <div className="flex items-center gap-1/2 mb-4">
+        <Link
+          href="/admin/cari-mahasiswa"
+          className="flex items-center gap-1/2 text-primary-500 hover:text-primary-600 transition-colors w-fit"
+        >
+          <ChevronLeft size={24} />
+          <span className="text-xl">Kembali</span>
+        </Link>
+      </div>
+      <h4 className="text-4xl md:text-3xl font-semibold text-black">
+        Cari Mahasiswa
+      </h4>
       <DataTable<MahasiswaDetail>
         table={table}
         isLoading={MahasiswaData.isLoading}

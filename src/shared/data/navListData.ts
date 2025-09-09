@@ -6,7 +6,7 @@ export interface NavItem {
 export const navListData: NavItem[] = [
   {
     title: "Beranda",
-    href: "/",
+    href: "/home",
   },
   {
     title: "Peta",
@@ -19,5 +19,9 @@ export const navListData: NavItem[] = [
   {
     title: "Akademik",
     href: "/akademik",
+  },
+  {
+    title: "STF",
+    href: "/stf",
   },
 ];

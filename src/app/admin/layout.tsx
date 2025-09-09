@@ -2,6 +2,8 @@
 
 import Sidebar from "@/shared/components/admin/sidebar/Sidebar";
 import { AuthProvider } from "@/shared/context/AuthContext";
+import { AuthErrorProvider } from "@/shared/context/AuthErrorContext";
+import { ToastProvider } from "@/shared/context/ToastContext";
 
 export default function AdminLayout({
   children,
@@ -9,13 +11,17 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   return (
-    <main className="flex  ">
-      <AuthProvider>
-        <Sidebar />
-      </AuthProvider>
-      <section className="right-0 px-24 py-24 w-4/5 xl:w-4/5 lg:w-3/4 absolute bg-[#E9E9E9CC]  min-h-screen overflow-y-auto">
-        {children}
-      </section>
-    </main>
+    <AuthProvider>
+      <ToastProvider>
+        <AuthErrorProvider>
+          <div className="bg-[#E9E9E9CC] min-h-screen">
+            <Sidebar />
+            <section className="w-auto transition-all duration-300 sm:ml-20 xl:ml-64">
+              <div className="px-6 py-8 md:px-8 lg:px-10">{children}</div>
+            </section>
+          </div>
+        </AuthErrorProvider>
+      </ToastProvider>
+    </AuthProvider>
   );
 }

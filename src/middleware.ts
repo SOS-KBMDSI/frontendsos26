@@ -17,13 +17,29 @@ export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const token = request.cookies.get("auth_session")?.value;
   const payload = token ? await verifyToken(token) : null;
-
-  // const mabaPaths: string[] = []; //nanti aja ini wak isinya
   const adminPath = "/admin";
   const loginPath = "/login";
+  const profilePath = "/profile";
+  const adminDashboardPath = "/admin/dashboard";
+
+  const adminRoles = ["admin", "superadmin", "sqc", "pjl"];
+
+  const isAdminUser = payload && adminRoles.includes(payload.Role as string);
+
+  if (pathname === "/" && isAdminUser) {
+    return NextResponse.redirect(new URL(adminDashboardPath, request.url));
+  }
 
   if (pathname.startsWith(adminPath)) {
-    if (!payload || payload.Role !== "admin") {
+    if (!payload || !adminRoles.includes(payload.Role as string)) {
+      const url = new URL(loginPath, request.url);
+      url.searchParams.set("error", "unauthorized");
+      return NextResponse.redirect(url);
+    }
+  }
+
+  if (pathname.startsWith(profilePath)) {
+    if (!payload) {
       const url = new URL(loginPath, request.url);
       url.searchParams.set("error", "unauthorized");
       return NextResponse.redirect(url);
@@ -32,6 +48,9 @@ export async function middleware(request: NextRequest) {
 
   if (pathname.startsWith(loginPath)) {
     if (payload) {
+      if (isAdminUser) {
+        return NextResponse.redirect(new URL(adminDashboardPath, request.url));
+      }
       return NextResponse.redirect(new URL("/", request.url));
     }
   }
