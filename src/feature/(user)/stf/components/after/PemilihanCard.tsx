@@ -23,7 +23,7 @@ const PemilihanCard = ({ isActive = false, data, onClick }: Props) => {
             width={300}
             height={300}
             alt="Foto Caketang"
-            className="w-full h-80 object-cover rounded-2xl border-8 border-primary-500"
+            className="w-full h-72 md:h-80 lg:h-96 object-cover rounded-2xl border-8 border-primary-500"
           />
         </div>
         <div className="py-2">
