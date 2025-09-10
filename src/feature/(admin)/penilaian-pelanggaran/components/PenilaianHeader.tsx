@@ -48,7 +48,7 @@ export const PenilaianHeader = ({
 }: PenilaianHeaderProps) => {
   return (
     <div className="mt-6 flex flex-col gap-6">
-      <div className="flex gap-4">
+      <div className="flex gap-4 flex-wrap md:flex-nowrap">
         <SearchableSelect
           options={distrikOptions.map((distrik) => ({
             value: distrik.id_distrik,
@@ -103,21 +103,21 @@ export const PenilaianHeader = ({
             )}
           </SelectContent>
         </Select>
+        <div className="relative w-full max-w-sm">
+          <Input
+            className="pl-10"
+            placeholder="Cari data Maba"
+            value={globalFilter}
+            onChange={(e) => onGlobalFilterChange(e.target.value)}
+          />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-secondary-700" />
+        </div>
       </div>
 
       <div>
         <Button onClick={onEditClick} disabled={isEditButtonDisabled}>
           Edit Rekap
         </Button>
-      </div>
-      <div className="relative w-full max-w-lg -mb-10 ">
-        <Input
-          className="pl-10"
-          placeholder="Cari data Maba"
-          value={globalFilter}
-          onChange={(e) => onGlobalFilterChange(e.target.value)}
-        />
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-secondary-700" />
       </div>
     </div>
   );
