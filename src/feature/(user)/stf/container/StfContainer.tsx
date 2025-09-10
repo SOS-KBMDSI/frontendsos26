@@ -35,7 +35,7 @@ const StfContainer = () => {
     return (
       <GradientBackground>
         <div className="mx-auto flex h-screen items-center justify-center text-default-white">
-          <p className="text-xl">Loading candidate data...</p>
+          <p className="text-xl">Tunggu Bentar...</p>
         </div>
       </GradientBackground>
     );
