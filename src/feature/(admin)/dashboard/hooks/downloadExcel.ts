@@ -1,10 +1,11 @@
 import { dashboardService } from "@/api/services/admin/dashboard";
+import { AxiosResponse } from "axios";
 import { useState, useCallback } from "react";
 
 interface UseDashboardExcelReturn {
   isDownloading: boolean;
   error: string | null;
-  downloadExcel: (filename?: string) => Promise<void>;
+  downloadExcel: () => Promise<Blob | null>;
   clearError: () => void;
 }
 
@@ -12,22 +13,20 @@ export const useDashboardExcel = (): UseDashboardExcelReturn => {
   const [isDownloading, setIsDownloading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const downloadExcel = useCallback(async () => {
+  const downloadExcel = useCallback(async (): Promise<Blob | null> => {
     try {
       setIsDownloading(true);
       setError(null);
 
-      const now = new Date();
-      const formattedDate = now.toISOString().split("T")[0];
-      const formattedTime = now.toTimeString().split(" ")[0].replace(/:/g, "-");
-      const filename = `dashboard_data_${formattedDate}_${formattedTime}.xlsx`;
+      const res: AxiosResponse<Blob> =
+        await dashboardService.downloadDashboardExcel();
 
-      await dashboardService.downloadAndSaveDashboardExcel(filename);
+      return res.data;
     } catch (err) {
       const errorMessage =
         err instanceof Error ? err.message : "Failed to download Excel file";
       setError(errorMessage);
-      throw err;
+      return null;
     } finally {
       setIsDownloading(false);
     }
