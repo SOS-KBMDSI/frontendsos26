@@ -62,7 +62,6 @@ const DashboardContainer = () => {
     }
   };
 
-  // State untuk sorting dan pagination
   const [tugasSorting, setTugasSorting] = useState<SortingState>([]);
   const [tugasPagination, setTugasPagination] = useState<PaginationState>({
     pageIndex: 0,
@@ -78,42 +77,6 @@ const DashboardContainer = () => {
     pageSize: 5,
   });
 
-  // Fungsi untuk handle sorting dengan validasi data kosong
-  const handleTugasSortingChange = (
-    newSorting: SortingState | ((old: SortingState) => SortingState),
-  ) => {
-    const tugasData = data?.data_tugas ?? [];
-    if (tugasData.length === 0) {
-      // Reset sorting jika data kosong
-      setTugasSorting([]);
-      return;
-    }
-    setTugasSorting(newSorting);
-  };
-
-  const handlePresensiSortingChange = (
-    newSorting: SortingState | ((old: SortingState) => SortingState),
-  ) => {
-    const presensiData = data?.data_presensi ?? [];
-    if (presensiData.length === 0) {
-      setPresensiSorting([]);
-      return;
-    }
-    setPresensiSorting(newSorting);
-  };
-
-  const handleKuisSortingChange = (
-    newSorting: SortingState | ((old: SortingState) => SortingState),
-  ) => {
-    const kuisData = data?.data_kuis ?? [];
-    if (kuisData.length === 0) {
-      setKuisSorting([]);
-      return;
-    }
-    setKuisSorting(newSorting);
-  };
-
-  // Setup tabel dengan validasi data kosong
   const tugasData = data?.data_tugas ?? [];
   const presensiData = data?.data_presensi ?? [];
   const kuisData = data?.data_kuis ?? [];
@@ -122,49 +85,47 @@ const DashboardContainer = () => {
     data: presensiData,
     columns: dataPresensiColumn,
     state: {
-      sorting: presensiData.length > 0 ? presensiSorting : [],
+      sorting: presensiSorting,
       pagination: presensiPagination,
     },
-    onSortingChange: handlePresensiSortingChange,
+    onSortingChange: setPresensiSorting,
     onPaginationChange: setPresensiPagination,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-    // Tambahkan enableSorting kondisional
-    enableSorting: presensiData.length > 0,
+    enableSorting: false,
   });
 
   const tugasTable = useReactTable({
     data: tugasData,
     columns: dataTugascolumn,
     state: {
-      sorting: tugasData.length > 0 ? tugasSorting : [],
+      sorting: tugasSorting,
       pagination: tugasPagination,
     },
-    onSortingChange: handleTugasSortingChange,
+    onSortingChange: setTugasSorting,
     onPaginationChange: setTugasPagination,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-    enableSorting: tugasData.length > 0,
+    enableSorting: false,
   });
 
   const kuisTable = useReactTable({
     data: kuisData,
     columns: dataKuisColumn,
     state: {
-      sorting: kuisData.length > 0 ? kuisSorting : [],
+      sorting: kuisSorting,
       pagination: kuisPagination,
     },
-    onSortingChange: handleKuisSortingChange,
+    onSortingChange: setKuisSorting,
     onPaginationChange: setKuisPagination,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-    enableSorting: kuisData.length > 0,
+    enableSorting: false,
   });
 
-  // Reset sorting ketika data berubah dari kosong ke ada data
   React.useEffect(() => {
     if (tugasData.length === 0 && tugasSorting.length > 0) {
       setTugasSorting([]);
@@ -176,7 +137,6 @@ const DashboardContainer = () => {
       setKuisSorting([]);
     }
   }, [tugasData.length, presensiData.length, kuisData.length]);
-
   if (isLoading) {
     return (
       <div className="flex h-screen items-center justify-center">
