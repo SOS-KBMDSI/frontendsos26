@@ -35,7 +35,7 @@ const StfContainer = () => {
     return (
       <GradientBackground>
         <div className="mx-auto flex h-screen items-center justify-center text-default-white">
-          <p className="text-xl">Loading candidate data...</p>
+          <p className="text-xl">Tunggu sebentar yh...</p>
         </div>
       </GradientBackground>
     );
@@ -43,24 +43,29 @@ const StfContainer = () => {
 
   return (
     <>
-      {user && stfData?.pemilihan_is_active ? (
+      {stfData?.pemilihan_is_active && user?.tipe_mahasiswa !== "pemutihan" ? (
         <>
           <HeroSection />
-          <VisiMisiSection
-            caketangList={caketangList || []}
-            isLoading={isLoading}
-            error={error}
-            activeCardId={activeCardId}
-            setActiveCardId={setActiveCardId}
-          />
-          <PemilihanSection
-            caketangList={caketangList || []}
-            isLoading={isLoading}
-            error={error}
-            activeCardId={activeCardId}
-            setActiveCardId={setActiveCardId}
-            kesempatan={stfData.kesempatan}
-          />
+
+          {caketangList && caketangList.length > 0 && (
+            <>
+              <VisiMisiSection
+                caketangList={caketangList || []}
+                isLoading={isLoading}
+                error={error}
+                activeCardId={activeCardId}
+                setActiveCardId={setActiveCardId}
+              />
+              <PemilihanSection
+                caketangList={caketangList || []}
+                isLoading={isLoading}
+                error={error}
+                activeCardId={activeCardId}
+                setActiveCardId={setActiveCardId}
+                kesempatan={stfData.kesempatan}
+              />
+            </>
+          )}
         </>
       ) : (
         <>
