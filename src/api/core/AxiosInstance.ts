@@ -3,8 +3,6 @@ import axios, {
   AxiosRequestConfig,
   AxiosResponse,
   AxiosError,
-  AxiosResponseHeaders,
-  RawAxiosResponseHeaders,
 } from "axios";
 
 export interface ApiResponse<T> {
@@ -13,11 +11,7 @@ export interface ApiResponse<T> {
   data: T;
 }
 
-export interface BlobResponse {
-  data: Blob;
-  headers: RawAxiosResponseHeaders | AxiosResponseHeaders;
-  status: number;
-}
+export type BlobResponse = AxiosResponse<Blob>;
 
 interface AuthError extends Error {
   response?: {
@@ -213,16 +207,16 @@ class ApiCore {
   public async getBlob(
     url: string,
     config?: AxiosRequestConfig,
-  ): Promise<BlobResponse> {
-    const response = await this.client.get<Blob>(url, {
+  ): Promise<AxiosResponse<Blob>> {
+    return this.client.get<Blob>(url, {
       ...config,
       responseType: "blob",
+      headers: {
+        Accept:
+          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        ...config?.headers,
+      },
     });
-    return {
-      data: response.data,
-      headers: response.headers,
-      status: response.status,
-    };
   }
 }
 

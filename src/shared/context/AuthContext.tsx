@@ -30,6 +30,16 @@ const RETRY_DELAY = 1000;
 const delay = (ms: number): Promise<void> =>
   new Promise((resolve) => setTimeout(resolve, ms));
 
+const getAuthCookie = (): string | undefined => {
+  if (typeof document === "undefined") {
+    return undefined;
+  }
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; auth_session=`);
+  if (parts.length === 2) return parts.pop()?.split(";").shift();
+  return undefined;
+};
+
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<AuthProfile | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -146,6 +156,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     );
 
     if (isPublic) {
+      setIsLoading(false);
+      setUser(null);
+      return;
+    }
+
+    const token = getAuthCookie();
+
+    if (!token) {
+      setUser(null);
       setIsLoading(false);
       return;
     }

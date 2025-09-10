@@ -43,12 +43,22 @@ const DashboardContainer = () => {
 
   const handleExcelDownload = async () => {
     try {
-      if (downloadError) {
-        clearError();
+      if (downloadError) clearError();
+
+      const blob = await downloadExcel();
+
+      if (blob) {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "dashboard.xlsx";
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        window.URL.revokeObjectURL(url);
       }
-      await downloadExcel();
-    } catch (error) {
-      console.error("Failed to download Excel file:", error);
+    } catch (err) {
+      console.error("Failed to download Excel file:", err);
     }
   };
 
