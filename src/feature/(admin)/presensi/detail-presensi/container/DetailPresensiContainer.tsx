@@ -66,10 +66,13 @@ const DetailPresensiContainer: React.FC<DetailPresensiContainerProps> = ({
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const [isModalMahasiswaOpen, setIsModalMahasiswaOpen] = React.useState(false);
 
-  const handleSelectedMahasiswa = (e: PresensiMahasiswaSummary) => {
-    setSelectedMahasiswa(e);
-    setIsModalMahasiswaOpen(true);
-  };
+  const handleSelectedMahasiswa = React.useCallback(
+    (e: PresensiMahasiswaSummary) => {
+      setSelectedMahasiswa(e);
+      setIsModalMahasiswaOpen(true);
+    },
+    [],
+  );
 
   const handleCreateSuccess = () => {
     setIsModalOpen(false);

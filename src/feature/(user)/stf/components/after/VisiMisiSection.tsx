@@ -42,8 +42,8 @@ const VisiMisiSection = ({
           </div>
 
           {activeCaketang && (
-            <div className="grid grid-cols-1 md:grid-cols-3 w-full gap-10 md:gap-8">
-              <div className="col-span-1 flex flex-col gap-10 order-2 md:order-1">
+            <div className="grid grid-cols-1 lg:grid-cols-3 w-full gap-10 md:gap-8">
+              <div className="col-span-1 flex flex-col gap-10 order-2 lg:order-1">
                 <h4 className="text-default-white text-4xl text-center md:text-left font-semibold md:text-5xl md:font-bold">
                   {activeCaketang.prodi}
                 </h4>
@@ -60,15 +60,15 @@ const VisiMisiSection = ({
                     ))}
                 </div>
               </div>
-              <div className="col-span-1 flex flex-col gap-10 order-1 md:order-2">
+              <div className="col-span-1 flex flex-col gap-10 order-1 lg:order-2">
                 <div className="w-full relative">
-                  <div className="w-8/12 md:w-9/12 mx-auto rounded-xl">
+                  <div className="w-10/12 md:w-9/12 lg:w-10/12 mx-auto rounded-xl">
                     <Image
                       src={activeCaketang.foto}
                       width={300}
                       height={300}
                       alt="Foto Caketang"
-                      className="w-full h-96 object-cover rounded-xl"
+                      className="w-full h-[24rem] md:h-[36rem] lg:h-[28rem] object-cover rounded-xl"
                     />
                   </div>
                   <div className="w-8/12 px-2 min-h-24 bg-default-white rounded-2xl flex justify-center items-center absolute bottom-6 right-6">
