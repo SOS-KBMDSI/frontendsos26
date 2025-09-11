@@ -10,16 +10,16 @@ export interface Rangkaian {
 export const rangkaianData = [
   {
     id: 1,
-    title: "Initiating the Odyssey",
+    title: "Initiating The Odyssey",
     description:
-      "Pengenalan Departemen Sistem Informasi, prospek karier di bidang IT, serta cara menyusun surat lamaran kerja yang dikemas secara interaktif.",
+      "Berisi pengenalan Departemen Sistem Informasi, prospek karier di bidang IT, serta cara menyusun CV. Selain itu, mahasiswa juga akan dibekali dengan materi tentang work life balance dan networking agar mampu menata kehidupan pribadi sekaligus membangun relasi sejak awal. Semua ini dikemas secara interaktif melalui aktivitas yang seru.",
     img: Rangkaian1,
   },
   {
     id: 2,
-    title: "Navigating the Currents",
+    title: "Orchestrating The Voyage",
     description:
-      "Pengembangan diri dan personal branding, dengan saling bertukar pendapat menentukan calon pemimpin angkatan dari tiap prodi.",
+      "Pada rangkaian ini mahasiswa menampilkan hasil kerja tim melalui presentasi tugas, serta proses pengembangan diri dengan saling bertukar pendapat dalam sesi Shaping The Future untuk menentukan calon pemimpin angkatan tiap prodi.",
     img: Rangkaian2,
   },
 ];

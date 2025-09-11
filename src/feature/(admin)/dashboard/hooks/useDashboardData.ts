@@ -2,7 +2,7 @@ import {
   DashboardData,
   dashboardService,
 } from "@/api/services/admin/dashboard";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 export const useDashboardData = () => {
   const [data, setData] = useState<DashboardData | null>(null);
@@ -30,5 +30,13 @@ export const useDashboardData = () => {
     fetchData();
   }, [fetchData]);
 
-  return { data, isLoading, error, refresh: fetchData };
+  return useMemo(
+    () => ({
+      data,
+      isLoading,
+      error,
+      refresh: fetchData,
+    }),
+    [data, isLoading, error, fetchData],
+  );
 };

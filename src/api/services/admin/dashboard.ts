@@ -1,4 +1,5 @@
-import { apiClient, ApiResponse, BlobResponse } from "@/api/core/AxiosInstance";
+import { apiClient, ApiResponse } from "@/api/core/AxiosInstance";
+import { AxiosResponse } from "axios";
 
 export interface DataTugas {
   nama_penugasan: string;
@@ -82,26 +83,8 @@ class DashboardService {
     }
   }
 
-  async downloadDashboardExcel(): Promise<BlobResponse> {
-    try {
-      const response = await apiClient.getBlob("/api/dashboard/excel");
-
-      if (!(response.data instanceof Blob)) {
-        console.error(
-          "Invalid response format: Expected a Blob but received",
-          typeof response.data,
-        );
-        throw new Error("The server response was not a valid file.");
-      }
-
-      return response;
-    } catch (err: unknown) {
-      console.error("Download dashboard excel error:", err);
-      if (err instanceof Error) {
-        throw new Error(`Download failed: ${err.message}`);
-      }
-      throw new Error("An unknown error occurred while downloading the file.");
-    }
+  async downloadDashboardExcel(): Promise<AxiosResponse<Blob>> {
+    return apiClient.getBlob("/api/dashboard/excel");
   }
 
   async downloadDashboardExcelFallback(): Promise<Blob> {
