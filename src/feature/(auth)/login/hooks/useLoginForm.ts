@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState, useEffect, useRef } from "react"; // 1. Impor useRef
+import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import axios from "axios";
 import { authService } from "@/api/services/auth";
 import { useToast } from "@/shared/hooks/useToast";
@@ -11,8 +11,52 @@ export function useLoginForm() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
   const { showToast } = useToast();
   const { refetch } = useAuthContext();
+
+  // 2. Gunakan ref untuk melacak error yang sudah diproses
+  const processedErrorRef = useRef<string | null>(null);
+
+  useEffect(() => {
+    const errorType = searchParams.get("error");
+
+    // 3. Cek utama:
+    // - Jangan lakukan apa-apa jika tidak ada error di URL.
+    // - Jangan lakukan apa-apa jika error yang ada di URL SAMA DENGAN yang baru saja kita proses.
+    if (!errorType || processedErrorRef.current === errorType) {
+      return;
+    }
+
+    // Jika ada error baru yang belum diproses, tampilkan toast
+    if (errorType === "bukan_maba_lu") {
+      showToast({
+        type: "error",
+        title: "Akses Ditolak",
+        message: "Kamu bukan maba DSI yaa?",
+        duration: 8000,
+      });
+    } else if (errorType === "unauthorized") {
+      showToast({
+        type: "warning",
+        title: "Sesi Dibutuhkan",
+        message: "Anda harus login untuk mengakses halaman tersebut.",
+        duration: 5000,
+      });
+    }
+
+    // 4. Tandai error ini sebagai "sudah diproses"
+    processedErrorRef.current = errorType;
+
+    const newSearchParams = new URLSearchParams(searchParams.toString());
+    newSearchParams.delete("error");
+    const newUrl = newSearchParams.toString()
+      ? `${pathname}?${newSearchParams.toString()}`
+      : pathname;
+
+    router.replace(newUrl, { scroll: false });
+  }, [searchParams, router, pathname, showToast]);
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();

@@ -23,8 +23,17 @@ export async function middleware(request: NextRequest) {
   const adminDashboardPath = "/admin/dashboard";
 
   const adminRoles = ["admin", "superadmin", "sqc", "pjl"];
-
   const isAdminUser = payload && adminRoles.includes(payload.Role as string);
+  if (payload && (!payload.Role || payload.Role === "")) {
+    const url = new URL(loginPath, request.url);
+    url.searchParams.set("error", "bukan_maba_lu");
+
+    const response = NextResponse.redirect(url);
+
+    response.cookies.delete("auth_session");
+
+    return response;
+  }
 
   if (pathname === "/" && isAdminUser) {
     return NextResponse.redirect(new URL(adminDashboardPath, request.url));
