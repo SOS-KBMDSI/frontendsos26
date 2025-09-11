@@ -54,7 +54,7 @@ const CaketangCard = ({ data, isActive, onClick }: CaketangCardProps) => {
             width={300}
             height={300}
             alt="Caketang Photo"
-            className="w-full object-cover rounded-lg h-32"
+            className="w-full object-cover rounded-lg h-42"
           />
         </div>
       </motion.div>
