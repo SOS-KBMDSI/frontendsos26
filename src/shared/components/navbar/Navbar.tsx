@@ -81,7 +81,7 @@ const Navbar = () => {
               />
               <div className="text-white  text-xs lg:text-xs xl:text-xs 2xl:text-base">
                 <h1>Synergy Of Symphony & </h1>
-                <h2>Shaping The Futures</h2>
+                <h2>Shaping The Future</h2>
               </div>
             </Link>
           </div>

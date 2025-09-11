@@ -33,7 +33,7 @@ const PolaroidCard = ({
       </div>
 
       <div
-        className="w-[38vh] -mt-[2vh] shadow-lg rounded-xl h-fit bg-white p-[2.5vh] 
+        className="w-[38vh] h-[58vh] flex flex-col justify-between -mt-[2vh] shadow-lg rounded-xl  bg-white p-[2.5vh] 
                     transition-all duration-500 ease-out
                     lg:hover:shadow-2xl lg:hover:shadow-primary-200/50
                     group"
@@ -60,7 +60,7 @@ const PolaroidCard = ({
         </div>
 
         <p
-          className="text-[1.8vh] mt-[2vh] text-justify leading-[2.5vh]
+          className="text-[1.5vh] mt-[2vh] text-justify leading-[2.5vh]
                     transition-all duration-300 
                     lg:group-hover:text-gray-700"
         >
