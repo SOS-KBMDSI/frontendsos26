@@ -18,7 +18,6 @@ export default function LoginForm({
   password,
   setPassword,
   isLoading,
-  error,
   handleSubmit,
 }: LoginFormProps) {
   return (
@@ -65,8 +64,6 @@ export default function LoginForm({
             </div>
           </div>
           <div className="2xl:mt-12">
-            {error && <p className="text-sm text-red-600 mb-2">{error}</p>}
-
             <Button
               type="submit"
               disabled={isLoading}
