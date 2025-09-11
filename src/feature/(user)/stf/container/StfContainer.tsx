@@ -35,6 +35,7 @@ const StfContainer = () => {
     return (
       <GradientBackground>
         <div className="mx-auto flex h-screen items-center justify-center text-default-white">
+          <p className="text-xl">Tunggu Bentar...</p>
           <p className="text-xl">Tunggu sebentar yh...</p>
         </div>
       </GradientBackground>

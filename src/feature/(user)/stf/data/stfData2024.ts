@@ -1,6 +1,8 @@
 import { StaticImageData } from "next/image";
 
-import Dummy from "@/assets/stf/dummy.png";
+import SI from "@/assets/stf/caketang-2024/si.png";
+import TI from "@/assets/stf/caketang-2024/ti.png";
+import PTI from "@/assets/stf/caketang-2024/pti.png";
 
 export interface Prodi {
   id: string;
@@ -14,7 +16,7 @@ export const stfData2024: Prodi[] = [
   {
     id: "sistem_informasi",
     nama: "Sistem Informasi",
-    image: Dummy,
+    image: SI,
     shortName: "SI",
     ketangWaketang: "Afham & Pras",
   },
@@ -22,14 +24,14 @@ export const stfData2024: Prodi[] = [
     id: "teknologi_informasi",
     nama: "Teknologi Informasi",
     shortName: "TI",
-    image: Dummy,
+    image: TI,
     ketangWaketang: "Luthfi & Daffa",
   },
   {
     id: "pendidikan_teknologi_informasi",
     nama: "Pendidikan Teknologi Informasi",
     shortName: "PTI",
-    image: Dummy,
+    image: PTI,
     ketangWaketang: "Steven & Kalingga",
   },
 ];
