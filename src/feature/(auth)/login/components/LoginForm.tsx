@@ -1,7 +1,8 @@
+"use client";
 import { Button } from "@/shared/components/ui/Button";
 import { Input } from "@/shared/components/ui/Input";
-import React, { useState } from "react"; // 1. Impor useState
-import { Eye, EyeOff } from "lucide-react"; // Contoh menggunakan ikon dari lucide-react
+import React, { useState } from "react";
+import { Eye, EyeOff } from "lucide-react";
 
 interface LoginFormProps {
   emailornim: string;
@@ -21,7 +22,6 @@ export default function LoginForm({
   isLoading,
   handleSubmit,
 }: LoginFormProps) {
-  // 2. Tambahkan state untuk visibilitas password
   const [showPassword, setShowPassword] = useState(false);
 
   return (
@@ -55,24 +55,20 @@ export default function LoginForm({
               >
                 Kata Sandi
               </label>
-              {/* 3. Bungkus Input dengan div relative */}
               <div className="relative">
                 <Input
                   size={"small"}
                   id="password"
-                  // 4. Jadikan tipe input dinamis
                   type={showPassword ? "text" : "password"}
                   placeholder="password siam"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
                   disabled={isLoading}
-                  // Tambahkan padding kanan agar teks tidak tertutup ikon
                   className="pr-10"
                 />
-                {/* 5. Tambahkan tombol untuk toggle visibilitas */}
                 <button
-                  type="button" // Penting agar tidak submit form
+                  type="button"
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 hover:text-gray-700"
                   aria-label={

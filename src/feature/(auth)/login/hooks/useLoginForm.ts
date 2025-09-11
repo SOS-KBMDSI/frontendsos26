@@ -16,20 +16,15 @@ export function useLoginForm() {
   const { showToast } = useToast();
   const { refetch } = useAuthContext();
 
-  // 2. Gunakan ref untuk melacak error yang sudah diproses
   const processedErrorRef = useRef<string | null>(null);
 
   useEffect(() => {
     const errorType = searchParams.get("error");
 
-    // 3. Cek utama:
-    // - Jangan lakukan apa-apa jika tidak ada error di URL.
-    // - Jangan lakukan apa-apa jika error yang ada di URL SAMA DENGAN yang baru saja kita proses.
     if (!errorType || processedErrorRef.current === errorType) {
       return;
     }
 
-    // Jika ada error baru yang belum diproses, tampilkan toast
     if (errorType === "bukan_maba_lu") {
       showToast({
         type: "error",

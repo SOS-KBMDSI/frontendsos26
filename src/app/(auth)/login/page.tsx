@@ -2,7 +2,7 @@ import LoginPageContainer from "@/feature/(auth)/login/container/LoginPageContai
 import Navbar from "@/shared/components/navbar/Navbar";
 import { AuthProvider } from "@/shared/context/AuthContext";
 import { ToastProvider } from "@/shared/context/ToastContext";
-import React from "react";
+import React, { Suspense } from "react";
 
 const page = () => {
   return (
@@ -10,7 +10,9 @@ const page = () => {
       <ToastProvider>
         <AuthProvider>
           <Navbar />
-          <LoginPageContainer />
+          <Suspense>
+            <LoginPageContainer />
+          </Suspense>
         </AuthProvider>
       </ToastProvider>
     </main>
