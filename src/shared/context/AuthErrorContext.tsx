@@ -10,6 +10,7 @@ interface AuthErrorContextType {
   checkAndHandleAuthError: (
     response: ApiResponse<unknown> | AuthError,
   ) => boolean;
+  handleRoleError: () => void;
 }
 
 interface AuthError extends Error {
@@ -39,14 +40,62 @@ export const AuthErrorProvider = ({
   // Anti-spam references
   const hasShownAuthToastRef = useRef(false);
   const hasShownNetworkToastRef = useRef(false);
+  const hasShownRoleToastRef = useRef(false);
   const lastAuthErrorTimeRef = useRef(0);
   const lastNetworkErrorTimeRef = useRef(0);
+  const lastRoleErrorTimeRef = useRef(0);
   const isRedirectingRef = useRef(false);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Debounce intervals (in milliseconds)
   const AUTH_ERROR_DEBOUNCE = 5000; // 5 seconds
   const NETWORK_ERROR_DEBOUNCE = 3000; // 3 seconds
+  const ROLE_ERROR_DEBOUNCE = 5000; // 5 seconds
+
+  const clearAuthSession = (): void => {
+    if (typeof window !== "undefined") {
+      // Clear auth_session cookie with different combinations to match the existing cookie
+      const cookiesToClear = [
+        // Standard combinations
+        "auth_session=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;",
+        "auth_session=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=localhost;",
+        "auth_session=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=" +
+          window.location.hostname +
+          ";",
+        "auth_session=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=." +
+          window.location.hostname +
+          ";",
+        // With SameSite=Strict (matching the cookie attributes)
+        "auth_session=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; SameSite=Strict;",
+        "auth_session=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=localhost; SameSite=Strict;",
+        "auth_session=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=" +
+          window.location.hostname +
+          "; SameSite=Strict;",
+        // Without path/domain
+        "auth_session=; expires=Thu, 01 Jan 1970 00:00:00 UTC;",
+        "auth_session=; Max-Age=0; path=/;",
+        "auth_session=; Max-Age=0; path=/; domain=localhost;",
+        "auth_session=; Max-Age=0; path=/; domain=" +
+          window.location.hostname +
+          ";",
+      ];
+
+      // Try all combinations to ensure cookie is deleted
+      cookiesToClear.forEach((cookie) => {
+        document.cookie = cookie;
+      });
+
+      // Also try to set empty value first, then delete
+      document.cookie =
+        "auth_session=; path=/; domain=" + window.location.hostname + ";";
+      document.cookie = "auth_session=; path=/;";
+
+      // Clear common auth tokens from localStorage
+      localStorage.removeItem("token");
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("authToken");
+      localStorage.removeItem("user");
+    }
+  };
 
   const isAuthError = (
     error: AuthError | AxiosError | ApiResponse<unknown>,
@@ -60,6 +109,22 @@ export const AuthErrorProvider = ({
         (error.message.includes("401") ||
           error.message.toLowerCase().includes("unauthorized"))) ||
       (typeof error === "string" && (error as string).includes("401"))
+    );
+  };
+
+  const isRoleError = (
+    error: AuthError | AxiosError | ApiResponse<unknown>,
+  ): boolean => {
+    return (
+      ("response" in error && error.response?.status === 401) ||
+      ("status" in error && error.status === 401) ||
+      ("code" in error && error.code === 401) ||
+      ("message" in error &&
+        error.message &&
+        (error.message.includes("403") ||
+          error.message.toLowerCase().includes("forbidden") ||
+          error.message.toLowerCase().includes("role"))) ||
+      (typeof error === "string" && (error as string).includes("403"))
     );
   };
 
@@ -148,15 +213,21 @@ export const AuthErrorProvider = ({
 
     showToast({
       type: "error",
-      title: "Sesi Berakhir",
-      message: "Sesi anda telah berakhir",
+      title: "401 Unauthorized",
+      message: "Sesi anda telah berakhir atau token tidak valid",
       duration: 4000,
     });
 
-    // Clear auth cookie
+    // Clear auth cookie and localStorage
     if (typeof window !== "undefined") {
       document.cookie =
         "auth_session=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+
+      // Clear common auth tokens from localStorage
+      localStorage.removeItem("token");
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("authToken");
+      localStorage.removeItem("user");
     }
 
     // Clear any existing timeout
@@ -169,18 +240,49 @@ export const AuthErrorProvider = ({
     }, 2000);
   };
 
+  const handleRoleError = (): void => {
+    const now = Date.now();
+
+    // Prevent spam - only show role error toast if enough time has passed
+    if (
+      hasShownRoleToastRef.current &&
+      now - lastRoleErrorTimeRef.current < ROLE_ERROR_DEBOUNCE
+    ) {
+      return;
+    }
+
+    hasShownRoleToastRef.current = true;
+    lastRoleErrorTimeRef.current = now;
+
+    showToast({
+      type: "error",
+      title: "Akses Ditolak",
+      message: "Kamu bukan maba DSI yaa?",
+      duration: 5000,
+    });
+
+    // Reset role error flag after debounce period
+    setTimeout(() => {
+      hasShownRoleToastRef.current = false;
+    }, ROLE_ERROR_DEBOUNCE);
+  };
+
   const handleAuthError = async (
     error: AuthError | AxiosError,
   ): Promise<void> => {
-    console.log("Auth error handled:", error);
-
     // Handle network errors
     if (error.code === "ERR_NETWORK") {
       await handleNetworkError();
       return;
     }
 
-    // Handle auth errors
+    // Handle role/permission errors (403)
+    if (isRoleError(error)) {
+      handleRoleError();
+      return;
+    }
+
+    // Handle auth errors (401)
     if (isAuthError(error)) {
       showSessionExpiredToast();
     }
@@ -189,29 +291,62 @@ export const AuthErrorProvider = ({
   const checkAndHandleAuthError = (
     response: ApiResponse<unknown> | AuthError,
   ): boolean => {
+    if (isRoleError(response)) {
+      handleRoleError();
+      return true;
+    }
+
     if (isAuthError(response)) {
+      clearAuthSession();
       showSessionExpiredToast();
       return true;
     }
+
     return false;
   };
 
   useEffect(() => {
-    apiClient.setAuthErrorHandler(handleAuthError);
+    if (apiClient && typeof apiClient.setAuthErrorHandler === "function") {
+      apiClient.setAuthErrorHandler(handleAuthError);
+    }
+
+    if (apiClient && apiClient.interceptors) {
+      const responseInterceptor = apiClient.interceptors.response.use(
+        (response) => response,
+        async (error) => {
+          if (error?.response?.status === 401) {
+            await handleAuthError(error);
+          }
+
+          return Promise.reject(error);
+        },
+      );
+
+      return () => {
+        if (apiClient.interceptors?.response) {
+          apiClient.interceptors.response.eject(responseInterceptor);
+        }
+      };
+    }
 
     if (protectedRoutes && protectedRoutes.length > 0) {
-      apiClient.setProtectedRoutes(protectedRoutes);
+      if (typeof apiClient.setProtectedRoutes === "function") {
+        apiClient.setProtectedRoutes(protectedRoutes);
+      }
     } else {
-      apiClient.disableRouteProtection();
+      if (typeof apiClient.disableRouteProtection === "function") {
+        apiClient.disableRouteProtection();
+      }
     }
 
     const resetFlags = () => {
-      // Only reset if not currently redirecting
       if (!isRedirectingRef.current) {
         hasShownAuthToastRef.current = false;
         hasShownNetworkToastRef.current = false;
+        hasShownRoleToastRef.current = false;
         lastAuthErrorTimeRef.current = 0;
         lastNetworkErrorTimeRef.current = 0;
+        lastRoleErrorTimeRef.current = 0;
       }
     };
 
@@ -222,10 +357,8 @@ export const AuthErrorProvider = ({
     };
 
     const handleOnline = () => {
-      // Reset network error flag when back online
       hasShownNetworkToastRef.current = false;
 
-      // Only show success toast if we're not redirecting
       if (!isRedirectingRef.current) {
         showToast({
           type: "success",
@@ -237,7 +370,6 @@ export const AuthErrorProvider = ({
     };
 
     const handleOffline = () => {
-      // Don't show offline toast if we're redirecting
       if (!isRedirectingRef.current) {
         showToast({
           type: "error",
@@ -248,10 +380,10 @@ export const AuthErrorProvider = ({
       }
     };
 
-    // Add page unload handler to prevent spam on refresh
     const handleBeforeUnload = () => {
       hasShownAuthToastRef.current = true;
       hasShownNetworkToastRef.current = true;
+      hasShownRoleToastRef.current = true;
     };
 
     document.addEventListener("visibilitychange", handleVisibilityChange);
@@ -274,6 +406,7 @@ export const AuthErrorProvider = ({
   const contextValue: AuthErrorContextType = {
     handleAuthError,
     checkAndHandleAuthError,
+    handleRoleError,
   };
 
   return (

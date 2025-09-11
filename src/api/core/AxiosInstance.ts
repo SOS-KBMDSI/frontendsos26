@@ -105,27 +105,22 @@ class ApiCore {
 
     this.client.interceptors.response.use(
       (response: AxiosResponse) => response,
-      (error: AxiosError) => {
-        // Handle network errors
+      async (error: AxiosError) => {
         if (error.code === "ERR_NETWORK") {
-          console.log("Network Error detected");
           if (this.authErrorHandler) {
-            this.authErrorHandler(error);
+            await this.authErrorHandler(error);
           }
         }
 
-        // Handle 401 errors silently for protected routes
-        if (error.response?.status === 401 && this.isCurrentRouteProtected()) {
-          // Remove or comment out this console.log to hide 401 logs
-          // console.log(
-          //   "401 Unauthorized detected in protected route:",
-          //   window.location.pathname,
-          // );
-
+        if (error.response?.status === 401) {
           if (this.authErrorHandler) {
-            this.authErrorHandler(error);
-          } else {
-            this.handleDefaultAuthError();
+            await this.authErrorHandler(error);
+          }
+        }
+
+        if (error.response?.status === 403) {
+          if (this.authErrorHandler) {
+            await this.authErrorHandler(error);
           }
         }
 
@@ -134,32 +129,19 @@ class ApiCore {
     );
   }
 
-  private handleDefaultAuthError(): void {
-    console.warn("No auth error handler set, using default behavior");
-
-    if (typeof window !== "undefined") {
-      document.cookie =
-        "auth_session=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-
-      setTimeout(() => {
-        window.location.href = "/login";
-      }, 1000);
-    }
-  }
-
   public async get<T>(
     url: string,
     config?: AxiosRequestConfig,
   ): Promise<ApiResponse<T>> {
     try {
-      return this.client
-        .get<ApiResponse<T>>(url, config)
-        .then((res) => res.data);
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
-      if (error.response?.status === 401) {
-        // Handle 401 silently
-        throw new Error("Authentication required");
+      const response = await this.client.get<ApiResponse<T>>(url, config);
+      return response.data;
+    } catch (error) {
+      if (
+        (error as AxiosError).response?.status === 401 ||
+        (error as AxiosError).response?.status === 403
+      ) {
+        throw error;
       }
       throw error;
     }
@@ -170,9 +152,16 @@ class ApiCore {
     data?: D,
     config?: AxiosRequestConfig,
   ): Promise<ApiResponse<T>> {
-    return this.client
-      .post<ApiResponse<T>>(url, data, config)
-      .then((res) => res.data);
+    try {
+      const response = await this.client.post<ApiResponse<T>>(
+        url,
+        data,
+        config,
+      );
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
   }
 
   public async put<T, D = unknown>(
@@ -180,9 +169,12 @@ class ApiCore {
     data?: D,
     config?: AxiosRequestConfig,
   ): Promise<ApiResponse<T>> {
-    return this.client
-      .put<ApiResponse<T>>(url, data, config)
-      .then((res) => res.data);
+    try {
+      const response = await this.client.put<ApiResponse<T>>(url, data, config);
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
   }
 
   public async patch<T, D = unknown>(
@@ -190,33 +182,51 @@ class ApiCore {
     data?: D,
     config?: AxiosRequestConfig,
   ): Promise<ApiResponse<T>> {
-    return this.client
-      .patch<ApiResponse<T>>(url, data, config)
-      .then((res) => res.data);
+    try {
+      const response = await this.client.patch<ApiResponse<T>>(
+        url,
+        data,
+        config,
+      );
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
   }
 
   public async delete<T>(
     url: string,
     config?: AxiosRequestConfig,
   ): Promise<ApiResponse<T>> {
-    return this.client
-      .delete<ApiResponse<T>>(url, config)
-      .then((res) => res.data);
+    try {
+      const response = await this.client.delete<ApiResponse<T>>(url, config);
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
   }
 
   public async getBlob(
     url: string,
     config?: AxiosRequestConfig,
   ): Promise<AxiosResponse<Blob>> {
-    return this.client.get<Blob>(url, {
-      ...config,
-      responseType: "blob",
-      headers: {
-        Accept:
-          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-        ...config?.headers,
-      },
-    });
+    try {
+      return await this.client.get<Blob>(url, {
+        ...config,
+        responseType: "blob",
+        headers: {
+          Accept:
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+          ...config?.headers,
+        },
+      });
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  public get interceptors() {
+    return this.client.interceptors;
   }
 }
 
