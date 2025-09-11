@@ -4,6 +4,7 @@ import { apiClient, ApiResponse } from "@/api/core/AxiosInstance";
 import { AxiosError } from "axios";
 import { createContext, ReactNode, useRef, useEffect } from "react";
 import { useToast } from "../hooks/useToast";
+import { usePathname } from "next/navigation";
 
 interface AuthErrorContextType {
   handleAuthError: (error: AuthError | AxiosError) => void;
@@ -239,11 +240,13 @@ export const AuthErrorProvider = ({
       window.location.href = "/login";
     }, 2000);
   };
+  const pathname = usePathname();
 
   const handleRoleError = (): void => {
     const now = Date.now();
-
-    // Prevent spam - only show role error toast if enough time has passed
+    if (pathname.startsWith("/stf")) {
+      return;
+    }
     if (
       hasShownRoleToastRef.current &&
       now - lastRoleErrorTimeRef.current < ROLE_ERROR_DEBOUNCE
