@@ -2,12 +2,10 @@
 import React, { useState } from "react";
 import { DashboardCard } from "../components/DashboardCard";
 import { DataTable } from "@/shared/components/table/DataTable";
-import { Button } from "@/shared/components/ui/Button";
 import {
   Archive,
   Check,
   Clock,
-  Download,
   FileWarning,
   Loader2,
   Star,
@@ -30,37 +28,9 @@ import { useDashboardData } from "../hooks/useDashboardData";
 import { dataTugascolumn } from "../type/dataTugasColumn";
 import { dataKuisColumn } from "../type/dataQuixColumn";
 import { dataPresensiColumn } from "../type/dataPresensiColumn";
-import { useDashboardExcel } from "../hooks/downloadExcel";
 
 const DashboardContainer = () => {
   const { data, isLoading, error, refresh } = useDashboardData();
-  const {
-    isDownloading,
-    error: downloadError,
-    downloadExcel,
-    clearError,
-  } = useDashboardExcel();
-
-  const handleExcelDownload = async () => {
-    try {
-      if (downloadError) clearError();
-
-      const blob = await downloadExcel();
-
-      if (blob) {
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = "dashboard.xlsx";
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
-        window.URL.revokeObjectURL(url);
-      }
-    } catch (err) {
-      console.error("Failed to download Excel file:", err);
-    }
-  };
 
   const [tugasSorting, setTugasSorting] = useState<SortingState>([]);
   const [tugasPagination, setTugasPagination] = useState<PaginationState>({
@@ -195,26 +165,7 @@ const DashboardContainer = () => {
         />
       </section>
 
-      <div className="mt-10">
-        <Button
-          variant={"outline"}
-          className="font-semibold"
-          onClick={handleExcelDownload}
-          disabled={isDownloading}
-        >
-          {isDownloading ? (
-            <>
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              Downloading...
-            </>
-          ) : (
-            <>
-              <Download className="mr-2 h-4 w-4" />
-              Export Ke Excel
-            </>
-          )}
-        </Button>
-      </div>
+      <div className="mt-10"></div>
 
       {/* Tugas Table */}
       <section className="mt-10">

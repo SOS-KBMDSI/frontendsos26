@@ -10,8 +10,8 @@ const page = () => {
       <ToastProvider>
         <AuthProvider>
           <Navbar />
+          <LoginPageContainer />
         </AuthProvider>
-        <LoginPageContainer />
       </ToastProvider>
     </main>
   );
