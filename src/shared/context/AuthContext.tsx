@@ -61,6 +61,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const fetchCurrentUser = useCallback(
     async (forceRefresh = false): Promise<void> => {
+      const token = getAuthCookie();
+      if (!token) {
+        if (mountedRef.current) {
+          setUser(null);
+          setIsLoading(false);
+        }
+        stateRef.current.authCache = { data: null, timestamp: Date.now() };
+        return;
+      }
       if (
         !mountedRef.current ||
         (stateRef.current.requestInProgress && !forceRefresh)
@@ -148,7 +157,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     mountedRef.current = true;
-    const publicPaths = ["/login", "/register", "/", "/about", "/contact"];
+    const publicPaths = [
+      "/login",
+      "/register",
+      "/",
+      "/about",
+      "/contact",
+      "/stf",
+    ];
 
     const isPublic = publicPaths.some(
       (path) =>
@@ -158,14 +174,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (isPublic) {
       setIsLoading(false);
       setUser(null);
-      return;
-    }
-
-    const token = getAuthCookie();
-
-    if (!token) {
-      setUser(null);
-      setIsLoading(false);
       return;
     }
 
