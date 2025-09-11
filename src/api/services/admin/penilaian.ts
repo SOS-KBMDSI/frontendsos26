@@ -73,6 +73,8 @@ class PenilaianService {
   async getMabaByFilter(
     distrikId: string,
     kelompokId?: string,
+    page: number = 1,
+    limit: number = 10,
   ): Promise<BackendResponse<PaginatedData<Maba>>> {
     if (!distrikId) {
       return Promise.resolve({
@@ -85,10 +87,14 @@ class PenilaianService {
       });
     }
 
-    let url = `/api/distrik/${distrikId}/maba`;
+    const params = new URLSearchParams();
     if (kelompokId) {
-      url += `?id_kelompok=${kelompokId}`;
+      params.append("id_kelompok", kelompokId);
     }
+    params.append("page", page.toString());
+    params.append("limit", limit.toString());
+
+    const url = `/api/distrik/${distrikId}/maba?${params.toString()}`;
 
     const response = await apiClient.get(url);
     return response as unknown as BackendResponse<PaginatedData<Maba>>;

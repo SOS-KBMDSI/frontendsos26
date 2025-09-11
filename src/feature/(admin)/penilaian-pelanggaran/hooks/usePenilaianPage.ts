@@ -90,6 +90,8 @@ export const usePenilaianPage = () => {
         const mabaRes = await penilaianService.getMabaByFilter(
           selectedDistrik,
           selectedKelompok,
+          1,
+          9999,
         );
         const records = mabaRes?.data?.records ?? [];
         const filteredMabaNims = new Set(records.map((maba) => maba.nim));
