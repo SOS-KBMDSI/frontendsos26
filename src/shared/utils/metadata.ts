@@ -5,14 +5,13 @@ export const siteConfig = {
   shortName: "SOS 2025",
   description:
     "Ajang pembekalan awal bagi mahasiswa baru Departemen Sistem Informasi 2025 yang menumbuhkan kolaborasi dan kepemimpinan, diwujudkan melalui Shaping The Future",
-  url: "https://sos.kbmdsi.com/", // ganti dengan domain kamu
+  url: "https://sos.kbmdsi.com/",
   ogImage: SOSLOGO,
   twitterImage: SOSLOGO,
   themeColor: "#1e40af",
 };
 
 export const defaultMetadata: Metadata = {
-  // Basic metadata
   title: {
     default: "Synergy of Symphony ",
     template: "%s | SOS 2025",
@@ -25,7 +24,7 @@ export const defaultMetadata: Metadata = {
     "sos",
     "synergy of symphony",
     "synergy of symphony 2025",
-    "KMBDSI",
+    "KBMDSI",
     "pembekalan mahasiswa baru",
     "mahasiswa baru sistem informasi",
     "departemen sistem informasi",
@@ -38,7 +37,7 @@ export const defaultMetadata: Metadata = {
 
   authors: [{ name: "Panitia SOS 2025" }],
   creator: "Departemen Sistem Informasi",
-  publisher: "KMBDSI",
+  publisher: "KBMDSI",
   generator: "Next.js",
 
   robots: {
@@ -53,17 +52,15 @@ export const defaultMetadata: Metadata = {
     },
   },
 
-  // Additional meta tags
   other: {
     "theme-color": siteConfig.themeColor,
     "color-scheme": "light dark",
     "event-year": "2025",
-    "event-type": "KMBDSI",
+    "event-type": "KBMDSI",
     "target-audience": "mahasiswa baru sistem informasi",
   },
 };
 
-// Structured data untuk event
 export const eventStructuredData = {
   "@context": "https://schema.org",
   "@type": "Event",
@@ -83,6 +80,6 @@ export const eventStructuredData = {
     audienceType: "Mahasiswa Baru Sistem Informasi 2025",
   },
   keywords:
-    "SOS, KMBDSI, synergy of symphony, mahasiswa baru, sistem informasi",
+    "SOS, KBMDSI, synergy of symphony, mahasiswa baru, sistem informasi",
   inLanguage: "id-ID",
 };
