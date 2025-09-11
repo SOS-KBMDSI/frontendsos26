@@ -88,8 +88,11 @@ const PetaContent = () => {
                 </h4>
                 <p className="text-sm lg:text-lg text-default-dark">
                   Berisi pengenalan Departemen Sistem Informasi, prospek karier
-                  di bidang IT, serta cara menyusun CV yang dikemas secara
-                  interaktif melalui aktivitas dan games yang seru.
+                  di bidang IT, serta cara menyusun CV. Selain itu, mahasiswa
+                  juga akan dibekali dengan materi tentang work life balance dan
+                  networking agar mampu menata kehidupan pribadi sekaligus
+                  membangun relasi sejak awal. Semua ini dikemas secara
+                  interaktif melalui aktivitas yang seru
                 </p>
               </div>
               <div className="w-7/12 lg:w-6/12 relative">
@@ -147,12 +150,13 @@ const PetaContent = () => {
               </div>
               <div className="w-5/12 lg:h-6/12 flex flex-col gap-4 text-right">
                 <h4 className="text-4xl lg:text-5xl text-primary-500 font-semibold">
-                  Navigating the Currents
+                  Orchestrating the Voyage
                 </h4>
                 <p className="text-sm lg:text-lg text-default-dark">
-                  Membahas pengembangan diri dan personal branding, dengan
-                  berdiskusi mahasiswa baru saling bertukar pendapat sekaligus
-                  menentukan calon pemimpin angkatan dari tiap prodi.
+                  Pada rangkaian ini mahasiswa menampilkan hasil kerja tim
+                  melalui presentasi tugas, serta proses pengembangan diri
+                  dengan saling bertukar pendapat dalam sesi Shaping The Future
+                  untuk menentukan calon pemimpin angkatan tiap prodi
                 </p>
               </div>
             </div>

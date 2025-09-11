@@ -19,7 +19,7 @@ export const kegiatanData = [
     id: 2,
     title: "Voyage to The Throne",
     description:
-      "Pemilihan calon ketua angkatan seluruh program studi di Departemen Sistem Informasi tahun 2025. Setiap calon ketua diposisikan sebagai seorang petualang yang menjalani perjalanan penuh tantangan dan pembelajaran, dengan misi untuk menyatukan ide, membangun kolaborasi, dan membawa perubahan positif bagi angkatannya",
+      "Pemilihan calon ketua angkatan seluruh program studi di Departemen Sistem Informasi tahun 2025. Setiap calon ketua diposisikan sebagai seorang petualang yang menjalani perjalanan penuh tantangan dan pembelajaran, dengan misi untuk menyatukan ide, membangun kolaborasi, dan membawa perubahan positif bagi angkatannya.",
     img: Voyage,
   },
 ];

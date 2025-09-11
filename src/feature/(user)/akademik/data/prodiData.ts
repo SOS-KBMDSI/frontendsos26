@@ -40,7 +40,7 @@ export const prodiData: Prodi[] = [
     deskripsi:
       "Program Studi Teknologi Informasi berfokus pada pengembangan, implementasi, dan pengelolaan sistem teknologi berbasis komputer. Mahasiswa dibekali keterampilan dalam pemrograman, jaringan komputer, keamanan siber, serta rekayasa perangkat lunak untuk menjawab tantangan dunia digital yang terus berkembang.",
     prospek: [
-      "Softawre Developer / Programmer",
+      "Software Developer / Programmer",
       "Web Developer / Mobile App Developer",
       "Data Analyst / Data Scientist",
       "Network Engineer / Cloud Engineer",
