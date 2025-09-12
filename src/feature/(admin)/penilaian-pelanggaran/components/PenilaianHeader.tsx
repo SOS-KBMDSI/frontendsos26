@@ -48,7 +48,7 @@ export const PenilaianHeader = ({
 }: PenilaianHeaderProps) => {
   return (
     <div className="mt-6 flex flex-col gap-6">
-      <div className="flex gap-4 flex-wrap md:flex-nowrap">
+      <div className="flex gap-4 flex-wrap md:flex-wrap">
         <SearchableSelect
           options={distrikOptions.map((distrik) => ({
             value: distrik.id_distrik,
