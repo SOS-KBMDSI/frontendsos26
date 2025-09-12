@@ -41,7 +41,6 @@ export function useLoginForm() {
       });
     }
 
-    // 4. Tandai error ini sebagai "sudah diproses"
     processedErrorRef.current = errorType;
 
     const newSearchParams = new URLSearchParams(searchParams.toString());
@@ -75,13 +74,10 @@ export function useLoginForm() {
         router.push("/");
       }
     } catch (err: unknown) {
-      console.error("Login failed:", err);
-      let message = "Login gagal. Periksa kembali email dan password Anda.";
+      let message = "Terjadi Keselahan, Coba Lagi Nanti";
 
       if (axios.isAxiosError(err) && err.response?.data?.message) {
         message = err.response.data.message;
-      } else if (err instanceof Error) {
-        message = err.message;
       }
 
       setError(message);

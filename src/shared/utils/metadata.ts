@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import SOSLOGO from "@/assets/logo-sos.svg";
+import favicon from "@/app/favicon.ico";
 export const siteConfig = {
   name: "Synergy of Symphony 2025",
   shortName: "SOS 2025",
@@ -18,7 +19,26 @@ export const defaultMetadata: Metadata = {
   },
   description:
     "Ajang pembekalan awal bagi mahasiswa baru Departemen Sistem Informasi 2025. Siap memulai perjalanan barumu? Temukan detailnya di sini.",
-
+  icons: {
+    icon: [
+      {
+        url: favicon.src,
+        type: "image/x-icon",
+      },
+    ],
+    shortcut: [
+      {
+        url: favicon.src,
+        type: "image/x-icon",
+      },
+    ],
+    apple: [
+      {
+        url: favicon.src,
+        type: "image/x-icon",
+      },
+    ],
+  },
   keywords: [
     "SOS 2025",
     "sos",
