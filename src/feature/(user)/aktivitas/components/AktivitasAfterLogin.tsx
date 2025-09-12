@@ -26,7 +26,7 @@ const AktivitasAfterLogin = ({ user }: AktivitasAfterLoginProps) => {
                     <span className="text-sm font-bold text-white">
                       Line
                       <span className="text-white font-medium">
-                        : {pjl.line}
+                        : {pjl.line.replace(/@/g, "")}
                       </span>
                     </span>
                   </div>
