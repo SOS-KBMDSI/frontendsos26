@@ -65,7 +65,7 @@ const DetailTugas = ({ tugas, onEdit, isSQC }: DetailTugasProps) => {
           />
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mt-12">
+        <div className="grid grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-8 mt-12">
           <div className="flex flex-col space-y-2 text-gray-700">
             <span className="text-primary-500 font-medium">Deadline:</span>
             <div className="flex items-center space-x-3">

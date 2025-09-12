@@ -14,7 +14,7 @@ const Guidebook = () => {
 
   const handleDownload = () => {
     window.open(
-      "https://drive.google.com/file/d/1vF5k8M55smWeJOnxvEvOMov13dKLiz93/view?usp=drive_link",
+      "https://drive.google.com/file/d/1PT3LB-lS2XSwt73y-VXolrVd2H8e1M_R/view?usp=drive_link",
       "_blank",
     );
   };
