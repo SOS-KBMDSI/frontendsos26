@@ -45,7 +45,7 @@ const DetailQuiz = ({ quiz, onEdit, onDelete, isSQC }: DetailQuizProps) => {
       </h4>
 
       <p
-        className="mt-8 md:mt-12 text-justify text-base md:text-lg lg:text-base text-gray-800"
+        className="mt-8 md:mt-12 text-justify text-base md:text-lg lg:text-base text-gray-800 whitespace-pre-line"
         data-testid="quiz-description"
       >
         {quiz?.deskripsi_kuis || "Deskripsi tidak tersedia."}

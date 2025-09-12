@@ -34,8 +34,8 @@ const QuizBefore = ({ quiz }: { quiz: Quiz | null }) => {
     <>
       <div className="w-full space-y-4 px-8 py-6 rounded-2xl mt-20 min-h-[15rem] bg-[#F5E6E9]">
         <h4 className="font-bold text-black">Siap Taklukan Quiz?</h4>
-        <p className="text-justify">
-          <span>{quiz?.deskripsi_kuis}</span>
+        <p className="text-justify ">
+          <span className="whitespace-pre-line">{quiz?.deskripsi_kuis}</span>
           <span className="font-semibold mx-2">{quiz?.nama_kuis}</span>. Kamu
           punya <span className="font-semibold">{totalMinutes} Menit</span>{" "}
           penuh untuk fokus. Ingat, timer akan terus berjalan. Percayalah pada
