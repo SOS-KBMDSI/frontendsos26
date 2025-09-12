@@ -5,6 +5,7 @@ import { defaultMetadata } from "@/shared/utils/metadata";
 import SOSLOGO from "@/assets/logo-sos.png";
 export const metadata: Metadata = {
   ...defaultMetadata,
+  metadataBase: new URL("https://sos.kbmdsi.com"),
   icons: {
     icon: SOSLOGO.src,
     shortcut: SOSLOGO.src,
