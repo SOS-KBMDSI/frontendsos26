@@ -46,7 +46,7 @@ const DetailTugas = ({ tugas, onEdit, isSQC }: DetailTugasProps) => {
       </h4>
 
       <p
-        className="mt-8 md:mt-12 text-justify text-base md:text-lg lg:text-base text-gray-800"
+        className="mt-8 md:mt-12 text-justify text-base md:text-lg lg:text-base text-gray-800 whitespace-pre-line"
         data-testid="tugas-description"
       >
         {tugas?.deskripsi || "Deskripsi tidak tersedia."}
