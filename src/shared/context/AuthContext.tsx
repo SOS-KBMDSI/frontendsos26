@@ -157,14 +157,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     mountedRef.current = true;
-    const publicPaths = [
-      "/login",
-      "/register",
-      "/",
-      "/about",
-      "/contact",
-      "/stf",
-    ];
+    const publicPaths = ["/login", "/register"];
 
     const isPublic = publicPaths.some(
       (path) =>
