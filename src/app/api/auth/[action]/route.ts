@@ -59,11 +59,62 @@ export async function POST(
         redirectUrl: redirectUrl,
       });
     } catch (error: unknown) {
-      let message = "Login gagal, email atau password salah.";
-      if (axios.isAxiosError(error) && error.response?.data?.message) {
-        message = error.response.data.message;
+      let message = "Terjadi Kesalahan, Coba Beberapa Saat Lagi";
+      let status = 500;
+
+      if (axios.isAxiosError(error)) {
+        if (error.response?.data?.message) {
+          message = error.response.data.message;
+        } else if (error.response?.statusText) {
+          message = error.response.statusText;
+        } else if (error.message) {
+          message = error.message;
+        }
+        status = error.response?.status || 500;
+      } else if (error instanceof Error) {
+        message = error.message || message;
+
+        if (error.name === "ValidationError") {
+          status = 400;
+        } else if (error.name === "UnauthorizedError") {
+          status = 401;
+        } else if (error.name === "ForbiddenError") {
+          status = 403;
+        } else if (error.name === "NotFoundError") {
+          status = 404;
+        } else if (error.name === "TimeoutError") {
+          status = 408;
+          message = "Request timeout, silakan coba lagi";
+        }
+      } else if (typeof error === "string") {
+        message = error;
+      } else if (error && typeof error === "object") {
+        if ("message" in error && typeof error.message === "string") {
+          message = error.message;
+        } else if ("error" in error && typeof error.error === "string") {
+          message = error.error;
+        }
+
+        if ("status" in error && typeof error.status === "number") {
+          status = error.status;
+        }
       }
-      return NextResponse.json({ message }, { status: 401 });
+
+      console.error("Error occurred:", {
+        error,
+        message,
+        status,
+        stack: error instanceof Error ? error.stack : undefined,
+      });
+
+      return NextResponse.json(
+        {
+          message,
+          success: false,
+          timestamp: new Date().toISOString(),
+        },
+        { status },
+      );
     }
   }
 
