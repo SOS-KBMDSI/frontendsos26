@@ -19,14 +19,12 @@ export class DownloadService {
         },
       });
 
-      // Cek apakah response valid
       if (!response.data || response.data.size === 0) {
         throw new Error(
           "Respons dari server bukan file yang valid atau file kosong.",
         );
       }
 
-      // Jika blob-nya bertipe JSON, berarti itu pesan error dari backend
       if (response.data.type === "application/json") {
         const errorText = await response.data.text();
         const errorJson = JSON.parse(errorText) as ErrorResponse;
@@ -35,25 +33,20 @@ export class DownloadService {
         );
       }
 
-      // Buat blob baru dengan content-type yang benar dari response header
       const contentType =
         response.headers["content-type"] ||
         "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
 
       const blob = new Blob([response.data], { type: contentType });
 
-      // Tentukan filename yang akan digunakan
       let finalFilename = defaultFilename;
 
-      // Prioritas: customFilename > Content-Disposition header > defaultFilename
       if (customFilename?.trim()) {
         finalFilename = customFilename.trim();
-        // Pastikan ada ekstensi .xlsx
         if (!finalFilename.toLowerCase().endsWith(".xlsx")) {
           finalFilename += ".xlsx";
         }
       } else {
-        // Ambil filename dari Content-Disposition header jika ada
         const disposition = response.headers["content-disposition"];
         if (disposition && disposition.indexOf("filename=") !== -1) {
           finalFilename = disposition.split("filename=")[1].replace(/"/g, "");
@@ -65,7 +58,6 @@ export class DownloadService {
       console.error(`Gagal mengunduh ${defaultFilename}:`, error);
 
       if (error instanceof AxiosError && error.response?.data instanceof Blob) {
-        // Coba baca blob error dari server untuk pesan yang lebih jelas
         const errorText = await error.response.data.text();
         try {
           const errorJson = JSON.parse(errorText) as ErrorResponse;
@@ -78,7 +70,6 @@ export class DownloadService {
         }
       }
 
-      // Lempar error yang sudah ada atau error umum
       if (error instanceof Error) {
         throw new Error(error.message || `Gagal mengunduh ${defaultFilename}.`);
       }
@@ -97,7 +88,7 @@ export class DownloadService {
 
   async downloadPenugasan(customFilename?: string): Promise<void> {
     const { blob, filename } = await this.downloadExcel(
-      "/excel/penugasan",
+      "/api/dashboard/excel/penugasan",
       "Data_Penugasan.xlsx",
       customFilename,
     );
@@ -106,7 +97,7 @@ export class DownloadService {
 
   async downloadPresensi(customFilename?: string): Promise<void> {
     const { blob, filename } = await this.downloadExcel(
-      "/excel/presensi",
+      "/api/dashboard/excel/presensi",
       "Data_Presensi.xlsx",
       customFilename,
     );
@@ -115,7 +106,7 @@ export class DownloadService {
 
   async downloadMahasiswa(customFilename?: string): Promise<void> {
     const { blob, filename } = await this.downloadExcel(
-      "/excel/mahasiswa",
+      "/api/dashboard/excel/mahasiswa",
       "Data_Mahasiswa.xlsx",
       customFilename,
     );

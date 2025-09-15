@@ -14,7 +14,7 @@ export const useTugasForm = ({ initialData, onSuccess }: UseTugasFormProps) => {
     initialData?.deskripsi || "",
   );
   const [is_visible, setIs_visible] = useState<boolean>(
-    initialData ? Boolean(initialData.is_visible) : false,
+    initialData ? initialData.is_visible === "true" : false,
   );
   const [tenggat, setTenggat] = useState<string>(initialData?.tenggat || "");
   const [fileLink, setFileLink] = useState<string>(
