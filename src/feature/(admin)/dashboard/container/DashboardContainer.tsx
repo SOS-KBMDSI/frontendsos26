@@ -6,6 +6,7 @@ import {
   Archive,
   Check,
   Clock,
+  File,
   FileWarning,
   Loader2,
   Star,
@@ -28,6 +29,7 @@ import { useDashboardData } from "../hooks/useDashboardData";
 import { dataTugascolumn } from "../type/dataTugasColumn";
 import { dataKuisColumn } from "../type/dataQuixColumn";
 import { dataPresensiColumn } from "../type/dataPresensiColumn";
+import { Button } from "@/shared/components/ui/Button";
 
 const DashboardContainer = () => {
   const { data, isLoading, error, refresh } = useDashboardData();
@@ -165,7 +167,15 @@ const DashboardContainer = () => {
         />
       </section>
 
-      <div className="mt-10"></div>
+      <div className="mt-10">
+        <Button
+          variant="primary"
+          onClick={() => (window.location.href = "/admin/dashboard-download")}
+        >
+          <File className="mr-2 mb-1 h-5 w-5" />
+          Export As Excel
+        </Button>
+      </div>
 
       {/* Tugas Table */}
       <section className="mt-10">
