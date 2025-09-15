@@ -1,64 +1,52 @@
-import {
-  downloadService,
-  DownloadService,
-} from "@/api/services/admin/download";
+import { downloadService } from "@/api/services/admin/download";
 import { useState } from "react";
 
 interface UseDownloadReturn {
   isLoading: boolean;
   error: string | null;
   download: (customFilename?: string) => Promise<void>;
+  clearError: () => void;
 }
 
-type DownloadType = "penilaian" | "penugasan" | "mahasiswa";
-
-const downloadConfig = {
-  penilaian: {
-    method: "downloadPenilaian",
-    filename: "Data_Penilaian.xlsx",
-    successMessage: "Data penilaian berhasil didownload",
-  },
-  penugasan: {
-    method: "downloadPenugasan",
-    filename: "Data_Penugasan.xlsx",
-    successMessage: "Data penugasan berhasil didownload",
-  },
-  mahasiswa: {
-    method: "downloadMahasiswa",
-    filename: "data_mahasiswa.xlsx",
-    successMessage: "Data mahasiswa berhasil didownload",
-  },
-} as const;
+type DownloadType = "penilaian" | "penugasan" | "mahasiswa" | "presensi";
 
 function useDownload(type: DownloadType): UseDownloadReturn {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  const clearError = () => setError(null);
 
   const download = async (customFilename?: string): Promise<void> => {
     setIsLoading(true);
     setError(null);
 
     try {
-      const config = downloadConfig[type];
-      const method = config.method as keyof DownloadService;
+      // Validasi downloadService tersedia
+      if (!downloadService) {
+        throw new Error("Download service tidak tersedia");
+      }
 
-      const blob = await (downloadService[method] as () => Promise<Blob>)();
-
-      // Tentukan nama file final
-      // Jika customFilename ada dan tidak kosong, gunakan itu. Jika tidak, gunakan default.
-      const finalFilename = customFilename?.trim()
-        ? customFilename
-        : config.filename;
-
-      // Pastikan ekstensi .xlsx ada
-      const filenameWithExt = finalFilename.endsWith(".xlsx")
-        ? finalFilename
-        : `${finalFilename}.xlsx`;
-
-      DownloadService.triggerDownload(blob, filenameWithExt);
+      // Direct method calls berdasarkan type
+      switch (type) {
+        case "penilaian":
+          await downloadService.downloadPenilaian(customFilename);
+          break;
+        case "penugasan":
+          await downloadService.downloadPenugasan(customFilename);
+          break;
+        case "presensi":
+          await downloadService.downloadPresensi(customFilename);
+          break;
+        case "mahasiswa":
+          await downloadService.downloadMahasiswa(customFilename);
+          break;
+        default:
+          throw new Error(`Download type '${type}' tidak didukung`);
+      }
     } catch (err) {
+      console.error("Download error:", err);
       const errorMessage =
-        err instanceof Error ? err.message : "Download failed";
+        err instanceof Error ? err.message : "Download gagal";
       setError(errorMessage);
       throw err;
     } finally {
@@ -70,6 +58,8 @@ function useDownload(type: DownloadType): UseDownloadReturn {
     isLoading,
     error,
     download,
+    clearError,
   };
 }
+
 export default useDownload;

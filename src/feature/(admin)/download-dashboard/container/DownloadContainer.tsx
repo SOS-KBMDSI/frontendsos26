@@ -9,9 +9,14 @@ import {
   CheckCircle2,
   Loader2,
   LucideIcon,
+  X,
+  Clock,
+  XCircle,
+  ChevronLeft,
 } from "lucide-react";
 import useDownload from "../hooks/useDownload";
 import FileNameModal from "../components/FileNameModal";
+import Link from "next/link";
 
 type DownloadType = "penilaian" | "penugasan" | "mahasiswa";
 
@@ -25,7 +30,19 @@ interface DownloadCard {
   defaultFilename?: string;
 }
 
+interface DownloadProgress {
+  id: string;
+  type: DownloadType;
+  title: string;
+  filename: string;
+  status: "downloading" | "completed" | "failed";
+  startTime: Date;
+  error?: string;
+}
+
 const DownloadContainer = () => {
+  const [downloadQueue, setDownloadQueue] = useState<DownloadProgress[]>([]);
+
   const downloadCards: DownloadCard[] = [
     {
       id: "penugasan",
@@ -53,6 +70,48 @@ const DownloadContainer = () => {
     },
   ];
 
+  const addToQueue = (type: DownloadType, title: string, filename: string) => {
+    const downloadId = `${type}-${Date.now()}`;
+    const newDownload: DownloadProgress = {
+      id: downloadId,
+      type,
+      title,
+      filename,
+      status: "downloading",
+      startTime: new Date(),
+    };
+    setDownloadQueue((prev) => [...prev, newDownload]);
+    return downloadId;
+  };
+
+  const updateQueueStatus = (
+    id: string,
+    status: "completed" | "failed",
+    error?: string,
+  ) => {
+    setDownloadQueue((prev) =>
+      prev.map((item) => (item.id === id ? { ...item, status, error } : item)),
+    );
+  };
+
+  const removeFromQueue = (id: string) => {
+    setDownloadQueue((prev) => prev.filter((item) => item.id !== id));
+  };
+
+  const clearAllCompleted = () => {
+    setDownloadQueue((prev) =>
+      prev.filter((item) => item.status === "downloading"),
+    );
+  };
+
+  const getElapsedTime = (startTime: Date) => {
+    const elapsed = Math.floor(
+      (new Date().getTime() - startTime.getTime()) / 1000,
+    );
+    if (elapsed < 60) return `${elapsed}s`;
+    return `${Math.floor(elapsed / 60)}m ${elapsed % 60}s`;
+  };
+
   const DownloadCard = ({ card }: { card: DownloadCard }) => {
     const { isLoading, error, download } = useDownload(card.id);
     const [success, setSuccess] = useState(false);
@@ -66,11 +125,41 @@ const DownloadContainer = () => {
 
     const handleConfirmDownload = async (customFilename: string) => {
       try {
-        await download(customFilename);
+        const today = new Date();
+        const dateSuffix = `${String(today.getDate()).padStart(
+          2,
+          "0",
+        )}_${String(today.getMonth() + 1).padStart(
+          2,
+          "0",
+        )}_${today.getFullYear()}`;
+        const filenameWithDate = `${customFilename}[${dateSuffix}]`;
+
+        const downloadId = addToQueue(card.id, card.title, filenameWithDate);
+
+        await download(filenameWithDate);
+
+        updateQueueStatus(downloadId, "completed");
+
         setSuccess(true);
         setIsModalOpen(false);
         setTimeout(() => setSuccess(false), 3000);
-      } catch {}
+
+        // Auto remove completed downloads after 10 seconds
+        setTimeout(() => removeFromQueue(downloadId), 10000);
+      } catch (err) {
+        // Update status to failed
+        const downloadId = downloadQueue.find(
+          (d) => d.type === card.id && d.status === "downloading",
+        )?.id;
+        if (downloadId) {
+          updateQueueStatus(
+            downloadId,
+            "failed",
+            err instanceof Error ? err.message : "Download failed",
+          );
+        }
+      }
     };
 
     const IconComponent = card.icon;
@@ -202,7 +291,14 @@ const DownloadContainer = () => {
 
   return (
     <div className="mycontainer py-8">
-      <div className="mb-8">
+      <Link
+        href="/admin/dashboard"
+        className="flex items-center gap-1/2 text-primary-500 hover:text-primary-600 transition-colors w-fit"
+      >
+        <ChevronLeft size={24} />
+        <span className="text-xl">Kembali</span>
+      </Link>
+      <div className="my-8">
         <h2 className="text-3xl font-bold text-default-dark mb-2 font-poppins">
           Download Data
         </h2>
@@ -210,6 +306,104 @@ const DownloadContainer = () => {
           Pilih jenis data yang ingin Anda download
         </p>
       </div>
+
+      {/* Download Progress Section */}
+      {downloadQueue.length > 0 && (
+        <div className="mb-8 bg-white rounded-xl shadow-lg border border-surface-divider p-6">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-lg font-semibold text-default-dark font-poppins flex items-center gap-2">
+              <Clock className="w-5 h-5" />
+              Download Progress ({downloadQueue.length})
+            </h3>
+            {downloadQueue.some((d) => d.status !== "downloading") && (
+              <button
+                onClick={clearAllCompleted}
+                className="text-sm text-gray-500 hover:text-gray-700 font-poppins"
+              >
+                Clear Completed
+              </button>
+            )}
+          </div>
+
+          <div className="space-y-3 max-h-64 overflow-y-auto">
+            {downloadQueue.map((download) => {
+              return (
+                <div
+                  key={download.id}
+                  className={`flex items-center justify-between p-3 rounded-lg border transition-all duration-200 ${
+                    download.status === "downloading"
+                      ? "bg-blue-50 border-blue-200"
+                      : download.status === "completed"
+                        ? "bg-green-50 border-green-200"
+                        : "bg-red-50 border-red-200"
+                  }`}
+                >
+                  <div className="flex items-center space-x-3">
+                    <div
+                      className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                        download.status === "downloading"
+                          ? "bg-blue-500"
+                          : download.status === "completed"
+                            ? "bg-green-500"
+                            : "bg-red-500"
+                      }`}
+                    >
+                      {download.status === "downloading" ? (
+                        <Loader2 className="w-4 h-4 text-white animate-spin" />
+                      ) : download.status === "completed" ? (
+                        <CheckCircle2 className="w-4 h-4 text-white" />
+                      ) : (
+                        <XCircle className="w-4 h-4 text-white" />
+                      )}
+                    </div>
+
+                    <div>
+                      <div className="font-medium text-default-dark font-poppins text-sm">
+                        {download.filename}.xlsx
+                      </div>
+                      <div className="text-xs text-default-dark-50">
+                        {download.title} • {getElapsedTime(download.startTime)}
+                        {download.status === "failed" && download.error && (
+                          <span className="text-red-500 ml-2">
+                            • {download.error}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center space-x-2">
+                    <span
+                      className={`text-xs font-medium px-2 py-1 rounded-full ${
+                        download.status === "downloading"
+                          ? "bg-blue-100 text-blue-700"
+                          : download.status === "completed"
+                            ? "bg-green-100 text-green-700"
+                            : "bg-red-100 text-red-700"
+                      }`}
+                    >
+                      {download.status === "downloading"
+                        ? "Downloading"
+                        : download.status === "completed"
+                          ? "Completed"
+                          : "Failed"}
+                    </span>
+
+                    {download.status !== "downloading" && (
+                      <button
+                        onClick={() => removeFromQueue(download.id)}
+                        className="text-gray-400 hover:text-gray-600"
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {downloadCards.map((card) => (
@@ -231,6 +425,7 @@ const DownloadContainer = () => {
               <li>• File akan didownload dalam format Excel (.xlsx)</li>
               <li>• Pastikan koneksi internet stabil saat download</li>
               <li>• Klik pada kartu untuk memulai download</li>
+              <li>• Progress download akan ditampilkan di atas</li>
             </ul>
           </div>
         </div>
