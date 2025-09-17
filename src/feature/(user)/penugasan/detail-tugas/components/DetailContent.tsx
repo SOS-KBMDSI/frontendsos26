@@ -83,11 +83,11 @@ export const DetailContent = ({
                     htmlFor="drive_link"
                     className="text-default-dark text-base md:text-lg"
                   >
-                    Link Google Drive Tugas
+                    Link Penugasan
                   </label>
                   <Input
                     id="drive_link"
-                    placeholder="Salin dan tempel link tugas kamu di sini"
+                    placeholder="Masukkan Link Tugas Penugasan mu di sini..."
                     value={driveLink}
                     onChange={(e) => setDriveLink(e.target.value)}
                     disabled={isSubmitted || isOverdue || isSubmitting}
