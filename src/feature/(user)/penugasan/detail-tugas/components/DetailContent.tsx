@@ -83,7 +83,7 @@ export const DetailContent = ({
                     htmlFor="drive_link"
                     className="text-default-dark text-base md:text-lg"
                   >
-                    Link Google Drive Tugas
+                    Link Penugasan
                   </label>
                   <Input
                     id="drive_link"
