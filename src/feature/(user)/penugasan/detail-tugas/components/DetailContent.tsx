@@ -87,7 +87,7 @@ export const DetailContent = ({
                   </label>
                   <Input
                     id="drive_link"
-                    placeholder="Salin dan tempel link tugas kamu di sini"
+                    placeholder="Masukkan Link Tugas Penugasan mu di sini..."
                     value={driveLink}
                     onChange={(e) => setDriveLink(e.target.value)}
                     disabled={isSubmitted || isOverdue || isSubmitting}
