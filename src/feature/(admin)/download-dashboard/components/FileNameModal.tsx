@@ -61,7 +61,7 @@ const FileNameModal: React.FC<FileNameModalProps> = ({
               type="text"
               value={filename}
               onChange={(e) => setFilename(e.target.value)}
-              placeholder="Contoh: Laporan Penilaian Semester 1"
+              placeholder="Data_Pengumpulan"
             />
             <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">
               .xlsx

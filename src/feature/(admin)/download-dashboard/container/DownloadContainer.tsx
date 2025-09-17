@@ -63,7 +63,7 @@ const DownloadContainer = () => {
     {
       id: "mahasiswa",
       title: "Mahasiswa",
-      description: "Download data kehadiran",
+      description: "Download data mahasiswa",
       icon: Users,
       color: "from-primary-400 to-primary-600",
       hoverColor: "hover:from-primary-500 hover:to-primary-700",
@@ -330,7 +330,7 @@ const DownloadContainer = () => {
               return (
                 <div
                   key={download.id}
-                  className={`flex items-center justify-between p-3 rounded-lg border transition-all duration-200 ${
+                  className={`flex w-full flex-col sm:flex-row md:items-center md:justify-between p-3 rounded-lg border transition-all duration-200 gap-3 ${
                     download.status === "downloading"
                       ? "bg-blue-50 border-blue-200"
                       : download.status === "completed"
@@ -340,7 +340,7 @@ const DownloadContainer = () => {
                 >
                   <div className="flex items-center space-x-3">
                     <div
-                      className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                      className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
                         download.status === "downloading"
                           ? "bg-blue-500"
                           : download.status === "completed"
@@ -357,11 +357,11 @@ const DownloadContainer = () => {
                       )}
                     </div>
 
-                    <div>
-                      <div className="font-medium text-default-dark font-poppins text-sm">
+                    <div className="min-w-0">
+                      <div className="font-medium text-default-dark font-poppins text-sm truncate">
                         {download.filename}.xlsx
                       </div>
-                      <div className="text-xs text-default-dark-50">
+                      <div className="text-xs text-default-dark-50 truncate">
                         {download.title} • {getElapsedTime(download.startTime)}
                         {download.status === "failed" && download.error && (
                           <span className="text-red-500 ml-2">
@@ -372,9 +372,9 @@ const DownloadContainer = () => {
                     </div>
                   </div>
 
-                  <div className="flex items-center space-x-2">
+                  <div className="flex items-center justify-between sm:justify-end space-x-2 ml-11 sm:ml-0">
                     <span
-                      className={`text-xs font-medium px-2 py-1 rounded-full ${
+                      className={`text-xs font-medium px-2 py-1 rounded-full whitespace-nowrap ${
                         download.status === "downloading"
                           ? "bg-blue-100 text-blue-700"
                           : download.status === "completed"
