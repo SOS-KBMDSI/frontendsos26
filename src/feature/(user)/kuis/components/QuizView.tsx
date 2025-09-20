@@ -124,7 +124,7 @@ export const QuizView = ({
 
         <div className="p-6 rounded-lg bg-[#F5E6E9]">
           <h5 className="font-semibold text-lg sm:text-xl">Pertanyaan</h5>
-          <p className="text-base sm:text-lg mb-6">
+          <p className="text-base sm:text-lg mb-6 whitespace-pre-line break-words">
             {currentQuestion.pertanyaan}
           </p>
 
@@ -135,20 +135,21 @@ export const QuizView = ({
                 onClick={() =>
                   onSelectAnswer(currentQuestion.id_pertanyaan, pilihan.label)
                 }
-                className={`w-full py-3 px-4 rounded-2xl border text-left transition-colors ${
+                className={`w-full flex items-center gap-2  py-4 md:py-3 px-3 md:px-4 rounded-xl md:rounded-2xl border text-left text-sm md:text-base transition-colors ${
                   answers[currentQuestion.id_pertanyaan] === pilihan.label
                     ? "border-primary-500 text-primary-500 bg-primary-100 hover:bg-primary-200"
                     : "bg-white border-black/50 hover:bg-gray-100"
                 }`}
               >
-                <span className="font-bold mr-3">{pilihan.label}.</span>
-                {pilihan.value}
+                <p className="font-bold mr-2 md:mr-3">{pilihan.label}.</p>
+                <p>{pilihan.value}</p>
               </button>
             ))}
           </div>
 
           <div className="lg:flex grid grid-cols-2 gap-4 lg:gap-0  lg:justify-between mt-8">
             <Button
+              className="text-xs md:text-base"
               onClick={onPrev}
               variant={"outline"}
               disabled={currentQuestionIndex === 0}
@@ -156,11 +157,21 @@ export const QuizView = ({
               Sebelumnya
             </Button>
             {isLastQuestion ? (
-              <Button onClick={onSubmit} disabled={isSubmitting}>
+              <Button
+                className="text-xs md:text-base"
+                onClick={onSubmit}
+                disabled={isSubmitting}
+              >
                 {isSubmitting ? "Mengumpulkan..." : "Selesai"}
               </Button>
             ) : (
-              <Button onClick={onNext}>Selanjutnya</Button>
+              <Button
+                className="text-xs md:text-base"
+                onClick={onNext}
+                size="small"
+              >
+                Selanjutnya
+              </Button>
             )}
           </div>
         </div>

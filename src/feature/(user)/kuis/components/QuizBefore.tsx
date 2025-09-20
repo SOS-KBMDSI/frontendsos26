@@ -36,10 +36,11 @@ const QuizBefore = ({ quiz }: { quiz: Quiz | null }) => {
         <h4 className="font-bold text-black">Siap Taklukan Quiz?</h4>
         <p className="text-justify ">
           <span className="whitespace-pre-line">{quiz?.deskripsi_kuis}</span>
-          <span className="font-semibold mx-2">{quiz?.nama_kuis}</span>. Kamu
-          punya <span className="font-semibold">{totalMinutes} Menit</span>{" "}
-          penuh untuk fokus. Ingat, timer akan terus berjalan. Percayalah pada
-          persiapan yang sudah kamu lakukan!
+          <p>
+            Kamu punya <span className="font-bold">{totalMinutes}</span>
+            Menit penuh untuk fokus. Ingat, timer akan terus berjalan.
+            Percayalah pada persiapan yang sudah kamu lakukan!
+          </p>
         </p>
         <Button
           onClick={() => setIsModalOpen(true)}
