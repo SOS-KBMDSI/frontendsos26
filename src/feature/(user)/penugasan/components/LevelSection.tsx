@@ -1,7 +1,9 @@
+"use client"; // 1. Tandai sebagai Client Component
+
 import * as ProgressPrimitive from "@radix-ui/react-progress";
 import * as React from "react";
-import { MahasiswaLevel } from "../types";
 import Image from "next/image";
+import { MahasiswaLevel } from "../types";
 import Maskot from "@/assets/user/maskot-sos-basic.svg";
 import { cn } from "@/shared/utils/cn";
 
@@ -11,18 +13,26 @@ interface LevelSectionProps {
 
 export const LevelSection = ({ level }: LevelSectionProps) => {
   const [progressValue, setProgressValue] = React.useState(0);
+  const percentage = React.useMemo(() => {
+    if (!level || level.max_level === 0) {
+      return 0;
+    }
+    return (level.level / level.max_level) * 100;
+  }, [level]);
 
   React.useEffect(() => {
-    const timer = setTimeout(() => setProgressValue(45), 100);
+    const timer = setTimeout(() => setProgressValue(percentage), 100);
     return () => clearTimeout(timer);
-  }, []);
+  }, [percentage]);
 
   if (!level) {
     return null;
   }
 
-  const completedTaskCount = level.level;
-  const displayLevel = level.level;
+  const progressMessage =
+    level.level === 0
+      ? "Kerjakan penugasan untuk membuka level"
+      : `Kamu telah menyelesaikan ${level.level} dari ${level.max_level} penugasan.`;
 
   return (
     <div
@@ -38,14 +48,12 @@ export const LevelSection = ({ level }: LevelSectionProps) => {
           className="w-14 h-14 md:w-20 md:h-20"
           priority
         />
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2 w-full">
           <p className="text-default-dark font-semibold text-lg md:text-2xl">
-            Level {displayLevel}
+            Level {level.level}
           </p>
           <p className="text-xs text-default-dark md:text-lg">
-            {completedTaskCount === 0
-              ? "Kerjakan penugasan untuk membuka level"
-              : `Selamat! kamu telah mengumpulkan ${completedTaskCount} penugasan`}
+            {progressMessage}
           </p>
         </div>
       </div>
@@ -62,7 +70,7 @@ export const LevelSection = ({ level }: LevelSectionProps) => {
             "transition-transform duration-1000 ease-out",
             "overflow-hidden",
           )}
-          style={{ transform: `translateX(-${100 - (progressValue || 0)}%)` }}
+          style={{ transform: `translateX(-${100 - progressValue}%)` }}
         >
           <div
             className={cn(
