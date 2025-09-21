@@ -292,7 +292,7 @@ const EditQuizForm: React.FC<EditQuizFormProps> = ({
             >
               <h3 className="font-bold text-primary-500">Soal {index + 1}</h3>
               <div>
-                <Input
+                <Textarea
                   placeholder="Tulis judul pertanyaan di sini..."
                   value={item.judul_pertanyaan || ""}
                   onChange={(e) =>
