@@ -47,9 +47,7 @@ const PresensiTable = ({
 }: PresensiTableProps) => {
   return (
     <div className="flex flex-col gap-y-4">
-      <h4 className="text-black text-3xl font-bold ">
-        Daftar Pengumpulan Penugasan
-      </h4>
+      <h4 className="text-black text-3xl font-bold ">Daftar Presensi</h4>
       <DataTable<PresensiMahasiswaDetail>
         table={table}
         isLoading={isSubmissionLoading}

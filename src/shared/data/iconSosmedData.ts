@@ -29,14 +29,14 @@ export const iconSosmedData: SocialMediaIcon[] = [
   },
   {
     name: "YouTube",
-    href: "#",
+    href: "https://youtube.com/@sosdsi?si=KGlAA94IGYwfxIb-",
     iconSrc: IconYoutube,
     width: 40,
     height: 40,
   },
   {
     name: "X/Twitter",
-    href: "#",
+    href: "https://x.com/sosdsi?s=21",
     iconSrc: IconX,
     width: 40,
     height: 40,
