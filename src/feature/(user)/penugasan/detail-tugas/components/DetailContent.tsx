@@ -23,7 +23,7 @@ export const DetailContent = ({
   tugas,
   driveLink,
   setDriveLink,
-  isSubmitted,
+  // isSubmitted,
   isOverdue,
   isSubmitting,
   handleFormSubmit,
@@ -90,7 +90,7 @@ export const DetailContent = ({
                     placeholder="Masukkan Link Tugas Penugasan mu di sini..."
                     value={driveLink}
                     onChange={(e) => setDriveLink(e.target.value)}
-                    disabled={isSubmitted || isOverdue || isSubmitting}
+                    disabled={isOverdue || isSubmitting}
                   />
                 </div>
                 <div className="flex flex-col md:flex-row items-center text-justify gap-3 bg-infoNotif border border-borderNotif p-4 md:p-5 rounded-lg w-full mt-4 md:mt-6">
@@ -116,7 +116,7 @@ export const DetailContent = ({
               </Button>
               <Button
                 onClick={handleFormSubmit}
-                disabled={isSubmitted || isOverdue || isSubmitting}
+                disabled={isOverdue || isSubmitting}
                 className="w-full md:w-auto px-20"
               >
                 {isSubmitting && (
