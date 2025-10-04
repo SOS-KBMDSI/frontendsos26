@@ -24,7 +24,17 @@ const MemoriCard = ({ memori, isActive }: MemoriCardProps) => {
           src={Texture}
           className="absolute z-10 w-full h-full"
         />
-        <p className="z-40">{memori.content.toString()}</p>
+        {typeof memori.content === "string" &&
+        memori.content.startsWith("http") ? (
+          <Image
+            src={memori.content}
+            alt={memori.title}
+            fill
+            className="object-cover z-40"
+          />
+        ) : (
+          <p className="z-40">{memori.content.toString()}</p>
+        )}
       </div>
       <div
         className={`w-full h-[10rem] rounded-[4rem] flex items-end  relative z-10 -mt-28 bg-primary-500 transition-all duration-300 ${
