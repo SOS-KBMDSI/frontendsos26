@@ -50,7 +50,7 @@ export const DetailTugasContainer = ({
   const isSubmitted = tugas.status === "Selesai";
 
   const isDeadlinePassed = new Date() > new Date(tugas.tenggat);
-  const isOverdue = isDeadlinePassed && !isSubmitted;
+  // const isOverdue = isDeadlinePassed && !isSubmitted;
 
   let statusText: string;
   let statusVariant: "not_started" | "completed" | "overdue";
@@ -58,7 +58,7 @@ export const DetailTugasContainer = ({
   if (isSubmitted) {
     statusText = "Selesai";
     statusVariant = "completed";
-  } else if (isOverdue) {
+  } else if (isDeadlinePassed) {
     statusText = "Terlewat";
     statusVariant = "overdue";
   } else {
@@ -121,7 +121,7 @@ export const DetailTugasContainer = ({
               driveLink={driveLink}
               setDriveLink={setDriveLink}
               isSubmitted={isSubmitted}
-              isOverdue={isOverdue}
+              isOverdue={isDeadlinePassed}
               isSubmitting={isSubmitting}
               handleFormSubmit={handleFormSubmit}
             />
