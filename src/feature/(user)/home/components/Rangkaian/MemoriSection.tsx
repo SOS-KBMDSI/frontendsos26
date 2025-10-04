@@ -4,6 +4,7 @@ import { memoriData } from "../../data/memori";
 import Arrow from "@/assets/user/arrow-memori.svg";
 import Image from "next/image";
 import MemoriCard from "./MemoriCard";
+import Link from "next/link";
 
 const MemoriSection = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -93,11 +94,14 @@ const MemoriSection = () => {
           className={`grid w-full  xl:gap-4 gap-10 2xl:gap-10 overflow-hidden ${getGridClasses()}`}
         >
           {visibleMemories.map((memori, index) => (
-            <MemoriCard
+            <Link
               key={`${memori.id}-${currentIndex}-${index}`}
-              memori={memori}
-              isActive={index === activeIndex}
-            />
+              href={memori.link}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <MemoriCard memori={memori} isActive={index === activeIndex} />
+            </Link>
           ))}
         </div>
 
