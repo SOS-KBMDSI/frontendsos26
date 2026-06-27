@@ -2,10 +2,10 @@ import type { Metadata } from "next";
 import SOSLOGO from "@/assets/logo-sos.svg";
 import favicon from "@/app/favicon.ico";
 export const siteConfig = {
-  name: "Synergy of Symphony 2025",
-  shortName: "SOS 2025",
+  name: "Synergy of Symphony 2026",
+  shortName: "SOS 2026",
   description:
-    "Ajang pembekalan awal bagi mahasiswa baru Departemen Sistem Informasi 2025 yang menumbuhkan kolaborasi dan kepemimpinan, diwujudkan melalui Shaping The Future",
+    "Ajang pembekalan awal bagi mahasiswa baru Departemen Sistem Informasi 2026 yang menumbuhkan kolaborasi dan kepemimpinan, diwujudkan melalui Shaping The Future",
   url: "https://sos.kbmdsi.com/",
   ogImage: SOSLOGO,
   twitterImage: SOSLOGO,
@@ -15,10 +15,10 @@ export const siteConfig = {
 export const defaultMetadata: Metadata = {
   title: {
     default: "Synergy of Symphony ",
-    template: "%s | SOS 2025",
+    template: "%s | SOS 2026",
   },
   description:
-    "Ajang pembekalan awal bagi mahasiswa baru Departemen Sistem Informasi 2025. Siap memulai perjalanan barumu? Temukan detailnya di sini.",
+    "Ajang pembekalan awal bagi mahasiswa baru Departemen Sistem Informasi 2026. Siap memulai perjalanan barumu? Temukan detailnya di sini.",
   icons: {
     icon: [
       {
@@ -40,10 +40,10 @@ export const defaultMetadata: Metadata = {
     ],
   },
   keywords: [
-    "SOS 2025",
+    "SOS 2026",
     "sos",
     "synergy of symphony",
-    "synergy of symphony 2025",
+    "synergy of symphony 2026",
     "KBMDSI",
     "pembekalan mahasiswa baru",
     "mahasiswa baru sistem informasi",
@@ -52,10 +52,10 @@ export const defaultMetadata: Metadata = {
     "kolaborasi mahasiswa",
     "kepemimpinan mahasiswa",
     "orientasi mahasiswa baru",
-    "sistem informasi 2025",
+    "sistem informasi 2026",
   ],
 
-  authors: [{ name: "Panitia SOS 2025" }],
+  authors: [{ name: "Panitia SOS 2026" }],
   creator: "Departemen Sistem Informasi",
   publisher: "KBMDSI",
   generator: "Next.js",
@@ -75,7 +75,7 @@ export const defaultMetadata: Metadata = {
   other: {
     "theme-color": siteConfig.themeColor,
     "color-scheme": "light dark",
-    "event-year": "2025",
+    "event-year": "2026",
     "event-type": "KBMDSI",
     "target-audience": "mahasiswa baru sistem informasi",
   },
@@ -84,9 +84,9 @@ export const defaultMetadata: Metadata = {
 export const eventStructuredData = {
   "@context": "https://schema.org",
   "@type": "Event",
-  name: "Synergy of Symphony 2025 (SOS 2025)",
+  name: "Synergy of Symphony 2026 (SOS 2026)",
   description:
-    "Ajang pembekalan awal bagi mahasiswa baru Departemen Sistem Informasi 2025 yang menumbuhkan kolaborasi dan kepemimpinan, diwujudkan melalui Shaping The Future",
+    "Ajang pembekalan awal bagi mahasiswa baru Departemen Sistem Informasi 2026 yang menumbuhkan kolaborasi dan kepemimpinan, diwujudkan melalui Shaping The Future",
   location: {
     "@type": "Place",
     name: "Departemen Sistem Informasi",
@@ -97,7 +97,7 @@ export const eventStructuredData = {
   },
   audience: {
     "@type": "Audience",
-    audienceType: "Mahasiswa Baru Sistem Informasi 2025",
+    audienceType: "Mahasiswa Baru Sistem Informasi 2026",
   },
   keywords:
     "SOS, KBMDSI, synergy of symphony, mahasiswa baru, sistem informasi",
