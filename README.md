@@ -1,38 +1,80 @@
-# frontendsos
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# SOS — Synergy of Symphony 2026
 
-## Getting Started
+Website Penerimaan Mahasiswa Baru Departemen Sistem Informasi.
 
-First, run the development server:
+## Daftar Isi
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- Tentang Project
+- Tech Stack
+- Prasyarat
+- Memulai
+- Environment Variables
+- Skrip Tersedia
+- Struktur Folder
+- Konvensi Coding & Git
+- Cara Menambah Fitur Baru
+- Quality Gate (Husky)
+- Tim
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Tentang Project
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Penjelasan SOS, target user (maba SI), modul utama (akademik, aktivitas, peta, STF, profile, admin).
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Tech Stack
 
-## Learn More
+Tabel: Next.js 15, React 19, TypeScript 5, Tailwind v4, Radix UI, TanStack Query/Table, Axios, Zod, Framer Motion, Jose (JWT).
 
-To learn more about Next.js, take a look at the following resources:
+## Prasyarat
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Node.js v20+ (LTS)
+- npm v10+
+- Git, VSCode (recommended)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Memulai
 
+1. Clone repo
+2. Copy `.env.example` → `.env.local`, isi value
+3. `npm install`
+4. `npm run dev` → http://localhost:3000
 
-## Deploy on Vercel
+## Environment Variables
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Tabel: nama | wajib? | deskripsi | contoh.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Skrip Tersedia
+
+Tabel: dev / build / start / lint.
+
+## Struktur Folder
+
+src/
+├── app/ # Next.js App Router (route: (auth), (user), admin)
+├── feature/ # Logic per fitur
+├── shared/ # Komponen, hooks, context, util lintas fitur
+├── api/ # Axios + service layer
+├── assets/ # Gambar, font, ikon
+├── lib/ # Helper umum
+├── styles/ # globals.css
+└── middleware.ts # JWT + role-based routing
+
+## Konvensi Coding & Git
+
+- Komponen: PascalCase. Hook: camelCase.
+- Branch: feat/, fix/, chore/, docs/, refactor/ + nama (kebab-case).
+- Commit: Conventional Commits (di-enforce commitlint).
+- PR: minimal 1 reviewer.
+
+## Cara Menambah Fitur Baru
+
+1. Route: src/app/(user)/<fitur>/page.tsx
+2. Logic: src/feature/(user)/<fitur>/{components,container,hooks,types}
+3. Service: src/api/services/<scope>/<fitur>.ts
+4. Asset: src/assets/<fitur>/
+
+## Quality Gate
+
+- pre-commit: tsc --noEmit + lint-staged
+- commit-msg: commitlint
+- pre-push: npm run build
+
+Jangan pakai --no-verify kalau hook nolak.
