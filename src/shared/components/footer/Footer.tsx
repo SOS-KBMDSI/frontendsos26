@@ -68,7 +68,7 @@ export const Footer = () => {
 
       <div className="border-t border-default-dark/50 text-center py-[11px] text-default-dark text-[10px] hover:underline hover:underline-offset-4 font-bold">
         <Link href="https://linktr.ee/pitsos25">
-          Made with ❤️ by PIT SOS 2025
+          Made with ❤️ by PIT SOS 2026
         </Link>
       </div>
     </footer>

@@ -33,9 +33,11 @@ export class DownloadService {
         );
       }
 
+      const rawContentType = response.headers["content-type"];
       const contentType =
-        response.headers["content-type"] ||
-        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+        typeof rawContentType === "string"
+          ? rawContentType
+          : "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
 
       const blob = new Blob([response.data], { type: contentType });
 
