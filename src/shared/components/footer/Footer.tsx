@@ -13,19 +13,19 @@ export const Footer = () => {
       <Image
         src={CaturPattern}
         alt="Footer Pattern"
-        className="w-full h-[50px] object-cover md:h-auto"
+        className="w-full h-50px object-cover md:h-auto"
         aria-hidden="true"
       />
 
-      <div className="mycontainer py-[89px] md:py-[56px]">
-        <div className="flex flex-col items-center md:flex-row md:justify-around gap-[34px] md:gap-[22px]">
-          <div className="flex flex-col md:flex-row items-center gap-[22px] text-center md:text-left">
+      <div className="mycontainer py-89px md:py-56px">
+        <div className="flex flex-col items-center md:flex-row md:justify-around gap-34px md:gap-22px">
+          <div className="flex flex-col md:flex-row items-center gap-22px text-center md:text-left">
             <Image
               src={LogoSoS}
               alt="Logo Synergy Of Symphony"
-              className="w-[78px] md:w-[112px]"
+              className="w-78px md:w-112px"
             />
-            <div className="flex flex-col gap-[6px]">
+            <div className="flex flex-col gap-6px">
               <h4 className="font-bold text-[17px] text-default-dark">
                 Synergy Of Symphony & <br className="hidden md:block" /> Shaping
                 The Future
@@ -36,13 +36,13 @@ export const Footer = () => {
             </div>
           </div>
 
-          <div className="flex flex-col-reverse items-center md:flex-row md:items-start gap-[17px] md:gap-[67px] lg:gap-[112px]">
+          <div className="flex flex-col-reverse items-center md:flex-row md:items-start gap-17px md:gap-67px lg:gap-112px">
             <FooterLinks />
-            <div className="flex flex-col items-center md:items-start gap-[17px]">
+            <div className="flex flex-col items-center md:items-start gap-17px">
               <h3 className="hidden md:block font-semibold text-[14px] text-default-dark">
                 Sosial Media
               </h3>
-              <div className="flex justify-center md:justify-start gap-[11px]">
+              <div className="flex justify-center md:justify-start gap-11px">
                 {iconSosmedData.map((sosmed) => (
                   <Link
                     key={sosmed.name}
@@ -66,7 +66,7 @@ export const Footer = () => {
         </div>
       </div>
 
-      <div className="border-t border-default-dark/50 text-center py-[11px] text-default-dark text-[10px] hover:underline hover:underline-offset-4 font-bold">
+      <div className="border-t border-default-dark/50 text-center py-11px text-default-dark text-[10px] hover:underline hover:underline-offset-4 font-bold">
         <Link href="https://linktr.ee/pitsos25">
           Made with ❤️ by PIT SOS 2026
         </Link>

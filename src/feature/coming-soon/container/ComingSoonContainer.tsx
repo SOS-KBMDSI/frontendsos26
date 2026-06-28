@@ -1,38 +1,27 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-
-import FramePhoto from "../components/FramePhoto";
-import Hero from "../components/Hero";
-import { ComingSoonLoader } from "../components/ComingSoonLoader";
+import { useOpeningSequence } from "../hooks/useOpeningSequence";
+import { BackgroundLayers } from "../components/BackgroundLayers";
+import { RockDecorations } from "../components/RockDecorations";
+import { HeroSection } from "../components/HeroSection";
+import { MeteorShower } from "../components/MeteorShower";
+import { OpeningAnimation } from "../components/OpeningAnimation";
 
 export default function ComingSoonContainer() {
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 5000);
-    return () => clearTimeout(timer);
-  }, []);
+  const {
+    phase,
+    isMainVisible,
+    isHeroVisible,
+    isSubtitleVisible,
+    isMeteorActive,
+  } = useOpeningSequence();
 
   return (
-    <main className="h-screen w-screen bg-login relative overflow-hidden">
-      <AnimatePresence mode="wait">
-        {loading ? (
-          <ComingSoonLoader />
-        ) : (
-          <motion.div
-            key="content"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.75 }}
-          >
-            <FramePhoto />
-            <Hero />
-          </motion.div>
-        )}
-      </AnimatePresence>
+    <main className="relative h-screen w-screen overflow-hidden">
+      <BackgroundLayers />
+      <RockDecorations active={isMainVisible} />
+      <HeroSection showLogo={isHeroVisible} showSubtitle={isSubtitleVisible} />
+      {isMeteorActive && <MeteorShower />}
+      <OpeningAnimation phase={phase} />
     </main>
   );
 }
