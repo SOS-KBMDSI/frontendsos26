@@ -12,9 +12,9 @@ export function RockDecorations({ active }: RockDecorationsProps) {
   return (
     <>
       <motion.div
-        className="absolute bottom-0 z-10 pointer-events-none select-none
+        className="absolute z-10 pointer-events-none select-none
                    w-[85%] sm:w-[68%] md:w-[65%] lg:w-[62%] xl:w-[58%]"
-        style={{ left: "-3%" }}
+        style={{ left: "-3%", bottom: "-5vh" }}
         initial={{ y: "100%" }}
         animate={active ? { y: 0 } : { y: "100%" }}
         transition={{
@@ -33,9 +33,9 @@ export function RockDecorations({ active }: RockDecorationsProps) {
       </motion.div>
 
       <motion.div
-        className="absolute bottom-0 z-20 pointer-events-none select-none
+        className="absolute z-20 pointer-events-none select-none
                    w-[115%] sm:w-[95%] md:w-[92%] lg:w-[88%] xl:w-[82%]"
-        style={{ right: "-3%" }}
+        style={{ right: "-3%", bottom: "-5vh" }}
         initial={{ y: "100%" }}
         animate={active ? { y: 0 } : { y: "100%" }}
         transition={{
