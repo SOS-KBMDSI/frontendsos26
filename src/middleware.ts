@@ -20,23 +20,23 @@ export async function middleware(request: NextRequest) {
   const adminPath = "/admin";
   const loginPath = "/login";
   const profilePath = "/profile";
-  const adminDashboardPath = "/admin/dashboard";
+  const comingSoonPath = "/coming-soon";
 
   const adminRoles = ["admin", "superadmin", "sqc", "pjl"];
   const isAdminUser = payload && adminRoles.includes(payload.Role as string);
+
   if (payload && (!payload.Role || payload.Role === "")) {
     const url = new URL(loginPath, request.url);
     url.searchParams.set("error", "bukan_maba_lu");
 
     const response = NextResponse.redirect(url);
-
     response.cookies.delete("auth_session");
-
     return response;
   }
 
-  if (pathname === "/" && isAdminUser) {
-    return NextResponse.redirect(new URL(adminDashboardPath, request.url));
+  // Pre-launch: semua visitor di-redirect dari root ke /coming-soon
+  if (pathname === "/") {
+    return NextResponse.redirect(new URL(comingSoonPath, request.url));
   }
 
   if (pathname.startsWith(adminPath)) {
@@ -58,9 +58,9 @@ export async function middleware(request: NextRequest) {
   if (pathname.startsWith(loginPath)) {
     if (payload) {
       if (isAdminUser) {
-        return NextResponse.redirect(new URL(adminDashboardPath, request.url));
+        return NextResponse.redirect(new URL("/admin/dashboard", request.url));
       }
-      return NextResponse.redirect(new URL("/", request.url));
+      return NextResponse.redirect(new URL(comingSoonPath, request.url));
     }
   }
 

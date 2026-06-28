@@ -9,6 +9,7 @@ export const upanddownNormal = localFont({
   ],
   variable: "--font-upanddownnormal",
 });
+
 export const poppins = localFont({
   src: [
     {
@@ -103,4 +104,16 @@ export const poppins = localFont({
     },
   ],
   variable: "--font-poppins",
+});
+
+export const superMario = localFont({
+  src: [
+    {
+      path: "../../assets/fonts/supermario/New Super Mario Font U.ttf",
+      weight: "400",
+      style: "normal",
+    },
+  ],
+  variable: "--font-supermario",
+  display: "swap",
 });

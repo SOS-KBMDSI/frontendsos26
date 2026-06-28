@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import "@/styles/globals.css";
-import { upanddownNormal, poppins } from "@/shared/utils/font";
+import { upanddownNormal, poppins, superMario } from "@/shared/utils/font";
 import { defaultMetadata } from "@/shared/utils/metadata";
 import SOSLOGO from "@/assets/logo-sos.png";
+
 export const metadata: Metadata = {
   ...defaultMetadata,
   metadataBase: new URL("https://sos.kbmdsi.com"),
@@ -26,7 +27,7 @@ export default function RootLayout({
         <link rel="apple-touch-icon" href={SOSLOGO.src} />
       </head>
       <body
-        className={`${poppins.variable} ${upanddownNormal.variable} font-poppins antialiased`}
+        className={`${poppins.variable} ${upanddownNormal.variable} ${superMario.variable} font-poppins antialiased`}
       >
         {children}
       </body>
