@@ -4,6 +4,10 @@ import { jwtVerify } from "jose";
 
 const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET as string);
 
+const PRE_LAUNCH_MODE = true;
+
+const COMING_SOON_PATH = "/coming-soon";
+
 async function verifyToken(token: string) {
   try {
     const { payload } = await jwtVerify(token, JWT_SECRET);
@@ -15,12 +19,19 @@ async function verifyToken(token: string) {
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
+
+  if (PRE_LAUNCH_MODE) {
+    if (pathname !== COMING_SOON_PATH) {
+      return NextResponse.redirect(new URL(COMING_SOON_PATH, request.url));
+    }
+    return NextResponse.next();
+  }
+
   const token = request.cookies.get("auth_session")?.value;
   const payload = token ? await verifyToken(token) : null;
   const adminPath = "/admin";
   const loginPath = "/login";
   const profilePath = "/profile";
-  const comingSoonPath = "/coming-soon";
 
   const adminRoles = ["admin", "superadmin", "sqc", "pjl"];
   const isAdminUser = payload && adminRoles.includes(payload.Role as string);
@@ -28,15 +39,13 @@ export async function middleware(request: NextRequest) {
   if (payload && (!payload.Role || payload.Role === "")) {
     const url = new URL(loginPath, request.url);
     url.searchParams.set("error", "bukan_maba_lu");
-
     const response = NextResponse.redirect(url);
     response.cookies.delete("auth_session");
     return response;
   }
 
-  // Pre-launch: semua visitor di-redirect dari root ke /coming-soon
-  if (pathname === "/") {
-    return NextResponse.redirect(new URL(comingSoonPath, request.url));
+  if (pathname === "/" && isAdminUser) {
+    return NextResponse.redirect(new URL("/admin/dashboard", request.url));
   }
 
   if (pathname.startsWith(adminPath)) {
@@ -60,7 +69,7 @@ export async function middleware(request: NextRequest) {
       if (isAdminUser) {
         return NextResponse.redirect(new URL("/admin/dashboard", request.url));
       }
-      return NextResponse.redirect(new URL(comingSoonPath, request.url));
+      return NextResponse.redirect(new URL("/", request.url));
     }
   }
 
