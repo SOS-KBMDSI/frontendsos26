@@ -24,9 +24,6 @@ const SUBTITLE_WORDS: SubtitleWord[] = [
   { text: "2026", strokeColor: "#65995B" },
 ];
 
-const ZOOM_SCALE: number[] = [0, 0.5, 1, 1.15, 1];
-const ZOOM_TIMES: number[] = [0, 0.3, 0.6, 0.85, 1];
-
 export function HeroSection({ showLogo, showSubtitle }: HeroSectionProps) {
   return (
     <div
@@ -44,12 +41,15 @@ export function HeroSection({ showLogo, showSubtitle }: HeroSectionProps) {
           className="relative w-[95%] sm:w-[88%] md:w-[80%] lg:w-[72%] xl:w-[68%] max-w-300"
         >
           <motion.div
-            initial={{ scale: 0 }}
-            animate={showLogo ? { scale: ZOOM_SCALE } : { scale: 0 }}
+            initial={{ scale: 0, opacity: 0 }}
+            animate={
+              showLogo ? { scale: 1, opacity: 1 } : { scale: 0, opacity: 0 }
+            }
             transition={{
-              duration: 0.8,
-              times: ZOOM_TIMES,
-              ease: "easeOut",
+              type: "spring",
+              stiffness: 180,
+              damping: 16,
+              mass: 0.9,
             }}
             className="relative"
           >
@@ -60,40 +60,10 @@ export function HeroSection({ showLogo, showSubtitle }: HeroSectionProps) {
               draggable={false}
               priority
             />
-
-            {showLogo && (
-              <div
-                className="absolute inset-0 overflow-hidden pointer-events-none"
-                style={{
-                  WebkitMaskImage: `url(${comingSoonLogo.src})`,
-                  maskImage: `url(${comingSoonLogo.src})`,
-                  WebkitMaskSize: "100% 100%",
-                  maskSize: "100% 100%",
-                  WebkitMaskRepeat: "no-repeat",
-                  maskRepeat: "no-repeat",
-                }}
-              >
-                <motion.div
-                  className="absolute top-0 bottom-0 w-[40%] -skew-x-12"
-                  style={{
-                    background:
-                      "linear-gradient(90deg, transparent 0%, rgba(255, 50, 50, 0.95) 50%, transparent 100%)",
-                    mixBlendMode: "screen",
-                  }}
-                  initial={{ left: "-50%" }}
-                  animate={{ left: ["-50%", "150%"] }}
-                  transition={{
-                    duration: 2,
-                    repeat: Infinity,
-                    repeatDelay: 1.5,
-                    ease: "linear",
-                  }}
-                />
-              </div>
-            )}
           </motion.div>
         </motion.div>
 
+        {/* Subtitle: float up-down wrapper */}
         <motion.div
           animate={showSubtitle ? { y: [0, -6, 0] } : { y: 0 }}
           transition={{
@@ -110,13 +80,18 @@ export function HeroSection({ showLogo, showSubtitle }: HeroSectionProps) {
           {SUBTITLE_WORDS.map((word, wordIdx) => (
             <motion.span
               key={`${word.text}-${wordIdx}`}
-              initial={{ scale: 0 }}
-              animate={showSubtitle ? { scale: ZOOM_SCALE } : { scale: 0 }}
+              initial={{ scale: 0, opacity: 0 }}
+              animate={
+                showSubtitle
+                  ? { scale: 1, opacity: 1 }
+                  : { scale: 0, opacity: 0 }
+              }
               transition={{
-                duration: 0.6,
-                times: ZOOM_TIMES,
-                delay: wordIdx * 0.08,
-                ease: "easeOut",
+                type: "spring",
+                stiffness: 220,
+                damping: 18,
+                mass: 0.8,
+                delay: wordIdx * 0.09,
               }}
               className="inline-flex [-webkit-text-stroke-width:1px] sm:[-webkit-text-stroke-width:2px]"
               style={{

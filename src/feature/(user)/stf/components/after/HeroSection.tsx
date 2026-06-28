@@ -8,7 +8,7 @@ const HeroSection = () => {
           Halo, Kenalan Yuk Sama Calon Ketua Angkatan!
         </h2>
         <p className="text-base text-justify md:text-center md:text-xl w-11/12">
-          Calon Ketua Angkatan 2025 hadir sebagai sosok yang membawa semangat
+          Calon Ketua Angkatan 2026 hadir sebagai sosok yang membawa semangat
           perubahan dan komitmen untuk membangun angkatan yang lebih solid,
           aktif, dan berdampak. Yuk kenali mereka lebih dekat dengan cari info
           visi dan misi, serta tujuan mereka. Karena setiap suara yang kamu

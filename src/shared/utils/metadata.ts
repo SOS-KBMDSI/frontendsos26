@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import SOSLOGO from "@/assets/logo-sos.svg";
+import SOSLOGO from "@/assets/logo-sos.png";
 import favicon from "@/app/favicon.ico";
 export const siteConfig = {
   name: "Synergy of Symphony 2026",

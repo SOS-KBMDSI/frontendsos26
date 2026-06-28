@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import Image, { StaticImageData } from "next/image";
+import { motion } from "framer-motion";
 import bgComingSoon from "@/assets/coming-soon/bg-comingsoon.webp";
 import star from "@/assets/coming-soon/star.svg";
 import greenDot from "@/assets/coming-soon/greenDot.svg";
@@ -8,8 +9,8 @@ import orangeDot from "@/assets/coming-soon/orangeDot.svg";
 import redDot from "@/assets/coming-soon/redDot.svg";
 import { FloatingDot } from "./FloatingDot";
 
-const STAR_COUNT = 28;
-const COLORED_DOT_COUNT = 18; // sebelumnya 6, tambah lebih banyak
+const STAR_COUNT = 14;
+const COLORED_DOT_COUNT = 8;
 const COLORED_ASSETS: StaticImageData[] = [greenDot, orangeDot, redDot];
 
 interface DotConfig {
@@ -22,6 +23,75 @@ interface DotConfig {
   glowDuration: number;
   delay: number;
 }
+
+interface WaveConfig {
+  top: string;
+  opacity: number;
+  duration: number;
+  delay: number;
+  fill: string;
+  reverse: boolean;
+}
+
+const WAVES: WaveConfig[] = [
+  {
+    top: "3%",
+    opacity: 0.1,
+    duration: 14,
+    delay: 0.0,
+    fill: "#FFFFFF",
+    reverse: false,
+  },
+  {
+    top: "18%",
+    opacity: 0.1,
+    duration: 18,
+    delay: 1.5,
+    fill: "#FFFFFF",
+    reverse: true,
+  },
+  {
+    top: "33%",
+    opacity: 0.1,
+    duration: 12,
+    delay: 0.8,
+    fill: "#FFFFFF",
+    reverse: false,
+  },
+  {
+    top: "48%",
+    opacity: 0.1,
+    duration: 16,
+    delay: 2.0,
+    fill: "#FFFFFF",
+    reverse: true,
+  },
+  {
+    top: "63%",
+    opacity: 0.1,
+    duration: 13,
+    delay: 0.4,
+    fill: "#FFFFFF",
+    reverse: false,
+  },
+  {
+    top: "78%",
+    opacity: 0.1,
+    duration: 17,
+    delay: 1.2,
+    fill: "#FFFFFF",
+    reverse: true,
+  },
+];
+
+const WAVE_PATH =
+  "M 0,30 " +
+  "Q 150,5 300,30 Q 450,55 600,30 Q 750,5 900,30 Q 1050,55 1200,30 " +
+  "Q 1350,5 1500,30 Q 1650,55 1800,30 Q 1950,5 2100,30 Q 2250,55 2400,30 " +
+  "L 2400,70 " +
+  "Q 2250,95 2100,70 Q 1950,45 1800,70 Q 1650,95 1500,70 Q 1350,45 1200,70 " +
+  "Q 1050,95 900,70 Q 750,45 600,70 Q 450,95 300,70 Q 150,45 0,70 " +
+  "Z";
 
 export function BackgroundLayers() {
   const [dots, setDots] = useState<DotConfig[]>([]);
@@ -69,7 +139,38 @@ export function BackgroundLayers() {
         />
       </div>
 
-      <div className="absolute inset-0 z-1 pointer-events-none overflow-hidden">
+      <div className="absolute inset-0 z-[1] pointer-events-none overflow-hidden">
+        {WAVES.map((w, i) => (
+          <motion.div
+            key={`wave-${i}`}
+            className="absolute left-0 w-[200%] h-[20vh]"
+            style={{
+              top: w.top,
+              opacity: w.opacity,
+            }}
+            animate={{
+              x: w.reverse ? ["0%", "-50%"] : ["-50%", "0%"],
+            }}
+            transition={{
+              duration: w.duration,
+              delay: w.delay,
+              repeat: Infinity,
+              ease: "linear",
+            }}
+          >
+            <svg
+              viewBox="0 0 2400 100"
+              preserveAspectRatio="none"
+              className="absolute inset-0 w-full h-full"
+              fill={w.fill}
+            >
+              <path d={WAVE_PATH} />
+            </svg>
+          </motion.div>
+        ))}
+      </div>
+
+      <div className="absolute inset-0 z-[2] pointer-events-none overflow-hidden">
         {dots.map((dot) => (
           <FloatingDot
             key={dot.id}

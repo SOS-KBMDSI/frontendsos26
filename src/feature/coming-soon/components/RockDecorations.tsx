@@ -13,14 +13,15 @@ export function RockDecorations({ active }: RockDecorationsProps) {
     <>
       <motion.div
         className="absolute z-10 pointer-events-none select-none
-                   w-[85%] sm:w-[68%] md:w-[65%] lg:w-[62%] xl:w-[58%]"
-        style={{ left: "-3%", bottom: "-5vh" }}
+                   w-[85%] sm:w-[68%] md:w-[65%] lg:w-[62%] xl:w-[58%]
+                   bottom-[-2vh] md:bottom-[-2vh] lg:bottom-[-8vh] xl:bottom-[-10vh]"
+        style={{ left: "-3%" }}
         initial={{ y: "100%" }}
         animate={active ? { y: 0 } : { y: "100%" }}
         transition={{
           duration: 0.9,
           ease: [0.34, 1.56, 0.64, 1],
-          delay: 0.4,
+          delay: 1.0,
         }}
       >
         <Image
@@ -34,8 +35,9 @@ export function RockDecorations({ active }: RockDecorationsProps) {
 
       <motion.div
         className="absolute z-20 pointer-events-none select-none
-                   w-[115%] sm:w-[95%] md:w-[92%] lg:w-[88%] xl:w-[82%]"
-        style={{ right: "-3%", bottom: "-5vh" }}
+                   w-[115%] sm:w-[95%] md:w-[92%] lg:w-[88%] xl:w-[82%]
+                   bottom-[-2vh] md:bottom-[-2vh] lg:bottom-[-8vh] xl:bottom-[-10vh]"
+        style={{ right: "-3%" }}
         initial={{ y: "100%" }}
         animate={active ? { y: 0 } : { y: "100%" }}
         transition={{
