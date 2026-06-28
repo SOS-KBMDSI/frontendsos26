@@ -30,7 +30,7 @@ export function OpeningAnimation({ phase }: OpeningAnimationProps) {
           style={{ background: GRADIENT_BG }}
         >
           <motion.div
-            className="absolute left-1/2 -translate-x-1/2 w-180px sm:w-220px md:w-280px lg:w-[320px]"
+            className="absolute left-1/2 -translate-x-1/2 w-45 sm:w-55 md:w-70 lg:w-[320px]"
             initial={{ y: "100vh", scale: 0.6, opacity: 0 }}
             animate={
               isRevealing

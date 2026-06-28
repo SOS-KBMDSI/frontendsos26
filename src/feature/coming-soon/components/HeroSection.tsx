@@ -41,7 +41,7 @@ export function HeroSection({ showLogo, showSubtitle }: HeroSectionProps) {
             repeat: Infinity,
             ease: "easeInOut",
           }}
-          className="relative w-[95%] sm:w-[88%] md:w-[80%] lg:w-[72%] xl:w-[68%] max-w-[1200px]"
+          className="relative w-[95%] sm:w-[88%] md:w-[80%] lg:w-[72%] xl:w-[68%] max-w-300"
         >
           <motion.div
             initial={{ scale: 0 }}
